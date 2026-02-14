@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniUyo Semester Exam - Set 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uyo: {
+                            primary: '#064e3b',   /* Emerald 900 */
+                            secondary: '#f59e0b', /* Amber 500 */
+                            accent: '#10b981',    /* Emerald 500 */
+                            bg: '#f0fdf4',        /* Light Green Bg */
+                            text: '#022c22',      /* Dark Green Text */
+                            danger: '#dc2626'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@400;500;600&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; color: #022c22; }
+        h1, h2, h3 { font-family: 'Merriweather', serif; }
+
+        .auth-gradient { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); }
+
+        .btn-uyo {
+            background-color: #064e3b;
+            color: white;
+            transition: all 0.2s;
+            border-bottom: 4px solid #022c22;
+        }
+        .btn-uyo:hover { background-color: #047857; transform: translateY(-1px); }
+        .btn-uyo:active { border-bottom: 0px; transform: translateY(4px); }
+
+        .option-card {
+            border: 2px solid #d1fae5;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: white;
+        }
+        .option-card:hover { border-color: #f59e0b; background-color: #fffbeb; }
+        .option-card.selected { border-color: #064e3b; background-color: #d1fae5; font-weight: 600; }
+        
+        /* Grid Item Styles */
+        .grid-item { cursor: pointer; transition: all 0.2s; }
+        .grid-item:hover { transform: scale(1.1); }
+        .grid-item.current { border: 2px solid #064e3b; box-shadow: 0 0 0 2px #6ee7b7; }
+        .grid-item.answered { background-color: #064e3b; color: white; border-color: #064e3b; }
+        .grid-item.flagged { background-color: #f59e0b; color: white; border-color: #f59e0b; }
+
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            header, #auth-screen, #start-screen, #exam-area, #nav-sidebar, .no-print { display: none !important; }
+            #result-screen, #review-area { display: block !important; box-shadow: none; border: none; padding: 0; }
+            .page-break { page-break-before: always; }
+            button { display: none !important; }
+            ::-webkit-scrollbar { display: none; }
+            .container { max-width: 100% !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="auth-gradient text-white p-4 sticky top-0 z-50 shadow-lg no-print">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-uyo-primary font-bold text-lg">U</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">University of Uyo</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] opacity-80 font-bold text-uyo-secondary">Set 3: Anatomy & Embryology</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleGrid()" class="md:hidden text-white bg-white/20 p-2 rounded-lg">
+                    ▦
+                </button>
+                <div id="timer-display" class="hidden bg-black/30 px-4 py-1.5 rounded-lg border border-white/20 text-uyo-secondary font-mono text-xl font-bold">
+                    40:00
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-grow flex relative">
+        
+        <!-- Sidebar Navigation Grid -->
+        <aside id="nav-sidebar" class="hidden md:block w-72 bg-white border-r border-emerald-100 p-4 overflow-y-auto h-[calc(100vh-80px)] sticky top-[80px] no-print z-40">
+            <div class="mb-4">
+                <h3 class="font-bold text-uyo-primary border-b border-emerald-100 pb-2">Question Navigator</h3>
+                <div class="flex gap-2 text-[10px] mt-2">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-gray-200"></span> Empty</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-uyo-primary"></span> Done</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-uyo-secondary"></span> Flag</span>
+                </div>
+            </div>
+            <div id="question-grid" class="grid grid-cols-5 gap-2">
+                <!-- Grid items generated by JS -->
+            </div>
+        </aside>
+
+        <main class="flex-1 container mx-auto px-4 py-8 max-w-4xl">
+            
+            <!-- Password Screen -->
+            <div id="auth-screen" class="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md mx-auto mt-10 border-t-8 border-uyo-secondary">
+                <div class="text-6xl mb-6">🦴</div>
+                <h2 class="text-3xl font-bold mb-2 text-uyo-primary">Examination Portal</h2>
+                <p class="text-gray-500 mb-8 font-medium">ANA 211 & ANA 213</p>
+                <input type="password" id="pass-input" placeholder="Access Code" 
+                    class="w-full p-4 rounded-2xl border-2 border-emerald-100 mb-6 focus:outline-none focus:border-uyo-secondary text-center text-2xl tracking-[0.5em] mt-4">
+                <button onclick="unlockExam()" class="btn-uyo w-full py-4 rounded-2xl text-lg font-bold">Enter Exam Hall</button>
+                <p id="auth-error" class="text-red-500 mt-4 hidden font-bold italic">Invalid Code.</p>
+                <p class="mt-4 text-xs text-gray-400">Password: AAT</p>
+            </div>
+
+            <!-- Start Briefing -->
+            <div id="start-screen" class="hidden bg-white rounded-3xl shadow-2xl p-10 border-l-8 border-uyo-primary fade-in">
+                <h2 class="text-3xl font-bold mb-6 text-uyo-primary">Instructions to Candidates</h2>
+                <div class="bg-emerald-50 p-6 rounded-2xl mb-8 border border-emerald-100 text-gray-700 space-y-3">
+                    <p>✅ <strong>Course Coverage:</strong> ANA 211 (Gross Anatomy) & ANA 213 (Embryology).</p>
+                    <p>✅ <strong>Time Limit:</strong> 40 Minutes (Strictly Enforced).</p>
+                    <p>✅ <strong>Features:</strong> Use the Flag button for review. Progress is Auto-Saved.</p>
+                </div>
+                <button onclick="initExam()" class="btn-uyo px-12 py-5 rounded-2xl text-xl font-bold w-full md:w-auto">Start Assessment ➜</button>
+            </div>
+
+            <!-- Exam Workspace -->
+            <div id="exam-area" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-widest" id="counter-txt">Question 1</div>
+                    <button id="flag-btn" onclick="toggleFlag()" class="text-gray-400 hover:text-uyo-secondary transition-colors flex items-center gap-1 text-sm font-bold border px-3 py-1 rounded-full">
+                        <span>🏳️</span> Flag
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 border border-emerald-50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span id="course-label" class="bg-uyo-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">COURSE</span>
+                        <span id="topic-label" class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase border border-emerald-100">TOPIC</span>
+                    </div>
+
+                    <h3 id="question-display" class="text-xl font-bold text-uyo-text mb-8 leading-snug">...</h3>
+
+                    <div id="options-container" class="grid grid-cols-1 gap-3 mb-8"></div>
+
+                    <div class="flex justify-between items-center border-t border-emerald-50 pt-6">
+                        <button onclick="prevQuestion()" class="text-gray-500 hover:text-uyo-primary font-bold">← Prev</button>
+                        <button id="next-button" onclick="nextQuestion()" class="btn-uyo px-8 py-3 rounded-xl font-bold">Next ➜</button>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                     <button onclick="finishExam()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-700 shadow-lg">Submit Final Answers</button>
+                </div>
+            </div>
+
+            <!-- Results & Review -->
+            <div id="result-screen" class="hidden bg-white rounded-3xl shadow-none p-8 md:p-10 text-center print:p-0">
+                <div class="no-print">
+                    <h2 class="text-4xl font-bold text-uyo-primary mb-2">Performance Report</h2>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs mb-8">Department of Anatomy</p>
+                </div>
+
+                <!-- Score Cards -->
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Score</p>
+                        <p id="final-pct" class="text-3xl md:text-5xl font-black text-uyo-primary">0%</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Correct</p>
+                        <p id="final-raw" class="text-3xl md:text-5xl font-black text-gray-700">0/100</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Time</p>
+                        <p id="final-time" class="text-3xl md:text-5xl font-black text-gray-700">00:00</p>
+                    </div>
+                </div>
+
+                <!-- Topic Breakdown -->
+                <div class="text-left mb-8 page-break">
+                    <h4 class="font-bold mb-4 border-b pb-2 text-uyo-primary">Course Analysis</h4>
+                    <div id="analytics-grid" class="space-y-4"></div>
+                </div>
+
+                <!-- Deep Review Section -->
+                <div id="review-area" class="text-left mt-10 border-t-4 border-uyo-secondary pt-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-uyo-primary print:text-left">Detailed Script Review</h3>
+                    <div id="review-list" class="space-y-6">
+                        <!-- Review items -->
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mt-8 no-print sticky bottom-4 bg-white p-4 border-t shadow-2xl rounded-xl">
+                    <button onclick="clearAndReload()" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-xl font-bold">New Attempt</button>
+                    <button onclick="window.print()" class="flex-1 btn-uyo py-3 rounded-xl font-bold">Download PDF Result</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- 100 QUESTIONS DATA (ANA 211 & ANA 213) ---
+        const rawBank = [
+            // ANA 211: UPPER & LOWER LIMB (1-50)
+            {q: "The only bony connection between the upper limb and axial skeleton is at the:", options: ["Acromioclavicular joint", "Sternoclavicular joint", "Glenohumeral joint", "Scapulothoracic joint"], a: 1, c: "ANA 211", topic: "Upper Limb Osteology"},
+            {q: "Which nerve passes through the quadrangular space?", options: ["Radial nerve", "Axillary nerve", "Ulnar nerve", "Median nerve"], a: 1, c: "ANA 211", topic: "Axilla/Shoulder"},
+            {q: "The 'Winged Scapula' deformity results from damage to which nerve?", options: ["Axillary", "Suprascapular", "Long Thoracic", "Dorsal Scapular"], a: 2, c: "ANA 211", topic: "Nerves"},
+            {q: "Which muscle is the primary flexor of the forearm?", options: ["Biceps brachii", "Brachialis", "Brachioradialis", "Coracobrachialis"], a: 1, c: "ANA 211", topic: "Arm Muscles"},
+            {q: "Fracture of the surgical neck of the humerus may damage the:", options: ["Radial nerve", "Axillary nerve", "Ulnar nerve", "Musculocutaneous nerve"], a: 1, c: "ANA 211", topic: "Clinical Anatomy"},
+            {q: "The superficial palmar arch is formed mainly by the:", options: ["Radial artery", "Ulnar artery", "Brachial artery", "Axillary artery"], a: 1, c: "ANA 211", topic: "Vascular Supply"},
+            {q: "Which carpal bone is most commonly fractured?", options: ["Lunate", "Scaphoid", "Capitate", "Hamate"], a: 1, c: "ANA 211", topic: "Hand Osteology"},
+            {q: "The sciatic nerve divides into tibial and common peroneal nerves at the:", options: ["Popliteal fossa (superior angle)", "Gluteal region", "Mid-thigh", "Ankle"], a: 0, c: "ANA 211", topic: "Lower Limb Nerves"},
+            {q: "Trendelenburg sign is positive due to paralysis of:", options: ["Gluteus maximus", "Gluteus medius/minimus", "Piriformis", "Quadratus femoris"], a: 1, c: "ANA 211", topic: "Gluteal Region"},
+            {q: "Which muscle is the 'Tailor's Muscle'?", options: ["Gracilis", "Sartorius", "Rectus femoris", "Tensor fascia lata"], a: 1, c: "ANA 211", topic: "Thigh Muscles"},
+            {q: "The strongest ligament in the body, iliofemoral, reinforces the:", options: ["Knee joint", "Hip joint", "Ankle joint", "Shoulder joint"], a: 1, c: "ANA 211", topic: "Joints"},
+            {q: "Foot drop is caused by injury to the:", options: ["Tibial nerve", "Common Peroneal nerve", "Femoral nerve", "Obturator nerve"], a: 1, c: "ANA 211", topic: "Clinical Anatomy"},
+            {q: "The boundaries of the Femoral Triangle include all EXCEPT:", options: ["Sartorius", "Adductor longus", "Inguinal ligament", "Gracilis"], a: 3, c: "ANA 211", topic: "Thigh Regions"},
+            {q: "Which vein is commonly used for venipuncture in the cubital fossa?", options: ["Cephalic", "Basilic", "Median Cubital", "Axillary"], a: 2, c: "ANA 211", topic: "Vascular Supply"},
+            {q: "The rotator cuff muscles include all EXCEPT:", options: ["Supraspinatus", "Infraspinatus", "Teres Major", "Subscapularis"], a: 2, c: "ANA 211", topic: "Shoulder Muscles"},
+            {q: "Which nerve innervates the anterior compartment of the arm?", options: ["Radial", "Median", "Musculocutaneous", "Ulnar"], a: 2, c: "ANA 211", topic: "Nerves"},
+            {q: "The Great Saphenous Vein drains into the:", options: ["Popliteal vein", "Femoral vein", "External iliac vein", "Internal iliac vein"], a: 1, c: "ANA 211", topic: "Lower Limb Vessels"},
+            {q: "Wrist drop is characteristic of injury to the:", options: ["Median nerve", "Ulnar nerve", "Radial nerve", "Musculocutaneous nerve"], a: 2, c: "ANA 211", topic: "Clinical Anatomy"},
+            {q: "The deltoid muscle is innervated by:", options: ["Suprascapular nerve", "Axillary nerve", "Radial nerve", "Musculocutaneous nerve"], a: 1, c: "ANA 211", topic: "Nerves"},
+            {q: "Which bone forms the lateral malleolus?", options: ["Tibia", "Fibula", "Talus", "Calcaneus"], a: 1, c: "ANA 211", topic: "Lower Limb Osteology"},
+            {q: "The Achillies tendon inserts onto the:", options: ["Talus", "Calcaneus", "Navicular", "Cuboid"], a: 1, c: "ANA 211", topic: "Leg/Foot"},
+            {q: "Which muscle 'unlocks' the knee joint?", options: ["Popliteus", "Plantaris", "Soleus", "Gastrocnemius"], a: 0, c: "ANA 211", topic: "Knee Joint"},
+            {q: "The anatomical snuffbox contains which artery?", options: ["Ulnar", "Radial", "Brachial", "Deep Palmar"], a: 1, c: "ANA 211", topic: "Hand"},
+            {q: "Erb-Duchenne palsy involves injury to which nerve roots?", options: ["C5-C6", "C8-T1", "C7", "T1-T2"], a: 0, c: "ANA 211", topic: "Brachial Plexus"},
+            {q: "Which compartment of the leg is responsible for dorsiflexion?", options: ["Anterior", "Lateral", "Superficial Posterior", "Deep Posterior"], a: 0, c: "ANA 211", topic: "Leg Muscles"},
+            {q: "The coracoid process is a feature of the:", options: ["Clavicle", "Humerus", "Scapula", "Sternum"], a: 2, c: "ANA 211", topic: "Upper Limb Osteology"},
+            {q: "The patella is what type of bone?", options: ["Long", "Short", "Sesamoid", "Irregular"], a: 2, c: "ANA 211", topic: "Lower Limb Osteology"},
+            {q: "Adductor pollicis is innervated by:", options: ["Median nerve", "Ulnar nerve", "Radial nerve", "Axillary nerve"], a: 1, c: "ANA 211", topic: "Hand Muscles"},
+            {q: "The medial meniscus of the knee is:", options: ["O-shaped and mobile", "C-shaped and fixed", "Not attached to MCL", "Smaller than lateral"], a: 1, c: "ANA 211", topic: "Knee Joint"},
+            {q: "Sensation to the little finger is supplied by:", options: ["Median nerve", "Radial nerve", "Ulnar nerve", "Musculocutaneous nerve"], a: 2, c: "ANA 211", topic: "Nerves"},
+            {q: "The femoral nerve innervates which compartment of the thigh?", options: ["Anterior", "Medial", "Posterior", "Lateral"], a: 0, c: "ANA 211", topic: "Thigh Nerves"},
+            {q: "Which structure passes deep to the flexor retinaculum?", options: ["Ulnar nerve", "Median nerve", "Radial artery", "Palmaris longus tendon"], a: 1, c: "ANA 211", topic: "Carpal Tunnel"},
+            {q: "The hip joint is a:", options: ["Hinge joint", "Pivot joint", "Ball and socket joint", "Saddle joint"], a: 2, c: "ANA 211", topic: "Joints"},
+            {q: "Which muscle is the chief extensor of the hip?", options: ["Gluteus medius", "Gluteus maximus", "Hamstrings", "Iliopsoas"], a: 1, c: "ANA 211", topic: "Gluteal Region"},
+            {q: "The sustentaculum tali is a feature of the:", options: ["Talus", "Calcaneus", "Navicular", "Cuboid"], a: 1, c: "ANA 211", topic: "Foot Osteology"},
+            {q: "Klumpke's palsy affects which nerve roots?", options: ["C5-C6", "C8-T1", "C7", "C5"], a: 1, c: "ANA 211", topic: "Brachial Plexus"},
+            {q: "The radial nerve runs in which groove of the humerus?", options: ["Bicipital", "Spiral", "Surgical neck", "Anatomical neck"], a: 1, c: "ANA 211", topic: "Upper Limb Osteology"},
+            {q: "Which vessel is the continuation of the femoral artery?", options: ["Popliteal", "Anterior Tibial", "Posterior Tibial", "Peroneal"], a: 0, c: "ANA 211", topic: "Vascular Supply"},
+            {q: "The lateral compartment of the leg contains:", options: ["Tibialis anterior", "Peroneus longus/brevis", "Gastrocnemius", "Soleus"], a: 1, c: "ANA 211", topic: "Leg Muscles"},
+            {q: "Which nerve is endangered in a mid-shaft humeral fracture?", options: ["Axillary", "Radial", "Ulnar", "Median"], a: 1, c: "ANA 211", topic: "Clinical Anatomy"},
+            {q: "The triceps brachii inserts into the:", options: ["Coronoid process", "Olecranon process", "Radial tuberosity", "Styloid process"], a: 1, c: "ANA 211", topic: "Arm Muscles"},
+            {q: "Inversion of the foot is primarily performed by:", options: ["Tibialis anterior/posterior", "Peroneus longus/brevis", "Gastrocnemius", "Soleus"], a: 0, c: "ANA 211", topic: "Foot Movement"},
+            {q: "The dorsal scapular nerve innervates:", options: ["Rhomboids", "Trapezius", "Latissimus dorsi", "Serratus anterior"], a: 0, c: "ANA 211", topic: "Back Muscles"},
+            {q: "Which artery passes through the anatomical snuffbox?", options: ["Ulnar", "Radial", "Anterior Interosseous", "Brachial"], a: 1, c: "ANA 211", topic: "Hand Vascular"},
+            {q: "The medial epicondyle of the humerus is the origin for:", options: ["Flexors of forearm", "Extensors of forearm", "Biceps", "Triceps"], a: 0, c: "ANA 211", topic: "Forearm Muscles"},
+            {q: "Which nerve innervates the Hamstring muscles?", options: ["Femoral", "Obturator", "Sciatic (Tibial part)", "Gluteal"], a: 2, c: "ANA 211", topic: "Thigh Nerves"},
+            {q: "The talus articulates with:", options: ["Tibia, Fibula, Calcaneus, Navicular", "Tibia, Fibula, Cuboid", "Calcaneus only", "Tibia only"], a: 0, c: "ANA 211", topic: "Foot Osteology"},
+            {q: "Which muscle is absent in about 14% of people (Forearm)?", options: ["Palmaris longus", "Flexor carpi radialis", "Pronator teres", "Flexor pollicis longus"], a: 0, c: "ANA 211", topic: "Anatomical Variation"},
+            {q: "The Profunda Femoris artery is a branch of the:", options: ["External Iliac", "Femoral", "Internal Iliac", "Popliteal"], a: 1, c: "ANA 211", topic: "Thigh Vascular"},
+            {q: "Baker's cyst involves the:", options: ["Elbow", "Shoulder", "Popliteal fossa (Knee)", "Ankle"], a: 2, c: "ANA 211", topic: "Clinical Anatomy"},
+
+            // ANA 213: EMBRYOLOGY (51-100)
+            {q: "Fertilization typically occurs in which part of the uterine tube?", options: ["Isthmus", "Ampulla", "Infundibulum", "Fimbriae"], a: 1, c: "ANA 213", topic: "General Embryology"},
+            {q: "Spermatogenesis takes approximately how many days?", options: ["24", "48", "64-74", "90"], a: 2, c: "ANA 213", topic: "Gametogenesis"},
+            {q: "The acrosome of the sperm is derived from the:", options: ["Nucleus", "Golgi apparatus", "Mitochondria", "Centriole"], a: 1, c: "ANA 213", topic: "Spermatogenesis"},
+            {q: "Implantation of the blastocyst normally occurs on day:", options: ["1-2", "3-4", "6-7", "14"], a: 2, c: "ANA 213", topic: "First Week"},
+            {q: "The process of formation of the three germ layers is:", options: ["Neurulation", "Gastrulation", "Cleavage", "Folding"], a: 1, c: "ANA 213", topic: "Gastrulation"},
+            {q: "Which germ layer gives rise to the Nervous System?", options: ["Ectoderm", "Mesoderm", "Endoderm", "Hypoblast"], a: 0, c: "ANA 213", topic: "Germ Layers"},
+            {q: "The notochord induces the formation of the:", options: ["Neural plate/tube", "Heart", "Liver", "Kidney"], a: 0, c: "ANA 213", topic: "Neurulation"},
+            {q: "Somites are derived from:", options: ["Paraxial mesoderm", "Intermediate mesoderm", "Lateral plate mesoderm", "Endoderm"], a: 0, c: "ANA 213", topic: "Mesoderm"},
+            {q: "The cardiovascular system is derived primarily from:", options: ["Ectoderm", "Mesoderm", "Endoderm", "Neural crest"], a: 1, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "Pharyngeal arches are visible externally during week:", options: ["1-2", "4-5", "8-9", "12"], a: 1, c: "ANA 213", topic: "Head/Neck"},
+            {q: "The fetal period begins at week:", options: ["3", "9", "12", "20"], a: 1, c: "ANA 213", topic: "General Embryology"},
+            {q: "The epidermis of the skin is derived from:", options: ["Ectoderm", "Mesoderm", "Endoderm", "Neural crest"], a: 0, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "The kidneys develop from:", options: ["Paraxial mesoderm", "Intermediate mesoderm", "Lateral plate mesoderm", "Endoderm"], a: 1, c: "ANA 213", topic: "Urogenital"},
+            {q: "Which hormone maintains the corpus luteum during early pregnancy?", options: ["FSH", "LH", "hCG", "Progesterone"], a: 2, c: "ANA 213", topic: "General Embryology"},
+            {q: "Failure of the neural tube to close caudally results in:", options: ["Anencephaly", "Spina Bifida", "Hydrocephalus", "Microcephaly"], a: 1, c: "ANA 213", topic: "Teratology"},
+            {q: "Limb buds appear around day:", options: ["14", "21", "26-28", "40"], a: 2, c: "ANA 213", topic: "Limb Development"},
+            {q: "The decidua basalis is the maternal component of the:", options: ["Amnion", "Chorion", "Placenta", "Yolk sac"], a: 2, c: "ANA 213", topic: "Placenta"},
+            {q: "Which structure connects the pulmonary artery to the aorta in the fetus?", options: ["Ductus venosus", "Ductus arteriosus", "Foramen ovale", "Ligamentum teres"], a: 1, c: "ANA 213", topic: "Cardiovascular"},
+            {q: "Oogenesis arrests in which phase until puberty?", options: ["Metaphase II", "Prophase I", "Anaphase I", "Telophase II"], a: 1, c: "ANA 213", topic: "Gametogenesis"},
+            {q: "The 'Zone of Polarizing Activity' (ZPA) regulates:", options: ["Limb Anterior-Posterior axis", "Head development", "Heart looping", "Kidney ascent"], a: 0, c: "ANA 213", topic: "Limb Development"},
+            {q: "Which teratogen causes phocomelia (seal limbs)?", options: ["Alcohol", "Thalidomide", "Rubella", "Smoking"], a: 1, c: "ANA 213", topic: "Teratology"},
+            {q: "The liver and pancreas are derivatives of the:", options: ["Foregut (Endoderm)", "Midgut", "Hindgut", "Mesoderm"], a: 0, c: "ANA 213", topic: "Gut Development"},
+            {q: "Neural crest cells give rise to:", options: ["CNS neurons", "PNS ganglia and melanocytes", "Epidermis", "Muscles"], a: 1, c: "ANA 213", topic: "Neurulation"},
+            {q: "The blastocyst consists of an inner cell mass and:", options: ["Trophoblast", "Epiblast", "Hypoblast", "Amnion"], a: 0, c: "ANA 213", topic: "First Week"},
+            {q: "Amelia refers to:", options: ["Short limbs", "Absence of limbs", "Fused digits", "Extra digits"], a: 1, c: "ANA 213", topic: "Teratology"},
+            {q: "The septum transversum contributes to the formation of the:", options: ["Heart", "Lungs", "Diaphragm", "Liver"], a: 2, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "During gastrulation, cells migrate through the:", options: ["Primitive Streak", "Neural tube", "Notochord", "Somite"], a: 0, c: "ANA 213", topic: "Gastrulation"},
+            {q: "Syncytiotrophoblast is responsible for producing:", options: ["hCG", "FSH", "LH", "Estrogen"], a: 0, c: "ANA 213", topic: "Implantation"},
+            {q: "The allantois degenerates to become the:", options: ["Urachus/Median umbilical ligament", "Round ligament", "Ligamentum venosum", "Falciform ligament"], a: 0, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "Which pharyngeal arch gives rise to the muscles of mastication?", options: ["First", "Second", "Third", "Fourth"], a: 0, c: "ANA 213", topic: "Pharyngeal Arches"},
+            {q: "The retina develops from the:", options: ["Optic cup (Diencephalon)", "Surface ectoderm", "Mesoderm", "Neural crest"], a: 0, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "Folding of the embryo occurs in:", options: ["Week 2", "Week 4", "Week 8", "Week 12"], a: 1, c: "ANA 213", topic: "Folding"},
+            {q: "The yolk sac acts as an early site for:", options: ["Digestion", "Haemopoiesis", "Respiration", "Excretion"], a: 1, c: "ANA 213", topic: "Extraembryonic"},
+            {q: "Meiosis II in the oocyte is completed only if:", options: ["Ovulation occurs", "Fertilization occurs", "Implantation occurs", "Menstruation occurs"], a: 1, c: "ANA 213", topic: "Gametogenesis"},
+            {q: "Which structure forms the axis of the embryo?", options: ["Neural tube", "Notochord", "Primitive streak", "Somites"], a: 1, c: "ANA 213", topic: "Gastrulation"},
+            {q: "Polydactyly is defined as:", options: ["Fused fingers", "Short fingers", "Extra digits", "Missing digits"], a: 2, c: "ANA 213", topic: "Teratology"},
+            {q: "The heart begins to beat around day:", options: ["14", "22", "30", "45"], a: 1, c: "ANA 213", topic: "Cardiovascular"},
+            {q: "Which arch nerve is the Facial nerve?", options: ["First", "Second", "Third", "Fourth"], a: 1, c: "ANA 213", topic: "Pharyngeal Arches"},
+            {q: "The adrenal medulla is derived from:", options: ["Mesoderm", "Endoderm", "Neural Crest", "Ectoderm"], a: 2, c: "ANA 213", topic: "Systemic Embryology"},
+            {q: "Gastroschisis is a defect in:", options: ["Neural tube closure", "Body wall closure", "Heart septation", "Gut rotation"], a: 1, c: "ANA 213", topic: "Teratology"},
+            {q: "The foramen ovale allows blood to flow from:", options: ["Right atrium to Left atrium", "Right ventricle to Left ventricle", "Pulmonary artery to Aorta", "Umbilical vein to IVC"], a: 0, c: "ANA 213", topic: "Cardiovascular"},
+            {q: "Sperm capacitance occurs in the:", options: ["Epididymis", "Male urethra", "Female reproductive tract", "Seminal vesicle"], a: 2, c: "ANA 213", topic: "Fertilization"},
+            {q: "The cortical reaction prevents:", options: ["Implantation", "Polyspermy", "Cleavage", "Ovulation"], a: 1, c: "ANA 213", topic: "Fertilization"},
+            {q: "Monozygotic twins share a placenta if splitting occurs at the:", options: ["2-cell stage", "Blastocyst stage", "Bilaminar disc stage", "Never share"], a: 1, c: "ANA 213", topic: "Twinning"},
+            {q: "The midgut communicates with the yolk sac via the:", options: ["Vitelline duct", "Allantois", "Urachus", "Umbilical cord"], a: 0, c: "ANA 213", topic: "Gut Development"},
+            {q: "Surfactant production in lungs begins around:", options: ["Week 10", "Week 24", "Week 36", "Birth"], a: 1, c: "ANA 213", topic: "Respiratory"},
+            {q: "The metanephros becomes the:", options: ["Permanent kidney", "Gonad", "Epididymis", "Uterus"], a: 0, c: "ANA 213", topic: "Urogenital"},
+            {q: "Intervillous spaces in the placenta contain:", options: ["Fetal blood", "Maternal blood", "Amniotic fluid", "Urine"], a: 1, c: "ANA 213", topic: "Placenta"},
+            {q: "Cryptorchidism is:", options: ["Undescended testes", "Missing kidney", "Cleft palate", "Webbed neck"], a: 0, c: "ANA 213", topic: "Urogenital"},
+            {q: "Apoptosis is essential in limb development for:", options: ["Bone formation", "Muscle growth", "Digit separation", "Nerve innervation"], a: 2, c: "ANA 213", topic: "Limb Development"}
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let state = {
+            questions: [],
+            answers: new Array(100).fill(null),
+            flagged: new Array(100).fill(false),
+            currentIndex: 0,
+            timeLeft: 40 * 60, // 40 Minutes
+            status: 'auth'
+        };
+
+        let timerInterval;
+
+        function loadState() {
+            const saved = localStorage.getItem('splendid_exam_set3');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.status === 'active') {
+                    state = parsed;
+                    showScreen('exam-area');
+                    initGrid();
+                    renderQuestion();
+                    startTimer();
+                    updateNavGrid();
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('splendid_exam_set3', JSON.stringify(state));
+        }
+
+        function clearAndReload() {
+            localStorage.removeItem('splendid_exam_set3');
+            location.reload();
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // --- AUTH & FLOW ---
+        function unlockExam() {
+            const pass = document.getElementById('pass-input').value;
+            if (pass === 'AAT') {
+                showScreen('start-screen');
+                state.status = 'start';
+            } else {
+                const err = document.getElementById('auth-error');
+                err.classList.remove('hidden');
+                document.getElementById('auth-screen').classList.add('shake');
+                setTimeout(()=>document.getElementById('auth-screen').classList.remove('shake'), 500);
+            }
+        }
+
+        function initExam() {
+            if (state.questions.length === 0) {
+                state.questions = shuffle([...rawBank]);
+            }
+            state.status = 'active';
+            showScreen('exam-area');
+            initGrid();
+            renderQuestion();
+            startTimer();
+            saveState();
+        }
+
+        function showScreen(id) {
+            ['auth-screen', 'start-screen', 'exam-area', 'result-screen'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            
+            const sb = document.getElementById('nav-sidebar');
+            const timer = document.getElementById('timer-display');
+            if (id === 'exam-area') {
+                sb.classList.remove('hidden');
+                timer.classList.remove('hidden');
+            } else {
+                sb.classList.add('hidden');
+                timer.classList.add('hidden');
+            }
+        }
+
+        // --- TIMER ---
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                state.timeLeft--;
+                const m = Math.floor(state.timeLeft / 60);
+                const s = state.timeLeft % 60;
+                document.getElementById('timer-display').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                
+                if (state.timeLeft % 5 === 0) saveState();
+                if (state.timeLeft <= 0) finishExam();
+            }, 1000);
+        }
+
+        // --- UI RENDERING ---
+        function initGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<100; i++) {
+                const div = document.createElement('div');
+                div.className = 'grid-item h-8 rounded bg-gray-100 text-[10px] flex items-center justify-center font-bold text-gray-500';
+                div.textContent = i+1;
+                div.onclick = () => jumpToQuestion(i);
+                div.id = `grid-${i}`;
+                grid.appendChild(div);
+            }
+            updateNavGrid();
+        }
+
+        function updateNavGrid() {
+            for(let i=0; i<100; i++) {
+                const el = document.getElementById(`grid-${i}`);
+                el.className = 'grid-item h-8 rounded text-[10px] flex items-center justify-center font-bold text-gray-500 transition-colors';
+                
+                if (state.answers[i] !== null) el.classList.add('bg-uyo-primary', 'text-white', 'border-uyo-primary');
+                else el.classList.add('bg-gray-200');
+
+                if (state.flagged[i]) el.classList.add('bg-uyo-secondary', 'text-white');
+                if (i === state.currentIndex) el.classList.add('ring-2', 'ring-offset-1', 'ring-emerald-400');
+            }
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIndex];
+            document.getElementById('counter-txt').textContent = `Question ${state.currentIndex + 1} of 100`;
+            document.getElementById('course-label').textContent = q.course;
+            document.getElementById('topic-label').textContent = q.topic;
+            document.getElementById('question-display').textContent = q.q;
+
+            const flagBtn = document.getElementById('flag-btn');
+            flagBtn.className = state.flagged[state.currentIndex] 
+                ? 'text-uyo-secondary font-bold flex items-center gap-1 text-sm border border-uyo-secondary bg-amber-50 px-3 py-1 rounded-full'
+                : 'text-gray-400 hover:text-uyo-secondary transition-colors flex items-center gap-1 text-sm font-bold border px-3 py-1 rounded-full';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                let classes = 'option-card p-4 rounded-xl flex items-center gap-3 transition-all';
+                if (state.answers[state.currentIndex] === idx) classes += ' border-uyo-primary bg-emerald-50 font-bold';
+                else classes += ' border-emerald-100 hover:border-uyo-primary';
+                
+                div.className = classes;
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full border flex items-center justify-center text-xs font-bold ${state.answers[state.currentIndex]===idx ? 'bg-uyo-primary text-white border-uyo-primary' : 'text-gray-400 border-gray-300'}">${String.fromCharCode(65+idx)}</div>
+                    <span class="text-sm md:text-base text-gray-700">${opt}</span>
+                `;
+                div.onclick = () => selectAnswer(idx);
+                container.appendChild(div);
+            });
+            updateNavGrid();
+        }
+
+        // --- INTERACTIONS ---
+        function selectAnswer(idx) {
+            state.answers[state.currentIndex] = idx;
+            renderQuestion();
+            saveState();
+        }
+
+        function toggleFlag() {
+            state.flagged[state.currentIndex] = !state.flagged[state.currentIndex];
+            renderQuestion();
+            saveState();
+        }
+
+        function jumpToQuestion(idx) {
+            state.currentIndex = idx;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (state.currentIndex < 99) {
+                state.currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function toggleGrid() {
+            document.getElementById('nav-sidebar').classList.toggle('hidden');
+        }
+
+        // --- FINISH ---
+        function finishExam() {
+            clearInterval(timerInterval);
+            state.status = 'finished';
+            saveState();
+            localStorage.removeItem('splendid_exam_set3');
+
+            showScreen('result-screen');
+            document.getElementById('nav-sidebar').classList.add('hidden');
+
+            let correctCount = 0;
+            state.questions.forEach((q, i) => {
+                if (state.answers[i] === q.a) correctCount++;
+            });
+            const pct = Math.round(correctCount);
+
+            document.getElementById('final-pct').textContent = `${pct}%`;
+            document.getElementById('final-raw').textContent = `${correctCount}/100`;
+            
+            // Analytics
+            const subjects = ["ANA 211", "ANA 213"];
+            const grid = document.getElementById('analytics-grid');
+            grid.innerHTML = '';
+            
+            subjects.forEach(sub => {
+                const subQs = state.questions.filter(q => q.course === sub);
+                if (subQs.length === 0) return;
+                
+                let subCorrect = 0;
+                subQs.forEach(q => {
+                    const idx = state.questions.indexOf(q);
+                    if (state.answers[idx] === q.a) subCorrect++;
+                });
+                
+                const subPct = Math.round((subCorrect / subQs.length) * 100);
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="flex justify-between text-sm font-bold mb-1 text-gray-700">
+                        <span>${sub}</span>
+                        <span>${subPct}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2.5">
+                        <div class="bg-uyo-primary h-2.5 rounded-full" style="width: ${subPct}%"></div>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+
+            // Review
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+            
+            state.questions.forEach((q, i) => {
+                const userAns = state.answers[i];
+                const isCorrect = userAns === q.a;
+                
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-xl border-l-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'} page-break`;
+                
+                let optionsHTML = '';
+                q.options.forEach((opt, oIdx) => {
+                    let optClass = "text-sm p-1 rounded ";
+                    if (oIdx === q.a) optClass += "font-bold text-green-700 bg-green-100"; 
+                    else if (oIdx === userAns && !isCorrect) optClass += "font-bold text-red-700 bg-red-100";
+                    else optClass += "text-gray-500";
+                    
+                    optionsHTML += `<div class="${optClass}">${String.fromCharCode(65+oIdx)}. ${opt}</div>`;
+                });
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-gray-700 text-sm">Q${i+1}. ${q.q}</span>
+                        <span class="text-[10px] font-black uppercase px-2 py-1 rounded ${isCorrect ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}">${isCorrect ? 'CORRECT' : 'WRONG'}</span>
+                    </div>
+                    <div class="space-y-1 pl-2 mb-2">${optionsHTML}</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400">Course: ${q.course} | Topic: ${q.topic}</div>
+                `;
+                reviewList.appendChild(div);
+            });
+        }
+
+        window.onload = loadState;
+    </script>
+</body>
+  </html>
