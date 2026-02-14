@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniUyo Semester Exam - Set 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uyo: {
+                            primary: '#064e3b',   /* Emerald 900 */
+                            secondary: '#f59e0b', /* Amber 500 */
+                            accent: '#10b981',    /* Emerald 500 */
+                            bg: '#f0fdf4',        /* Light Green Bg */
+                            text: '#022c22',      /* Dark Green Text */
+                            danger: '#dc2626'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Inter:wght@400;500;600&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; color: #022c22; }
+        h1, h2, h3 { font-family: 'Merriweather', serif; }
+
+        .auth-gradient { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); }
+
+        .btn-uyo {
+            background-color: #064e3b;
+            color: white;
+            transition: all 0.2s;
+            border-bottom: 4px solid #022c22;
+        }
+        .btn-uyo:hover { background-color: #047857; transform: translateY(-1px); }
+        .btn-uyo:active { border-bottom: 0px; transform: translateY(4px); }
+
+        .option-card {
+            border: 2px solid #d1fae5;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: white;
+        }
+        .option-card:hover { border-color: #f59e0b; background-color: #fffbeb; }
+        .option-card.selected { border-color: #064e3b; background-color: #d1fae5; font-weight: 600; }
+        
+        /* Grid Item Styles */
+        .grid-item { cursor: pointer; transition: all 0.2s; }
+        .grid-item:hover { transform: scale(1.1); }
+        .grid-item.current { border: 2px solid #064e3b; box-shadow: 0 0 0 2px #6ee7b7; }
+        .grid-item.answered { background-color: #064e3b; color: white; border-color: #064e3b; }
+        .grid-item.flagged { background-color: #f59e0b; color: white; border-color: #f59e0b; }
+
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            header, #auth-screen, #start-screen, #exam-area, #nav-sidebar, .no-print { display: none !important; }
+            #result-screen, #review-area { display: block !important; box-shadow: none; border: none; padding: 0; }
+            .page-break { page-break-before: always; }
+            button { display: none !important; }
+            ::-webkit-scrollbar { display: none; }
+            .container { max-width: 100% !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="auth-gradient text-white p-4 sticky top-0 z-50 shadow-lg no-print">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-uyo-primary font-bold text-lg">U</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">University of Uyo</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] opacity-80 font-bold text-uyo-secondary">Set 2: Cell Phys & Biochem</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleGrid()" class="md:hidden text-white bg-white/20 p-2 rounded-lg">
+                    ▦
+                </button>
+                <div id="timer-display" class="hidden bg-black/30 px-4 py-1.5 rounded-lg border border-white/20 text-uyo-secondary font-mono text-xl font-bold">
+                    40:00
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-grow flex relative">
+        
+        <aside id="nav-sidebar" class="hidden md:block w-72 bg-white border-r border-emerald-100 p-4 overflow-y-auto h-[calc(100vh-80px)] sticky top-[80px] no-print z-40">
+            <div class="mb-4">
+                <h3 class="font-bold text-uyo-primary border-b border-emerald-100 pb-2">Question Navigator</h3>
+                <div class="flex gap-2 text-[10px] mt-2">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-gray-200"></span> Empty</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-uyo-primary"></span> Done</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-uyo-secondary"></span> Flag</span>
+                </div>
+            </div>
+            <div id="question-grid" class="grid grid-cols-5 gap-2">
+                </div>
+        </aside>
+
+        <main class="flex-1 container mx-auto px-4 py-8 max-w-4xl">
+            
+            <div id="auth-screen" class="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md mx-auto mt-10 border-t-8 border-uyo-secondary">
+                <div class="text-6xl mb-6">🧬</div>
+                <h2 class="text-3xl font-bold mb-2 text-uyo-primary">Examination Portal</h2>
+                <p class="text-gray-500 mb-8 font-medium">PHS 213 & MBC 211</p>
+                <input type="password" id="pass-input" placeholder="Access Code" 
+                    class="w-full p-4 rounded-2xl border-2 border-emerald-100 mb-6 focus:outline-none focus:border-uyo-secondary text-center text-2xl tracking-[0.5em] mt-4">
+                <button onclick="unlockExam()" class="btn-uyo w-full py-4 rounded-2xl text-lg font-bold">Enter Exam Hall</button>
+                <p id="auth-error" class="text-red-500 mt-4 hidden font-bold italic">Invalid Code.</p>
+            </div>
+
+            <div id="start-screen" class="hidden bg-white rounded-3xl shadow-2xl p-10 border-l-8 border-uyo-primary fade-in">
+                <h2 class="text-3xl font-bold mb-6 text-uyo-primary">Instructions to Candidates</h2>
+                <div class="bg-emerald-50 p-6 rounded-2xl mb-8 border border-emerald-100 text-gray-700 space-y-3">
+                    <p>✅ <strong>Course Coverage:</strong> PHS 213 (Cell Physiology) & MBC 211 (Biochemistry).</p>
+                    <p>✅ <strong>Time Limit:</strong> 40 Minutes (Strictly Enforced).</p>
+                    <p>✅ <strong>Features:</strong> Use the Flag button for review. Progress is Auto-Saved.</p>
+                </div>
+                <button onclick="initExam()" class="btn-uyo px-12 py-5 rounded-2xl text-xl font-bold w-full md:w-auto">Start Assessment ➜</button>
+            </div>
+
+            <div id="exam-area" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-widest" id="counter-txt">Question 1</div>
+                    <button id="flag-btn" onclick="toggleFlag()" class="text-gray-400 hover:text-uyo-secondary transition-colors flex items-center gap-1 text-sm font-bold border px-3 py-1 rounded-full">
+                        <span>🏳️</span> Flag
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 border border-emerald-50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span id="course-label" class="bg-uyo-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">COURSE</span>
+                        <span id="topic-label" class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase border border-emerald-100">TOPIC</span>
+                    </div>
+
+                    <h3 id="question-display" class="text-xl font-bold text-uyo-text mb-8 leading-snug">...</h3>
+
+                    <div id="options-container" class="grid grid-cols-1 gap-3 mb-8"></div>
+
+                    <div class="flex justify-between items-center border-t border-emerald-50 pt-6">
+                        <button onclick="prevQuestion()" class="text-gray-500 hover:text-uyo-primary font-bold">← Prev</button>
+                        <button id="next-button" onclick="nextQuestion()" class="btn-uyo px-8 py-3 rounded-xl font-bold">Next ➜</button>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                     <button onclick="finishExam()" class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-700 shadow-lg">Submit Final Answers</button>
+                </div>
+            </div>
+
+            <div id="result-screen" class="hidden bg-white rounded-3xl shadow-none p-8 md:p-10 text-center print:p-0">
+                <div class="no-print">
+                    <h2 class="text-4xl font-bold text-uyo-primary mb-2">Performance Report</h2>
+                    <p class="text-gray-500 uppercase tracking-widest text-xs mb-8">Faculty of Basic Medical Sciences</p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Score</p>
+                        <p id="final-pct" class="text-3xl md:text-5xl font-black text-uyo-primary">0%</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Correct</p>
+                        <p id="final-raw" class="text-3xl md:text-5xl font-black text-gray-700">0/100</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                        <p class="text-[10px] uppercase text-gray-400 font-black">Time</p>
+                        <p id="final-time" class="text-3xl md:text-5xl font-black text-gray-700">00:00</p>
+                    </div>
+                </div>
+
+                <div class="text-left mb-8 page-break">
+                    <h4 class="font-bold mb-4 border-b pb-2 text-uyo-primary">Course Analysis</h4>
+                    <div id="analytics-grid" class="space-y-4"></div>
+                </div>
+
+                <div id="review-area" class="text-left mt-10 border-t-4 border-uyo-secondary pt-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-uyo-primary print:text-left">Detailed Script Review</h3>
+                    <div id="review-list" class="space-y-6">
+                        </div>
+                </div>
+
+                <div class="flex gap-4 mt-8 no-print sticky bottom-4 bg-white p-4 border-t shadow-2xl rounded-xl">
+                    <button onclick="clearAndReload()" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-xl font-bold">New Attempt</button>
+                    <button onclick="window.print()" class="flex-1 btn-uyo py-3 rounded-xl font-bold">Download PDF Result</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- 100 QUESTIONS DATA (PHS 213 & MBC 211) ---
+        // REPLACE THIS SECTION IF YOU HAVE DIFFERENT QUESTIONS
+        const rawBank = [
+            // PHS 213: CELL PHYSIOLOGY & BIOPHYSICS (1-50)
+            {q: "Which ion influx serves as the 'universal fire alarm' or wound signal for membrane damage?", options: ["Sodium", "Potassium", "Calcium", "Chloride"], a: 2, c: "PHS 213", topic: "Repair"},
+            {q: "The 'Patch' mechanism of membrane repair primarily involves:", options: ["Actomyosin contraction", "Vesicle/Lysosome fusion", "Protein synthesis", "DNA replication"], a: 1, c: "PHS 213", topic: "Repair"},
+            {q: "Lipid Peroxidation is a chain reaction initiated by:", options: ["Glucose", "Reactive Oxygen Species (ROS)", "Amino acids", "Cholesterol"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "The clinical marker used to detect lipid peroxidation damage is:", options: ["ATP", "MDA (Malondialdehyde)", "NADH", "GTP"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "Which protein scaffold stabilizes torn membrane edges during repair?", options: ["Actin", "Annexins", "Myosin", "Tubulin"], a: 1, c: "PHS 213", topic: "Repair"},
+            {q: "The 'Purse String' effect in membrane repair is driven by the contraction of:", options: ["Microtubules", "Actomyosin ring", "Intermediate filaments", "Collagen fibers"], a: 1, c: "PHS 213", topic: "Repair"},
+            {q: "Shear Force in blood vessels is an example of which category of stressor?", options: ["Biological", "Chemical", "Physical/Mechanical", "Metabolic"], a: 2, c: "PHS 213", topic: "Stressors"},
+            {q: "Pore-Forming Toxins (PFTs) damage cells by:", options: ["Inhibiting ribosomes", "Punching holes in the membrane", "Blocking DNA", "Stopping ATP"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "The 'Cookie Cutter' mechanism describes the action of:", options: ["Lipid Peroxidation", "Pore-Forming Toxins", "Detergents", "Osmotic stress"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "Which condition involves Amyloid Beta forming non-specific Ca2+ channels?", options: ["Cystic Fibrosis", "Alzheimer's Disease", "Hypertension", "Diabetes"], a: 1, c: "PHS 213", topic: "Pathology"},
+            {q: "Barotrauma affects the cell membrane by:", options: ["Increasing fluidity", "Rigidifying/packing lipid tails", "Dissolving lipids", "Hydrating the headgroups"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "In High Pressure Nervous Syndrome (HPNS), the primary membrane change is:", options: ["Increased fluidity", "Decreased fluidity (Rigidity)", "Lysis", "Blebbing"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "Cyclodextrins are used in research to disrupt membrane signaling by extracting:", options: ["Proteins", "Cholesterol (Lipid Rafts)", "Water", "Ions"], a: 1, c: "PHS 213", topic: "Research Tools"},
+            {q: "Hyper-osmotic stress causes the cell to:", options: ["Swell and Lyse", "Shrink (Crenate)", "Divide", "Fuse"], a: 1, c: "PHS 213", topic: "Osmosis"},
+            {q: "Hypo-osmotic stress causes the cell to:", options: ["Swell and potentially Lyse", "Shrink", "Accumulate lipids", "Stop metabolism"], a: 0, c: "PHS 213", topic: "Osmosis"},
+            {q: "Detergents like SDS disrupt membranes by:", options: ["Mimicking lipids and forming micelles", "Oxidizing lipids", "Freezing lipids", "Blocking channels"], a: 0, c: "PHS 213", topic: "Stressors"},
+            {q: "Polyene antifungals (e.g., Amphotericin B) target:", options: ["Cholesterol", "Ergosterol", "Phospholipids", "Glycolipids"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "The Fluid Mosaic Model states that proteins:", options: ["Form a rigid sandwich", "Float in a fluid lipid bilayer", "Are fixed in place", "Are only on the surface"], a: 1, c: "PHS 213", topic: "Membrane Structure"},
+            {q: "Which technique uses a centrifuge to separate cell components?", options: ["Cell Culture", "Cell Fractionation", "Microscopy", "Chromatography"], a: 1, c: "PHS 213", topic: "Methods"},
+            {q: "The Na+/K+ ATPase is an example of:", options: ["Primary Active Transport", "Secondary Active Transport", "Facilitated Diffusion", "Simple Diffusion"], a: 0, c: "PHS 213", topic: "Transport"},
+            {q: "SGLT1 transports Glucose using the energy from:", options: ["ATP hydrolysis", "Sodium gradient", "Potassium gradient", "Calcium gradient"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Which GLUT transporter is insulin-dependent?", options: ["GLUT1", "GLUT2", "GLUT3", "GLUT4"], a: 3, c: "PHS 213", topic: "Transport"},
+            {q: "Cystic Fibrosis is caused by a defect in the:", options: ["Na/K pump", "CFTR (Chloride channel)", "Calcium pump", "Glucose carrier"], a: 1, c: "PHS 213", topic: "Pathology"},
+            {q: "Digoxin increases cardiac contraction by indirectly increasing intracellular:", options: ["Sodium", "Potassium", "Calcium", "Magnesium"], a: 2, c: "PHS 213", topic: "Pathology"},
+            {q: "The 'L.P. Chain' of Lipid Peroxidation stands for:", options: ["Lipid, Protein, Chain", "Initiation, Propagation, Termination", "Lysis, Pain, Trauma", "Low Pressure Chain"], a: 1, c: "PHS 213", topic: "Stressors"},
+            {q: "Cardiolipin is a unique lipid found primarily in the:", options: ["Nucleus", "Mitochondrial inner membrane", "Golgi", "Plasma membrane"], a: 1, c: "PHS 213", topic: "Membrane Lipids"},
+            {q: "Which enzyme is released by snake venom to cleave phospholipids?", options: ["Phospholipase A2 (PLA2)", "Amylase", "Kinase", "Ligase"], a: 0, c: "PHS 213", topic: "Stressors"},
+            {q: "Ceramide signaling is often associated with:", options: ["Cell growth", "Apoptosis (Cell death)", "Energy production", "Mitosis"], a: 1, c: "PHS 213", topic: "Signaling"},
+            {q: "In the 'Trojan Horse' viral entry mechanism, HIV binds to:", options: ["CD4 and CCR5/CXCR4", "GLUT4", "Na+ channels", "Integrins"], a: 0, c: "PHS 213", topic: "Pathology"},
+            {q: "The viral fusion peptide acts like a:", options: ["Key", "Harpoon", "Shield", "Magnet"], a: 1, c: "PHS 213", topic: "Pathology"},
+            {q: "Which form of transport reaches a Vmax?", options: ["Simple Diffusion", "Carrier-mediated transport", "Osmosis", "Filtration"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "The uptake of LDL cholesterol occurs via:", options: ["Phagocytosis", "Receptor-Mediated Endocytosis", "Pinocytosis", "Active Transport"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Clathrin-coated pits are essential for:", options: ["Exocytosis", "Receptor-Mediated Endocytosis", "Simple Diffusion", "Osmosis"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Exocytosis is triggered by a rise in intracellular:", options: ["Na+", "Ca2+", "K+", "Cl-"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Which junctions allow electrical coupling between cardiac cells?", options: ["Tight junctions", "Gap junctions", "Desmosomes", "Adherens"], a: 1, c: "PHS 213", topic: "Junctions"},
+            {q: "The Sodium-Potassium pump moves:", options: ["3 Na out, 2 K in", "2 Na out, 3 K in", "Equal ions", "3 Na in, 2 K out"], a: 0, c: "PHS 213", topic: "Transport"},
+            {q: "Phagocytosis is often called cell:", options: ["Drinking", "Eating", "Vomiting", "Breathing"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Pinocytosis is the uptake of:", options: ["Solids", "Fluids/Solutes", "Bacteria", "Viruses"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Amphipathic molecules have:", options: ["Only hydrophilic parts", "Only hydrophobic parts", "Both hydrophilic and hydrophobic parts", "No charge"], a: 2, c: "PHS 213", topic: "Biophysics"},
+            {q: "Aquaporins are channels specifically for:", options: ["Ions", "Water", "Glucose", "Proteins"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Which GLUT is found in the liver and pancreas (Sensor)?", options: ["GLUT1", "GLUT2", "GLUT3", "GLUT4"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Blebbing is a morphological sign of:", options: ["Healthy division", "Cytoskeletal deregulation/Apoptosis", "Active transport", "Protein synthesis"], a: 1, c: "PHS 213", topic: "Pathology"},
+            {q: "Reperfusion injury is caused by a massive burst of:", options: ["ATP", "ROS (Reactive Oxygen Species)", "Water", "Glucose"], a: 1, c: "PHS 213", topic: "Pathology"},
+            {q: "Which microscope provides the highest resolution for organelles?", options: ["Light Microscope", "Electron Microscope", "Phase Contrast", "Fluorescence"], a: 1, c: "PHS 213", topic: "Methods"},
+            {q: "Cell culture involves growing cells:", options: ["In vivo", "In vitro", "In situ", "In utero"], a: 1, c: "PHS 213", topic: "Methods"},
+            {q: "Movement of glucose down its concentration gradient via a carrier is:", options: ["Active transport", "Facilitated diffusion", "Simple diffusion", "Osmosis"], a: 1, c: "PHS 213", topic: "Transport"},
+            {q: "Tight junctions are responsible for:", options: ["Communication", "Forming a barrier (Blood-Brain Barrier)", "Movement", "Structure"], a: 1, c: "PHS 213", topic: "Junctions"},
+            {q: "Desmosomes provide:", options: ["Chemical communication", "Mechanical strength", "Electrical coupling", "Fluid transport"], a: 1, c: "PHS 213", topic: "Junctions"},
+            {q: "The electrochemical gradient is maintained primarily by:", options: ["The Na/K Pump", "Leak channels", "Mitochondria", "Nucleus"], a: 0, c: "PHS 213", topic: "Biophysics"},
+            {q: "Hemifusion is a state where:", options: ["Two cells fully merge", "Only the outer leaflets of membranes merge", "Nuclei merge", "Nothing merges"], a: 1, c: "PHS 213", topic: "Membrane Fusion"},
+
+            // MBC 211: GENERAL BIOCHEMISTRY I (51-100)
+            {q: "Water accounts for approximately what percentage of total body weight?", options: ["40%", "60%", "80%", "20%"], a: 1, c: "MBC 211", topic: "Water"},
+            {q: "The major cation in the Extracellular Fluid (ECF) is:", options: ["Potassium", "Sodium", "Calcium", "Magnesium"], a: 1, c: "MBC 211", topic: "Electrolytes"},
+            {q: "The major cation in the Intracellular Fluid (ICF) is:", options: ["Sodium", "Potassium", "Chloride", "Bicarbonate"], a: 1, c: "MBC 211", topic: "Electrolytes"},
+            {q: "Which organelle is the site of aerobic respiration (ATP production)?", options: ["Ribosome", "Mitochondria", "Golgi", "Nucleus"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "The 'Suicide bags' of the cell are:", options: ["Peroxisomes", "Lysosomes", "Vacuoles", "Centrioles"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "Which organelle is the site of protein synthesis?", options: ["Smooth ER", "Rough ER / Ribosome", "Golgi", "Lysosome"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "Smooth Endoplasmic Reticulum is involved in:", options: ["Protein synthesis", "Lipid synthesis & Detoxification", "DNA replication", "ATP production"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "The pH of human blood is strictly maintained between:", options: ["7.0-7.2", "7.35-7.45", "6.8-7.0", "7.5-7.8"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "Which buffer system is the most important in the ECF/Plasma?", options: ["Phosphate buffer", "Bicarbonate buffer", "Protein buffer", "Hemoglobin buffer"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "The Henderson-Hasselbalch equation relates pH, pKa and:", options: ["Temperature", "Concentration of salt and acid", "Pressure", "Volume"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "A solution that resists changes in pH is called a:", options: ["Solvent", "Buffer", "Acid", "Base"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "Metabolic Acidosis is characterized by a decrease in:", options: ["PCO2", "Bicarbonate (HCO3-)", "Lactic acid", "Ketones"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "Respiratory Alkalosis is typically caused by:", options: ["Hypoventilation", "Hyperventilation", "Vomiting", "Diarrhea"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "The marker enzyme for Mitochondria is:", options: ["Acid phosphatase", "Succinate dehydrogenase", "Catalase", "DNA polymerase"], a: 1, c: "MBC 211", topic: "Enzymes"},
+            {q: "The marker enzyme for Lysosomes is:", options: ["Acid phosphatase", "Cytochrome oxidase", "Lactate dehydrogenase", "Hexokinase"], a: 0, c: "MBC 211", topic: "Enzymes"},
+            {q: "Cell fractionation separates organelles based on:", options: ["Color", "Size and Density", "Acidity", "Shape"], a: 1, c: "MBC 211", topic: "Methods"},
+            {q: "Which organelle is responsible for packaging and sorting proteins?", options: ["ER", "Golgi apparatus", "Nucleus", "Mitochondria"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "Peroxisomes contain the enzyme:", options: ["Catalase", "Amylase", "Lipase", "Pepsin"], a: 0, c: "MBC 211", topic: "Organelles"},
+            {q: "Prokaryotic cells lack:", options: ["DNA", "Ribosomes", "A defined Nucleus", "Cell membrane"], a: 2, c: "MBC 211", topic: "Cell Type"},
+            {q: "The fluid inside the nucleus is called:", options: ["Cytosol", "Nucleoplasm", "Matrix", "Stroma"], a: 1, c: "MBC 211", topic: "Cell Structure"},
+            {q: "Which biomolecule is the main structural component of the cell membrane?", options: ["Carbohydrate", "Phospholipid", "Nucleic acid", "Vitamin"], a: 1, c: "MBC 211", topic: "Biomolecules"},
+            {q: "Hypernatremia refers to high blood levels of:", options: ["Potassium", "Sodium", "Calcium", "Water"], a: 1, c: "MBC 211", topic: "Electrolytes"},
+            {q: "Hypokalemia refers to low blood levels of:", options: ["Sodium", "Potassium", "Calcium", "Iron"], a: 1, c: "MBC 211", topic: "Electrolytes"},
+            {q: "The cytoskeleton is composed of:", options: ["Microtubules and Microfilaments", "DNA and RNA", "Lipids", "Sugars"], a: 0, c: "MBC 211", topic: "Cell Structure"},
+            {q: "Which organ plays a major role in regulating blood pH via HCO3- reabsorption?", options: ["Lung", "Kidney", "Liver", "Heart"], a: 1, c: "MBC 211", topic: "Systemic Biochem"},
+            {q: "Which organ regulates blood pH via CO2 exhalation?", options: ["Kidney", "Lung", "Skin", "Stomach"], a: 1, c: "MBC 211", topic: "Systemic Biochem"},
+            {q: "Water acts as a universal solvent because it is:", options: ["Non-polar", "Polar (Dipolar)", "Hydrophobic", "Acidic"], a: 1, c: "MBC 211", topic: "Water"},
+            {q: "Osmotic pressure is primarily determined by:", options: ["Temperature", "Solute concentration", "Pressure", "Volume"], a: 1, c: "MBC 211", topic: "Water"},
+            {q: "What effect does a strong acid have on pH?", options: ["Raises it significantly", "Lowers it significantly", "No change", "Neutralizes it"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "The pK of a weak acid is the pH at which:", options: ["It is fully dissociated", "It is 50% dissociated", "It is not dissociated", "It explodes"], a: 1, c: "MBC 211", topic: "Acid-Base"},
+            {q: "Which organelle contains the cell's genetic material?", options: ["Ribosome", "Nucleus", "Golgi", "Centriole"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "The nucleolus is the site of:", options: ["DNA synthesis", "rRNA synthesis (Ribosome production)", "Lipid synthesis", "ATP synthesis"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "Centrioles are involved in:", options: ["Protein synthesis", "Cell division (Spindle formation)", "Digestion", "Energy"], a: 1, c: "MBC 211", topic: "Organelles"},
+            {q: "Biochemistry helps explain physiology at the:", options: ["Organ level", "Molecular level", "Tissue level", "System level"], a: 1, c: "MBC 211", topic: "Intro"},
+            {q: "Which element is a major component of organic molecules?", options: ["Carbon", "Iron", "Sodium", "Chlorine"], a: 0, c: "MBC 211", topic: "Intro"},
+            {q: "Hydrophobic molecules are:", options: ["Water-loving", "Water-fearing", "Soluble in water", "Charged"], a: 1, c: "MBC 211", topic: "Intro"},
+            {q: "Amphipathic molecules have:", options: ["Both polar and non-polar regions", "Only polar regions", "Only non-polar regions", "No charge"], a: 0, c: "MBC 211", topic: "Intro"},
+            {q: "The monomer of proteins is:", options: ["Glucose", "Fatty acid", "Amino acid", "Nucleotide"], a: 2, c: "MBC 211", topic: "Biomolecules"},
+            {q: "The monomer of nucleic acids is:", options: ["Amino acid", "Nucleotide", "Monosaccharide", "Glycerol"], a: 1, c: "MBC 211", topic: "Biomolecules"},
+            {q: "Glycolysis occurs in the:", options: ["Mitochondria", "Cytosol", "Nucleus", "ER"], a: 1, c: "MBC 211", topic: "Metabolism"},
+            {q: "Oxidative phosphorylation occurs in the:", options: ["Cytosol", "Mitochondria", "Golgi", "Lysosome"], a: 1, c: "MBC 211", topic: "Metabolism"},
+            {q: "Enzymes function as biological:", options: ["Buffers", "Catalysts", "Solvents", "Fuels"], a: 1, c: "MBC 211", topic: "Enzymes"},
+            {q: "The 'Lock and Key' model refers to:", options: ["Membrane transport", "Enzyme-Substrate interaction", "DNA replication", "Cell division"], a: 1, c: "MBC 211", topic: "Enzymes"},
+            {q: "Which vitamin is water-soluble?", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], a: 1, c: "MBC 211", topic: "Vitamins"},
+            {q: "Respiratory System biochemistry involves gas exchange of:", options: ["O2 and CO2", "N2 and O2", "H2 and CO2", "CO and O2"], a: 0, c: "MBC 211", topic: "Systemic Biochem"},
+            {q: "Digestive System biochemistry focuses on the breakdown of:", options: ["Macromolecules", "Atoms", "Electrons", "Protons"], a: 0, c: "MBC 211", topic: "Systemic Biochem"},
+            {q: "The functional unit of the kidney for filtration is the:", options: ["Nephron", "Alveolus", "Villus", "Neuron"], a: 0, c: "MBC 211", topic: "Systemic Biochem"},
+            {q: "Dehydration results in:", options: ["Expanded ECF", "Concentrated urine and thirst", "Low heart rate", "Edema"], a: 1, c: "MBC 211", topic: "Water"},
+            {q: "Edema can be caused by low levels of plasma:", options: ["Sodium", "Albumin (Protein)", "Glucose", "Urea"], a: 1, c: "MBC 211", topic: "Water"},
+            {q: "The study of the chemical composition of living matter is:", options: ["Anatomy", "Biochemistry", "Physics", "Geology"], a: 1, c: "MBC 211", topic: "Intro"}
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let state = {
+            questions: [],
+            answers: new Array(100).fill(null),
+            flagged: new Array(100).fill(false),
+            currentIndex: 0,
+            timeLeft: 40 * 60, // 40 Minutes
+            status: 'auth'
+        };
+
+        let timerInterval;
+
+        function loadState() {
+            const saved = localStorage.getItem('splendid_exam_set2');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.status === 'active') {
+                    state = parsed;
+                    showScreen('exam-area');
+                    initGrid();
+                    renderQuestion();
+                    startTimer();
+                    updateNavGrid();
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('splendid_exam_set2', JSON.stringify(state));
+        }
+
+        function clearAndReload() {
+            localStorage.removeItem('splendid_exam_set2');
+            location.reload();
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // --- AUTH & FLOW ---
+        function unlockExam() {
+            const pass = document.getElementById('pass-input').value;
+            if (pass === 'AAT') {
+                showScreen('start-screen');
+                state.status = 'start';
+            } else {
+                const err = document.getElementById('auth-error');
+                err.classList.remove('hidden');
+                document.getElementById('auth-screen').classList.add('shake');
+                setTimeout(()=>document.getElementById('auth-screen').classList.remove('shake'), 500);
+            }
+        }
+
+        function initExam() {
+            if (state.questions.length === 0) {
+                state.questions = shuffle([...rawBank]);
+            }
+            state.status = 'active';
+            showScreen('exam-area');
+            initGrid();
+            renderQuestion();
+            startTimer();
+            saveState();
+        }
+
+        function showScreen(id) {
+            ['auth-screen', 'start-screen', 'exam-area', 'result-screen'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            
+            const sb = document.getElementById('nav-sidebar');
+            const timer = document.getElementById('timer-display');
+            if (id === 'exam-area') {
+                sb.classList.remove('hidden');
+                timer.classList.remove('hidden');
+            } else {
+                sb.classList.add('hidden');
+                timer.classList.add('hidden');
+            }
+        }
+
+        // --- TIMER ---
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                state.timeLeft--;
+                const m = Math.floor(state.timeLeft / 60);
+                const s = state.timeLeft % 60;
+                document.getElementById('timer-display').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                
+                if (state.timeLeft % 5 === 0) saveState();
+                if (state.timeLeft <= 0) finishExam();
+            }, 1000);
+        }
+
+        // --- UI RENDERING ---
+        function initGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<100; i++) {
+                const div = document.createElement('div');
+                div.className = 'grid-item h-8 rounded bg-gray-100 text-[10px] flex items-center justify-center font-bold text-gray-500';
+                div.textContent = i+1;
+                div.onclick = () => jumpToQuestion(i);
+                div.id = `grid-${i}`;
+                grid.appendChild(div);
+            }
+            updateNavGrid();
+        }
+
+        function updateNavGrid() {
+            for(let i=0; i<100; i++) {
+                const el = document.getElementById(`grid-${i}`);
+                el.className = 'grid-item h-8 rounded text-[10px] flex items-center justify-center font-bold text-gray-500 transition-colors';
+                
+                if (state.answers[i] !== null) el.classList.add('bg-uyo-primary', 'text-white', 'border-uyo-primary');
+                else el.classList.add('bg-gray-200');
+
+                if (state.flagged[i]) el.classList.add('bg-uyo-secondary', 'text-white');
+                if (i === state.currentIndex) el.classList.add('ring-2', 'ring-offset-1', 'ring-emerald-400');
+            }
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIndex];
+            document.getElementById('counter-txt').textContent = `Question ${state.currentIndex + 1} of 100`;
+            document.getElementById('course-label').textContent = q.course;
+            document.getElementById('topic-label').textContent = q.topic;
+            document.getElementById('question-display').textContent = q.q;
+
+            const flagBtn = document.getElementById('flag-btn');
+            flagBtn.className = state.flagged[state.currentIndex] 
+                ? 'text-uyo-secondary font-bold flex items-center gap-1 text-sm border border-uyo-secondary bg-amber-50 px-3 py-1 rounded-full'
+                : 'text-gray-400 hover:text-uyo-secondary transition-colors flex items-center gap-1 text-sm font-bold border px-3 py-1 rounded-full';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                let classes = 'option-card p-4 rounded-xl flex items-center gap-3 transition-all';
+                if (state.answers[state.currentIndex] === idx) classes += ' border-uyo-primary bg-emerald-50 font-bold';
+                else classes += ' border-emerald-100 hover:border-uyo-primary';
+                
+                div.className = classes;
+                div.innerHTML = `
+                    <div class="w-8 h-8 rounded-full border flex items-center justify-center text-xs font-bold ${state.answers[state.currentIndex]===idx ? 'bg-uyo-primary text-white border-uyo-primary' : 'text-gray-400 border-gray-300'}">${String.fromCharCode(65+idx)}</div>
+                    <span class="text-sm md:text-base text-gray-700">${opt}</span>
+                `;
+                div.onclick = () => selectAnswer(idx);
+                container.appendChild(div);
+            });
+            updateNavGrid();
+        }
+
+        // --- INTERACTIONS ---
+        function selectAnswer(idx) {
+            state.answers[state.currentIndex] = idx;
+            renderQuestion();
+            saveState();
+        }
+
+        function toggleFlag() {
+            state.flagged[state.currentIndex] = !state.flagged[state.currentIndex];
+            renderQuestion();
+            saveState();
+        }
+
+        function jumpToQuestion(idx) {
+            state.currentIndex = idx;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (state.currentIndex < 99) {
+                state.currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function toggleGrid() {
+            document.getElementById('nav-sidebar').classList.toggle('hidden');
+        }
+
+        // --- FINISH ---
+        function finishExam() {
+            clearInterval(timerInterval);
+            state.status = 'finished';
+            saveState();
+            localStorage.removeItem('splendid_exam_set2');
+
+            showScreen('result-screen');
+            document.getElementById('nav-sidebar').classList.add('hidden');
+
+            let correctCount = 0;
+            state.questions.forEach((q, i) => {
+                if (state.answers[i] === q.a) correctCount++;
+            });
+            const pct = Math.round(correctCount);
+
+            document.getElementById('final-pct').textContent = `${pct}%`;
+            document.getElementById('final-raw').textContent = `${correctCount}/100`;
+            
+            // Analytics
+            const subjects = ["PHS 213", "MBC 211"];
+            const grid = document.getElementById('analytics-grid');
+            grid.innerHTML = '';
+            
+            subjects.forEach(sub => {
+                const subQs = state.questions.filter(q => q.course === sub);
+                if (subQs.length === 0) return;
+                
+                let subCorrect = 0;
+                subQs.forEach(q => {
+                    const idx = state.questions.indexOf(q);
+                    if (state.answers[idx] === q.a) subCorrect++;
+                });
+                
+                const subPct = Math.round((subCorrect / subQs.length) * 100);
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="flex justify-between text-sm font-bold mb-1 text-gray-700">
+                        <span>${sub}</span>
+                        <span>${subPct}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2.5">
+                        <div class="bg-uyo-primary h-2.5 rounded-full" style="width: ${subPct}%"></div>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+
+            // Review
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+            
+            state.questions.forEach((q, i) => {
+                const userAns = state.answers[i];
+                const isCorrect = userAns === q.a;
+                
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-xl border-l-4 ${isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'} page-break`;
+                
+                let optionsHTML = '';
+                q.options.forEach((opt, oIdx) => {
+                    let optClass = "text-sm p-1 rounded ";
+                    if (oIdx === q.a) optClass += "font-bold text-green-700 bg-green-100"; 
+                    else if (oIdx === userAns && !isCorrect) optClass += "font-bold text-red-700 bg-red-100";
+                    else optClass += "text-gray-500";
+                    
+                    optionsHTML += `<div class="${optClass}">${String.fromCharCode(65+oIdx)}. ${opt}</div>`;
+                });
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="font-bold text-gray-700 text-sm">Q${i+1}. ${q.q}</span>
+                        <span class="text-[10px] font-black uppercase px-2 py-1 rounded ${isCorrect ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}">${isCorrect ? 'CORRECT' : 'WRONG'}</span>
+                    </div>
+                    <div class="space-y-1 pl-2 mb-2">${optionsHTML}</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400">Course: ${q.course} | Topic: ${q.topic}</div>
+                `;
+                reviewList.appendChild(div);
+            });
+        }
+
+        window.onload = loadState;
+    </script>
+</body>
+                      </html>
