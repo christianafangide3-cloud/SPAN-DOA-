@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splendid's Library | Digital Vault</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .folder { transition: all 0.2s; border-left: 4px solid transparent; }
+        .folder:hover { transform: translateX(5px); border-left: 4px solid #064e3b; background-color: #f0fdf4; }
+        .download-btn { background-color: #e2e8f0; color: #475569; }
+        .download-btn:hover { background-color: #064e3b; color: white; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col max-w-4xl mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-8 border-b pb-4">
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-900">📚 The Digital Vault</h1>
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Splendid's Academy Resource Center</p>
+        </div>
+        <a href="index.html" class="text-sm font-bold text-green-700 hover:underline">← Back to Exams</a>
+    </div>
+
+    <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">PHS 211</span> 
+            Intro to Physiology & Blood
+        </h2>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="folder p-4 border-b border-gray-100 flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🩸</span>
+                    <div>
+                        <p class="font-bold text-gray-700 text-sm group-hover:text-green-800">Haemostasis & Clotting Factors</p>
+                        <p class="text-[10px] text-gray-400">PDF • 2.4 MB • Dr. Splendid's Note</p>
+                    </div>
+                </div>
+                <a href="#" class="download-btn px-4 py-2 rounded-lg text-xs font-bold transition-colors">Download ⬇</a>
+            </div>
+
+            <div class="folder p-4 border-b border-gray-100 flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🧬</span>
+                    <div>
+                        <p class="font-bold text-gray-700 text-sm group-hover:text-green-800">Erythropoiesis & Iron Metabolism</p>
+                        <p class="text-[10px] text-gray-400">PDF • 1.8 MB • Lecture Slides</p>
+                    </div>
+                </div>
+                <a href="#" class="download-btn px-4 py-2 rounded-lg text-xs font-bold transition-colors">Download ⬇</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">PHS 213</span> 
+            Cell Physiology
+        </h2>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="folder p-4 border-b border-gray-100 flex justify-between items-center group">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🦠</span>
+                    <div>
+                        <p class="font-bold text-gray-700 text-sm group-hover:text-green-800">Membrane Transport Mechanisms</p>
+                        <p class="text-[10px] text-gray-400">PDF • 3.1 MB • Summary Note</p>
+                    </div>
+                </div>
+                <a href="#" class="download-btn px-4 py-2 rounded-lg text-xs font-bold transition-colors">Download ⬇</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-12">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">ARCHIVE</span> 
+            Past Questions (PQ)
+        </h2>
+        <div class="grid grid-cols-2 gap-4">
+            <a href="#" class="block p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow text-center">
+                <span class="block text-2xl mb-2">📜</span>
+                <span class="block font-bold text-sm text-gray-700">2023/2024 Session</span>
+                <span class="text-[10px] text-gray-400">View PDF</span>
+            </a>
+            <a href="#" class="block p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow text-center">
+                <span class="block text-2xl mb-2">📜</span>
+                <span class="block font-bold text-sm text-gray-700">2022/2023 Session</span>
+                <span class="text-[10px] text-gray-400">View PDF</span>
+            </a>
+        </div>
+    </div>
+
+    <footer class="text-center text-gray-400 text-xs pb-8">
+        <p>Tip: Can't find a file? Request it in the group chat.</p>
+    </footer>
+
+</body>
+</html>
