@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christian Solomon Afangide | Director's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        
+        /* Custom Gradient for Hero */
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        /* Profile Image Placeholder Styling */
+        .profile-frame {
+            background: linear-gradient(45deg, #064e3b, #0ea5e9);
+            padding: 4px;
+            border-radius: 9999px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .profile-img {
+            width: 160px; height: 160px;
+            background-color: #cbd5e1;
+            
+            /* ✅ STEP 1: Save your photo as 'profile.jpg' in the same folder. */
+            /* If 'profile.jpg' exists, it will show. If not, it shows the placeholder. */
+            background-image: url('profile.jpg'), url('https://via.placeholder.com/160/cbd5e1/64748b?text=CSA'); 
+            
+            background-size: cover;
+            background-position: center;
+            border: 4px solid white;
+        }
+
+        /* Card Hover Effects */
+        .hover-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-slate-900 tracking-tight">CSA.</div>
+            <div class="space-x-6 text-sm font-medium hidden md:block">
+                <a href="#about" class="text-slate-600 hover:text-emerald-700 transition">About</a>
+                <a href="#leadership" class="text-slate-600 hover:text-emerald-700 transition">Leadership</a>
+                <a href="#projects" class="text-slate-600 hover:text-emerald-700 transition">Projects</a>
+                <a href="index.html" class="bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 transition">Exam Portal</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg text-white pt-32 pb-32 relative overflow-hidden">
+        <!-- Abstract Pattern Overlay -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <div class="inline-block profile-frame mb-8">
+                <div class="profile-img rounded-full"></div>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Christian Solomon Afangide</h1>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 text-slate-300 text-sm md:text-lg font-medium tracking-wide mb-8">
+                <span>MEDICAL PHYSIOLOGIST</span>
+                <span class="hidden md:inline">•</span>
+                <span>DIRECTOR OF ACADEMICS</span>
+                <span class="hidden md:inline">•</span>
+                <span>WEB DEVELOPER</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <!-- ✅ STEP 2: Replace 'your-email@gmail.com' with your actual email below -->
+                <a href="mailto:your-email@gmail.com" class="bg-emerald-600 text-white px-8 py-3 rounded-full font-bold hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/20">
+                    <i class="fas fa-envelope mr-2"></i> Contact Me
+                </a>
+                <a href="#projects" class="bg-transparent border border-white/30 text-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                    View My Work
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 -mt-20 relative z-20 pb-20">
+        
+        <!-- About Card -->
+        <section id="about" class="bg-white rounded-2xl shadow-xl p-8 md:p-10 mb-12">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                <i class="fas fa-user-circle text-2xl text-emerald-600"></i>
+                <h2 class="text-2xl font-bold text-slate-900">About Me</h2>
+            </div>
+            <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
+                <p class="mb-4 text-lg">
+                    I am a second-year <strong>Medical Physiology</strong> student at the University of Uyo, driven by a passion to bridge the gap between medicine, technology, and education.
+                </p>
+                <p class="mb-4">
+                    As the <strong>Director of Academics</strong> and founder of the <em>Academic Advancement Team (AAT)</em>, I design systems that empower students to succeed. My work sits at the intersection of clinical science and digital innovation.
+                </p>
+                <p>
+                    My core interests include <strong>Clinical Physiology</strong>, <strong>Jungian Psychology</strong>, and <strong>Educational Leadership</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Leadership & Experience -->
+        <section id="leadership" class="mb-12">
+            <h3 class="text-xl font-bold text-slate-400 uppercase tracking-widest mb-6 px-2">Leadership & Roles</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Role 1 -->
+                <div class="bg-white rounded-xl shadow-sm p-6 hover-card border-l-4 border-emerald-600">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="bg-emerald-50 p-2 rounded-lg text-emerald-700"><i class="fas fa-graduation-cap"></i></div>
+                        <span class="text-xs font-bold text-slate-400">2025 - Present</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-900">Director of Academics</h4>
+                    <p class="text-sm text-slate-500 font-medium">Department of Physiology</p>
+                    <p class="text-sm text-slate-600 mt-2">Leading academic initiatives and developing the Splendid's Academy portal.</p>
+                </div>
+
+                <!-- Role 2 -->
+                <div class="bg-white rounded-xl shadow-sm p-6 hover-card border-l-4 border-blue-600">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="bg-blue-50 p-2 rounded-lg text-blue-700"><i class="fas fa-leaf"></i></div>
+                        <span class="text-xs font-bold text-slate-400">BAMSSA</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-900">SSA on Env. Protection</h4>
+                    <p class="text-sm text-slate-500 font-medium">Faculty of Basic Medical Sciences</p>
+                    <p class="text-sm text-slate-600 mt-2">Spearheading environmental health awareness and faculty cleanliness drives.</p>
+                </div>
+
+                <!-- Role 3 -->
+                <div class="bg-white rounded-xl shadow-sm p-6 hover-card border-l-4 border-purple-600">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="bg-purple-50 p-2 rounded-lg text-purple-700"><i class="fas fa-church"></i></div>
+                        <span class="text-xs font-bold text-slate-400">Pioneer Member</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-900">Board of Trustee Chirman</h4>
+                    <p class="text-sm text-slate-500 font-medium">First Freedom Apostolic Church Int'l</p>
+                    <p class="text-sm text-slate-600 mt-2">Spiritual leadership and community administration.</p>
+                </div>
+                
+                 <!-- Role 4 -->
+                 <div class="bg-white rounded-xl shadow-sm p-6 hover-card border-l-4 border-amber-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="bg-amber-50 p-2 rounded-lg text-amber-700"><i class="fas fa-users"></i></div>
+                        <span class="text-xs font-bold text-slate-400">Team Lead</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-900">Academic Advancement Team</h4>
+                    <p class="text-sm text-slate-500 font-medium">AAT</p>
+                    <p class="text-sm text-slate-600 mt-2">Founding a specialized team dedicated to student success strategies.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="mb-12">
+            <h3 class="text-xl font-bold text-slate-400 uppercase tracking-widest mb-6 px-2">Featured Projects</h3>
+            
+            <div class="space-y-6">
+                <!-- Project 1: Splendid's Academy -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col md:flex-row hover-card group">
+                    <div class="bg-slate-900 p-8 md:w-1/3 flex items-center justify-center group-hover:bg-emerald-900 transition-colors">
+                        <div class="text-6xl">🩺</div>
+                    </div>
+                    <div class="p-8 md:w-2/3">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xl font-bold text-slate-900">Splendid's Academy</h4>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold uppercase">Live</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">
+                            A fully responsive CBT Exam Portal built for the Faculty of Basic Medical Sciences. Features include a 40-minute timer, auto-grading, and a digital library.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">HTML5</span>
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">Tailwind CSS</span>
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">JavaScript</span>
+                        </div>
+                        <a href="index.html" class="inline-flex items-center text-emerald-700 font-bold hover:text-emerald-500">
+                            Launch Portal <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Research -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col md:flex-row hover-card">
+                    <div class="bg-blue-900 p-8 md:w-1/3 flex items-center justify-center">
+                        <div class="text-6xl text-white"><i class="fas fa-book-open"></i></div>
+                    </div>
+                    <div class="p-8 md:w-2/3">
+                         <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xl font-bold text-slate-900">PGDE Research Thesis</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold uppercase">Ongoing</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">
+                            <em>"Family Variables and Students' Choice of Subject in Secondary Schools in Uyo LGA."</em>
+                            <br>A comprehensive study analyzing the socio-economic factors influencing academic career paths in Akwa Ibom.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">Data Analysis</span>
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">Education</span>
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">Sociology</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="bg-slate-900 rounded-2xl shadow-xl p-8 md:p-10 text-center text-white">
+            <h2 class="text-2xl font-bold mb-8">Technical & Professional Skills</h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-emerald-600 hover:border-emerald-600 transition cursor-default">Medical Physiology</span>
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-blue-600 hover:border-blue-600 transition cursor-default">Curriculum Planning</span>
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-yellow-600 hover:border-yellow-600 transition cursor-default">Web Development</span>
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-purple-600 hover:border-purple-600 transition cursor-default">Public Speaking</span>
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-red-600 hover:border-red-600 transition cursor-default">Leadership</span>
+                <span class="px-4 py-2 border border-slate-700 rounded-full hover:bg-indigo-600 hover:border-indigo-600 transition cursor-default">Teaching</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-12">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="font-serif text-2xl font-bold text-slate-900 mb-2">Christian Solomon Afangide</h3>
+            <p class="text-slate-500 mb-6">Building the future of medical education.</p>
+            
+            <!-- ✅ STEP 3: Add your Social Media Links below by replacing '#' with your profile URLs -->
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="text-slate-400 hover:text-emerald-600 text-2xl transition" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-slate-400 hover:text-blue-700 text-2xl transition" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-slate-400 hover:text-pink-600 text-2xl transition" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:your-email@gmail.com" class="text-slate-400 hover:text-red-600 text-2xl transition" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            
+            <p class="text-slate-400 text-xs uppercase tracking-widest font-bold">© 2026 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+                      </html>
