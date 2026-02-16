@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splendid's GP Forecaster 🔮</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0f9ff; }
+        .input-field { 
+            border: 2px solid #e2e8f0; 
+            transition: all 0.2s; 
+        }
+        .input-field:focus { 
+            border-color: #0ea5e9; 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2); 
+        }
+        .grade-card { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4">
+
+    <div class="max-w-md w-full mb-6 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-extrabold text-sky-900">GP Forecaster 🔮</h1>
+            <p class="text-xs font-bold text-sky-600 uppercase tracking-widest">Predict Your Fate</p>
+        </div>
+        <a href="index.html" class="bg-white text-sky-900 px-4 py-2 rounded-lg text-xs font-bold shadow-sm hover:shadow-md transition-all">← Back</a>
+    </div>
+
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden">
+        
+        <div class="bg-sky-50 p-6 border-b border-sky-100">
+            <h2 class="text-sm font-bold text-sky-800 uppercase mb-4 flex items-center gap-2">
+                <span>👤</span> Current Academic Standing
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Current CGPA</label>
+                    <input type="number" id="current-cgpa" step="0.01" placeholder="e.g. 3.45" class="input-field w-full p-3 rounded-xl font-bold text-lg text-gray-700">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Total Units Taken</label>
+                    <input type="number" id="units-taken" placeholder="e.g. 42" class="input-field w-full p-3 rounded-xl font-bold text-lg text-gray-700">
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-sm font-bold text-gray-800 uppercase flex items-center gap-2">
+                    <span>📚</span> This Semester's Plan
+                </h2>
+                <button onclick="addCourse()" class="bg-sky-100 text-sky-700 hover:bg-sky-200 px-3 py-1 rounded-full text-xs font-bold transition-colors">+ Add Course</button>
+            </div>
+
+            <div id="course-list" class="space-y-3 mb-6">
+                <div class="grade-card flex gap-2 items-center">
+                    <input type="text" placeholder="Course (e.g. PHS 211)" class="input-field flex-1 p-3 rounded-xl text-sm font-medium bg-gray-50">
+                    <input type="number" placeholder="Units" class="course-unit input-field w-20 p-3 rounded-xl text-sm font-bold text-center" value="3">
+                    <select class="course-grade input-field w-24 p-3 rounded-xl text-sm font-bold bg-white text-gray-700 cursor-pointer">
+                        <option value="5">A (5)</option>
+                        <option value="4">B (4)</option>
+                        <option value="3">C (3)</option>
+                        <option value="2">D (2)</option>
+                        <option value="1">E (1)</option>
+                        <option value="0">F (0)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="calculateGP()" class="w-full bg-sky-600 hover:bg-sky-700 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-sky-200 transition-all transform active:scale-95">
+                Calculate My Fate 🎲
+            </button>
+        </div>
+
+        <div id="result-area" class="hidden bg-gray-900 text-white p-8 text-center animate-pulse">
+            <p class="text-xs text-gray-400 uppercase font-bold tracking-widest mb-2">Projected CGPA</p>
+            <h1 id="final-gp" class="text-6xl font-black mb-2 text-sky-400">0.00</h1>
+            <p id="verdict" class="text-sm font-medium text-gray-300">Keep pushing! 💪</p>
+        </div>
+
+    </div>
+
+    <script>
+        function addCourse() {
+            const div = document.createElement('div');
+            div.className = 'grade-card flex gap-2 items-center';
+            div.innerHTML = `
+                <input type="text" placeholder="Course Code" class="input-field flex-1 p-3 rounded-xl text-sm font-medium bg-gray-50">
+                <input type="number" placeholder="Units" class="course-unit input-field w-20 p-3 rounded-xl text-sm font-bold text-center">
+                <select class="course-grade input-field w-24 p-3 rounded-xl text-sm font-bold bg-white text-gray-700 cursor-pointer">
+                    <option value="5">A (5)</option>
+                    <option value="4">B (4)</option>
+                    <option value="3">C (3)</option>
+                    <option value="2">D (2)</option>
+                    <option value="1">E (1)</option>
+                    <option value="0">F (0)</option>
+                </select>
+                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-red-500 font-bold px-2">×</button>
+            `;
+            document.getElementById('course-list').appendChild(div);
+        }
+
+        function calculateGP() {
+            // 1. Get Past Stats
+            const currentCGPA = parseFloat(document.getElementById('current-cgpa').value) || 0;
+            const pastUnits = parseFloat(document.getElementById('units-taken').value) || 0;
+            const pastPoints = currentCGPA * pastUnits;
+
+            // 2. Get Current Semester Stats
+            let currentUnits = 0;
+            let currentPoints = 0;
+
+            const units = document.querySelectorAll('.course-unit');
+            const grades = document.querySelectorAll('.course-grade');
+
+            units.forEach((unitInput, index) => {
+                const u = parseFloat(unitInput.value) || 0;
+                const g = parseFloat(grades[index].value) || 0;
+                
+                currentUnits += u;
+                currentPoints += (u * g);
+            });
+
+            // 3. Calculate Final
+            const totalUnits = pastUnits + currentUnits;
+            const totalPoints = pastPoints + currentPoints;
+            const newCGPA = totalUnits === 0 ? 0 : (totalPoints / totalUnits).toFixed(2);
+
+            // 4. Display
+            const resultArea = document.getElementById('result-area');
+            const resultText = document.getElementById('final-gp');
+            const verdict = document.getElementById('verdict');
+            
+            resultArea.classList.remove('hidden');
+            resultArea.classList.remove('animate-pulse'); // Stop pulsing once loaded
+            resultText.textContent = newCGPA;
+
+            // Verdict Logic
+            if (newCGPA >= 4.5) {
+                verdict.textContent = "🏆 First Class Territory! Phenomenal!";
+                verdict.className = "text-sm font-bold text-green-400";
+            } else if (newCGPA >= 3.5) {
+                verdict.textContent = "🔥 Second Class Upper. Solid ground!";
+                verdict.className = "text-sm font-bold text-sky-300";
+            } else if (newCGPA >= 2.4) {
+                verdict.textContent = "👍 Second Class Lower. Keep pushing higher.";
+                verdict.className = "text-sm font-bold text-yellow-400";
+            } else {
+                verdict.textContent = "⚠️ Warning Zone. We need to strategize.";
+                verdict.className = "text-sm font-bold text-red-400";
+            }
+        }
+    </script>
+</body>
+</html>
