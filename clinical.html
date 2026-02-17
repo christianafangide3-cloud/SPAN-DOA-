@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Case | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@300;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdfa; }
+        h1, h2, h3 { font-family: 'Merriweather', serif; }
+        
+        .blur-reveal { filter: blur(8px); user-select: none; transition: all 0.5s; }
+        .revealed { filter: blur(0); user-select: auto; }
+        
+        .pulse-btn { animation: pulse-green 2s infinite; }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-8 px-4 text-slate-800">
+
+    <div class="max-w-2xl w-full mb-8 flex justify-between items-end border-b border-teal-200 pb-4">
+        <div>
+            <span class="text-teal-600 font-bold tracking-widest text-xs uppercase mb-1 block">Weekly Challenge</span>
+            <h1 class="text-3xl font-bold text-teal-900">Clinical Rounds 🩺</h1>
+        </div>
+        <a href="index.html" class="text-xs font-bold text-slate-400 hover:text-teal-600 uppercase tracking-widest transition-colors">
+            <i class="fas fa-arrow-left mr-1"></i> Dashboard
+        </a>
+    </div>
+
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden mb-8 border border-teal-100">
+        
+        <div class="bg-teal-900 text-white p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 opacity-10 text-9xl transform translate-x-10 -translate-y-4">?</div>
+            <div class="relative z-10">
+                <span class="bg-teal-700 text-teal-100 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">Case #001 • PHS 211</span>
+                <h2 class="text-2xl font-bold leading-tight">The Student with Yellow Eyes</h2>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8">
+            <h3 class="text-lg font-bold text-slate-900 mb-2"><i class="fas fa-user-injured text-teal-600 mr-2"></i>Patient Presentation</h3>
+            <p class="text-slate-600 leading-relaxed mb-6">
+                A 22-year-old male medical student presents to the clinic with <strong>extreme fatigue</strong> and <strong>dark urine</strong> (coca-cola colored). 
+                <br><br>
+                <strong>History:</strong> He was treated for Malaria 3 days ago using an older antimalarial drug (Primaquine).
+                <br>
+                <strong>Observation:</strong> Examination reveals <strong>scleral icterus</strong> (yellowing of the eyes).
+            </p>
+
+            <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-teal-500 mb-8">
+                <h4 class="font-bold text-sm text-slate-900 uppercase mb-1">The Challenge</h4>
+                <p class="text-sm text-slate-600">Based on your knowledge of <strong>Blood Physiology (PHS 211)</strong>, what is the most likely diagnosis?</p>
+            </div>
+
+            <div id="answer-section" class="hidden bg-teal-50 rounded-xl p-6 border border-teal-200 animate-fade-in">
+                <div class="flex items-start gap-3 mb-4">
+                    <div class="bg-teal-100 p-2 rounded-full text-teal-700"><i class="fas fa-check"></i></div>
+                    <div>
+                        <h3 class="font-bold text-xl text-teal-900">G6PD Deficiency</h3>
+                        <p class="text-sm text-teal-700 font-medium">Glucose-6-Phosphate Dehydrogenase Deficiency</p>
+                    </div>
+                </div>
+                
+                <h4 class="font-bold text-sm text-slate-900 uppercase mb-2">Physiological Mechanism:</h4>
+                <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                    <strong>1. The Defect:</strong> Lack of G6PD enzyme reduces <strong>NADPH</strong> production in RBCs.
+                </p>
+                <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                    <strong>2. The Trigger:</strong> Antimalarials (oxidative drugs) cause oxidative stress. Without NADPH, <strong>Glutathione</strong> cannot neutralize H2O2.
+                </p>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                    <strong>3. The Result:</strong> Hemoglobin precipitates (Heinz bodies), causing macrophages to bite them out ("Bite Cells"), leading to <strong>Acute Hemolytic Anemia</strong>.
+                </p>
+            </div>
+
+            <button id="reveal-btn" onclick="revealAnswer()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-teal-200 transition-all transform hover:-translate-y-1 pulse-btn">
+                👁️ Reveal Diagnosis
+            </button>
+
+        </div>
+    </div>
+
+    <div class="max-w-2xl w-full">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Coming Soon</h3>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between opacity-60">
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-100 h-10 w-10 rounded-full flex items-center justify-center text-slate-400"><i class="fas fa-lock"></i></div>
+                <div>
+                    <h4 class="font-bold text-slate-700 text-sm">Case #002: The Twitching Muscle</h4>
+                    <p class="text-xs text-slate-400">Excitable Tissues • PHS 212</p>
+                </div>
+            </div>
+            <span class="text-xs font-bold text-slate-300 bg-slate-100 px-2 py-1 rounded">Locked</span>
+        </div>
+    </div>
+
+    <script>
+        function revealAnswer() {
+            const answer = document.getElementById('answer-section');
+            const btn = document.getElementById('reveal-btn');
+            
+            // Show Answer
+            answer.classList.remove('hidden');
+            
+            // Hide Button
+            btn.classList.add('hidden');
+            
+            // Track in Analytics (Optional)
+            if(typeof gtag === 'function') {
+                gtag('event', 'reveal_answer', {
+                    'event_category': 'engagement',
+                    'event_label': 'Case 001'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
