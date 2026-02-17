@@ -2,45 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Splendid's Academy | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap'); body { font-family: 'Inter', sans-serif; }</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Sidebar Animation */
+        #sidebar { transition: transform 0.3s ease-in-out; }
+        .sidebar-open { transform: translateX(0); }
+        .sidebar-closed { transform: translateX(-100%); }
+        
+        /* Glass Effect */
+        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+    </style>
 </head>
-<body class="bg-slate-50">
-    
-    <nav class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-lg">
-        <div class="flex items-center gap-3">
-            <button class="text-2xl text-slate-400 hover:text-white"><i class="fas fa-bars"></i></button>
-            <h1 class="font-bold text-lg tracking-tight">Splendid's Academy</h1>
-        </div>
+<body class="min-h-screen">
+
+    <nav class="glass-nav fixed w-full top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
         <div class="flex items-center gap-4">
-            <span id="user-name" class="text-sm font-medium text-emerald-400">Loading...</span>
-            <button onclick="logout()" class="bg-red-600 text-xs font-bold px-3 py-2 rounded hover:bg-red-700 transition">LOG OUT</button>
+            <button onclick="toggleSidebar()" class="text-slate-700 text-xl hover:text-emerald-600 transition-colors p-2 rounded-lg hover:bg-slate-100">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="font-extrabold text-lg text-slate-800 tracking-tight">Splendid's Academy</h1>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <div class="text-right hidden md:block">
+                <p id="user-name-display" class="text-xs font-bold text-slate-900">Student</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Online</p>
+            </div>
+            <div class="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold border border-emerald-200">
+                <i class="fas fa-user"></i>
+            </div>
         </div>
     </nav>
 
-    <div class="p-8 text-center mt-10">
-        <h2 class="text-3xl font-bold text-slate-800 mb-4">Welcome to the V2 Portal 🚀</h2>
-        <p class="text-slate-600 mb-8">This is the secure area. Only logged-in students can see this.</p>
-        
-        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-emerald-500">
-                <h3 class="font-bold text-lg">My Progress</h3>
-                <p class="text-sm text-slate-500 mt-2">Database Connection: <span class="text-green-600 font-bold">ACTIVE</span></p>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+    
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-slate-900 text-white z-50 sidebar-closed shadow-2xl flex flex-col">
+        <div class="p-6 border-b border-slate-800 flex justify-between items-center">
+            <div>
+                <h2 class="font-bold text-xl">Menu</h2>
+                <p class="text-xs text-slate-500 uppercase tracking-widest">Navigation</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
-                <h3 class="font-bold text-lg">Library Access</h3>
-                <p class="text-sm text-slate-500 mt-2">User Authentication: <span class="text-green-600 font-bold">VERIFIED</span></p>
+            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-emerald-600 rounded-xl text-white font-bold shadow-lg shadow-emerald-900/20">
+                <i class="fas fa-home w-6"></i> Home Dashboard
+            </a>
+            
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Academics</p>
+            
+            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-book-open w-6 text-emerald-400"></i> Lecture Notes
+            </a>
+            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-laptop-code w-6 text-blue-400"></i> CBT Assessments
+            </a>
+            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases
+            </a>
+
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Tools</p>
+            
+            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-calculator w-6 text-yellow-400"></i> GP Forecaster
+            </a>
+            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-user-graduate w-6 text-pink-400"></i> My Profile
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="logout()" class="flex items-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-900/30 rounded-xl transition-colors font-bold">
+                <i class="fas fa-sign-out-alt w-6"></i> Log Out
+            </button>
+        </div>
+    </aside>
+
+    <main class="pt-24 px-4 pb-12 max-w-4xl mx-auto">
+        
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-800 rounded-3xl p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+            <div class="absolute right-0 top-0 h-full w-1/2 bg-white/5 skew-x-12"></div>
+            <div class="relative z-10">
+                <h2 id="welcome-msg" class="text-3xl font-extrabold mb-2">Welcome Back!</h2>
+                <p class="text-emerald-100 text-sm max-w-md">Your academic journey continues here. Pick up where you left off.</p>
+                <div class="mt-6 flex gap-3">
+                    <button onclick="toggleSidebar()" class="bg-white text-emerald-800 px-5 py-2 rounded-lg font-bold text-sm hover:bg-emerald-50 transition">Open Menu</button>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="mb-8">
+            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-history text-slate-400"></i> Recently Viewed
+            </h3>
+            <div class="bg-white rounded-2xl p-8 text-center border border-slate-200 border-dashed">
+                <div class="text-slate-300 text-4xl mb-2"><i class="fas fa-wind"></i></div>
+                <p class="text-slate-500 text-sm font-medium">Nothing viewed yet. Start studying to track progress!</p>
+            </div>
+        </div>
+
+    </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Your Config
         const firebaseConfig = {
             apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
             authDomain: "splendids-academy-v2.firebaseapp.com",
@@ -54,24 +127,39 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Security Check: If not logged in, kick them back to login page
+        // Auth Check
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in
-                document.getElementById('user-name').textContent = user.displayName || user.email;
+                const name = user.displayName || "Student";
+                document.getElementById('user-name-display').textContent = name;
+                document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
             } else {
-                // User is NOT signed in
                 window.location.href = "index.html";
             }
         });
 
-        // Logout Function
+        // Logout
         window.logout = function() {
-            signOut(auth).then(() => {
-                window.location.href = "index.html";
-            }).catch((error) => {
-                alert("Error logging out: " + error);
-            });
+            signOut(auth).then(() => { window.location.href = "index.html"; });
+        }
+    </script>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('sidebar-closed')) {
+                // Open
+                sidebar.classList.remove('sidebar-closed');
+                sidebar.classList.add('sidebar-open');
+                overlay.classList.remove('hidden');
+            } else {
+                // Close
+                sidebar.classList.add('sidebar-closed');
+                sidebar.classList.remove('sidebar-open');
+                overlay.classList.add('hidden');
+            }
         }
     </script>
 </body>
