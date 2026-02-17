@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splendid's CBT | Assessment Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdfa; }
+        
+        /* Lock Animation */
+        .locked-card { filter: grayscale(100%); opacity: 0.7; pointer-events: none; }
+        .locked-icon { animation: shake 2s infinite; }
+        
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-teal-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <a href="dashboard.html" class="text-teal-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
+            <h1 class="font-bold text-lg tracking-tight">Assessment Engine</h1>
+        </div>
+        <div class="text-xs font-bold text-teal-400 border border-teal-700 bg-teal-800 px-2 py-1 rounded">PHS 213</div>
+    </nav>
+
+    <div class="p-6 text-center">
+        <h2 class="text-2xl font-extrabold text-teal-900">Cell Physiology Track</h2>
+        <p class="text-sm text-teal-600">Complete modules in order to unlock the Final Exam.</p>
+    </div>
+
+    <div class="max-w-md mx-auto px-4 space-y-4">
+
+        <div id="level-1" class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-teal-500 relative overflow-hidden group hover:scale-105 transition-transform">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded uppercase">Module 1</span>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Cell Membrane</h3>
+                    <p class="text-xs text-slate-500 mt-1">20 Questions • 15 Mins</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-teal-600 text-white flex items-center justify-center text-xl shadow-lg shadow-teal-200">
+                    <i class="fas fa-play ml-1"></i>
+                </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-4">
+                <div class="bg-teal-600 h-1.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <button onclick="startQuiz(1)" class="absolute inset-0 w-full h-full cursor-pointer opacity-0">Start</button>
+        </div>
+
+        <div id="level-2" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Module 2</span>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Transport Systems</h3>
+                    <p class="text-xs text-slate-500 mt-1">Active/Passive • 25 Questions</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
+                    <i class="fas fa-lock locked-icon"></i>
+                </div>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-4"></div>
+            <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
+                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Module 1 to Unlock</span>
+            </div>
+        </div>
+
+        <div id="level-3" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Final Exam</span>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Course Certification</h3>
+                    <p class="text-xs text-slate-500 mt-1">Comprehensive • 50 Questions</p>
+                </div>
+                <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
+                    <i class="fas fa-lock locked-icon"></i>
+                </div>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-4"></div>
+             <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
+                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Module 2 to Unlock</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Firebase Config (Your Keys)
+        const firebaseConfig = { apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew", authDomain: "splendids-academy-v2.firebaseapp.com", projectId: "splendids-academy-v2", storageBucket: "splendids-academy-v2.firebasestorage.app", messagingSenderId: "573697150601", appId: "1:573697150601:web:74c556c85b6be053018058", measurementId: "G-VVDT1PMHNX" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Security
+        onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = "index.html";
+            else checkProgress(); // Check locks on load
+        });
+
+        // --- THE UNLOCKING LOGIC ---
+        window.checkProgress = function() {
+            // We simulate progress for now using LocalStorage
+            // In Phase 5, this will come from Firebase Database
+            const passedLevel1 = localStorage.getItem('phs213_lvl1_passed');
+            const passedLevel2 = localStorage.getItem('phs213_lvl2_passed');
+
+            if(passedLevel1 === 'true') {
+                unlockCard('level-2', 'teal');
+            }
+            if(passedLevel2 === 'true') {
+                unlockCard('level-3', 'teal');
+            }
+        }
+
+        function unlockCard(id, color) {
+            const card = document.getElementById(id);
+            card.classList.remove('locked-card', 'border-gray-300');
+            card.classList.add('border-' + color +'-500', 'hover:scale-105', 'transition-transform');
+            
+            // Remove Lock Icon
+            const iconContainer = card.querySelector('.rounded-full');
+            iconContainer.classList.remove('bg-gray-200', 'text-gray-400');
+            iconContainer.classList.add('bg-'+color+'-600', 'text-white', 'shadow-lg');
+            iconContainer.innerHTML = '<i class="fas fa-play ml-1"></i>';
+
+            // Remove Overlay
+            const overlay = card.querySelector('.absolute.inset-0.flex');
+            if(overlay) overlay.remove();
+
+            // Add Click Action
+            const btn = document.createElement('button');
+            btn.className = "absolute inset-0 w-full h-full cursor-pointer opacity-0";
+            const levelNum = id.split('-')[1];
+            btn.onclick = function() { startQuiz(levelNum); };
+            card.appendChild(btn);
+        }
+
+        // Navigation to the actual Quiz (We will build quiz-runner.html next)
+        window.startQuiz = function(level) {
+            // For demo: If they click Level 1, we let them pass instantly to test the lock
+            if(confirm("Start Module " + level + " Quiz? \n(Click OK to simulate PASSING for demo)")) {
+                // Simulate Passing
+                localStorage.setItem('phs213_lvl'+level+'_passed', 'true');
+                alert("🎉 Module Passed! Next level unlocking...");
+                location.reload(); // Reload to see the unlock
+            }
+        }
+    </script>
+</body>
+</html>
