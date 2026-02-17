@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splendid's Academy | Student Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden glass-panel border border-slate-200 relative">
+        
+        <div id="loading" class="hidden absolute inset-0 bg-white/80 z-50 flex flex-col items-center justify-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+            <p class="mt-4 text-sm font-bold text-emerald-800 animate-pulse">Authenticating...</p>
+        </div>
+
+        <div class="bg-slate-900 p-8 text-center text-white">
+            <div class="text-4xl mb-2">🩺</div>
+            <h1 class="text-2xl font-extrabold tracking-tight">Splendid's Academy</h1>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Secure Student Portal</p>
+        </div>
+
+        <div class="flex border-b border-slate-200">
+            <button onclick="toggleForm('login')" id="tab-login" class="flex-1 py-4 text-sm font-bold text-emerald-600 border-b-2 border-emerald-600 bg-slate-50 transition-colors">Log In</button>
+            <button onclick="toggleForm('signup')" id="tab-signup" class="flex-1 py-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Create Account</button>
+        </div>
+
+        <div class="p-8">
+            
+            <div id="auth-message" class="hidden mb-4 p-3 rounded-lg text-xs font-bold text-center"></div>
+
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
+                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
+                        <i class="fas fa-envelope text-slate-400"></i>
+                        <input type="email" id="login-email" required class="w-full p-3 outline-none text-sm font-medium" placeholder="student@uniuyo.edu.ng">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
+                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
+                        <i class="fas fa-lock text-slate-400"></i>
+                        <input type="password" id="login-password" required class="w-full p-3 outline-none text-sm font-medium" placeholder="••••••••">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-transform active:scale-95 shadow-lg">
+                    Access Portal <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <p class="text-center text-xs text-slate-400 mt-4">Forgot Password? <a href="#" onclick="resetPassword()" class="text-emerald-600 font-bold hover:underline">Reset here</a></p>
+            </form>
+
+            <form id="signup-form" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
+                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
+                        <i class="fas fa-user text-slate-400"></i>
+                        <input type="text" id="signup-name" required class="w-full p-3 outline-none text-sm font-medium" placeholder="Christian Solomon">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
+                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
+                        <i class="fas fa-envelope text-slate-400"></i>
+                        <input type="email" id="signup-email" required class="w-full p-3 outline-none text-sm font-medium" placeholder="student@uniuyo.edu.ng">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Create Password</label>
+                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
+                        <i class="fas fa-lock text-slate-400"></i>
+                        <input type="password" id="signup-password" required class="w-full p-3 outline-none text-sm font-medium" placeholder="•••••••• (Min 6 chars)">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition-transform active:scale-95 shadow-lg shadow-emerald-200">
+                    Register Student <i class="fas fa-user-plus ml-2"></i>
+                </button>
+            </form>
+
+        </div>
+        
+        <div class="bg-slate-50 p-4 text-center border-t border-slate-200">
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Secure • Encrypted • Fast</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged } 
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
+            authDomain: "splendids-academy-v2.firebaseapp.com",
+            projectId: "splendids-academy-v2",
+            storageBucket: "splendids-academy-v2.firebasestorage.app",
+            messagingSenderId: "573697150601",
+            appId: "1:573697150601:web:74c556c85b6be053018058",
+            measurementId: "G-VVDT1PMHNX"
+        };
+
+        // Initialize
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // --- DOM ELEMENTS ---
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const msgBox = document.getElementById('auth-message');
+        const loader = document.getElementById('loading');
+
+        // --- AUTH STATE LISTENER (Redirect if logged in) ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // If user is already logged in, send them to dashboard
+                window.location.href = "dashboard.html";
+            }
+        });
+
+        // --- LOGIN LOGIC ---
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            showLoading(true);
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    showMessage("Login Successful! Redirecting...", "success");
+                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+                })
+                .catch((error) => {
+                    showLoading(false);
+                    showMessage(cleanError(error.code), "error");
+                });
+        });
+
+        // --- SIGNUP LOGIC ---
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const name = document.getElementById('signup-name').value;
+
+            showLoading(true);
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Update profile with name
+                    updateProfile(auth.currentUser, { displayName: name })
+                    .then(() => {
+                        showMessage("Account Created! Welcome, " + name, "success");
+                        setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+                    });
+                })
+                .catch((error) => {
+                    showLoading(false);
+                    showMessage(cleanError(error.code), "error");
+                });
+        });
+
+        // --- RESET PASSWORD ---
+        window.resetPassword = function() {
+            const email = prompt("Enter your email to reset password:");
+            if(email) {
+                sendPasswordResetEmail(auth, email)
+                    .then(() => alert("Reset link sent! Check your inbox."))
+                    .catch((error) => alert(cleanError(error.code)));
+            }
+        }
+
+        // --- UI UTILITIES ---
+        function showMessage(text, type) {
+            msgBox.textContent = text;
+            msgBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+            if(type === 'error') msgBox.classList.add('bg-red-100', 'text-red-700');
+            else msgBox.classList.add('bg-green-100', 'text-green-700');
+            msgBox.classList.remove('hidden');
+        }
+
+        function cleanError(code) {
+            // Converts 'auth/user-not-found' to 'User not found'
+            return code.replace('auth/', '').replace(/-/g, ' ').toUpperCase();
+        }
+
+        function showLoading(show) {
+            if(show) loader.classList.remove('hidden');
+            else loader.classList.add('hidden');
+        }
+
+        // Expose toggle function to window
+        window.toggleForm = function(tab) {
+            const loginBtn = document.getElementById('tab-login');
+            const signupBtn = document.getElementById('tab-signup');
+            
+            msgBox.classList.add('hidden'); // Clear errors
+
+            if(tab === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                
+                loginBtn.classList.add('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
+                loginBtn.classList.remove('text-slate-400');
+                
+                signupBtn.classList.remove('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
+                signupBtn.classList.add('text-slate-400');
+            } else {
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                
+                signupBtn.classList.add('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
+                signupBtn.classList.remove('text-slate-400');
+                
+                loginBtn.classList.remove('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
+                loginBtn.classList.add('text-slate-400');
+            }
+        }
+    </script>
+</body>
+  </html>
