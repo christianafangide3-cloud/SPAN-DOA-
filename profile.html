@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Share+Tech+Mono&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* ID Card Hologram Effect */
+        .id-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .id-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            animation: shine 6s infinite;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+        .mono-font { font-family: 'Share Tech Mono', monospace; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <a href="dashboard.html" class="text-slate-400 hover:text-white"><i class="fas fa-arrow-left"></i></a>
+            <h1 class="font-bold text-lg">Student Profile</h1>
+        </div>
+        <button onclick="logout()" class="text-xs bg-red-600 px-3 py-1 rounded font-bold hover:bg-red-700">LOG OUT</button>
+    </nav>
+
+    <div class="max-w-md mx-auto p-6">
+        
+        <div class="id-card rounded-2xl shadow-2xl p-6 text-white mb-8 border border-slate-700 relative transform transition hover:scale-[1.02]">
+            <div class="absolute right-4 top-4 text-6xl opacity-10">🩺</div>
+            
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-xs text-emerald-400 font-bold uppercase tracking-widest mb-1">Official Student ID</h2>
+                    <h1 class="text-xl font-extrabold tracking-tight">Splendid's Academy</h1>
+                </div>
+                <div class="h-10 w-10 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+                    <i class="fas fa-university text-emerald-400"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="h-20 w-20 rounded-xl bg-slate-700 border-2 border-emerald-500 overflow-hidden flex items-center justify-center">
+                    <i class="fas fa-user text-4xl text-slate-500"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase">Student Name</p>
+                    <h3 id="card-name" class="font-bold text-lg leading-tight mb-2">Loading...</h3>
+                    
+                    <p class="text-[10px] text-slate-400 uppercase">ID Status</p>
+                    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/50">VERIFIED • V2.0</span>
+                </div>
+            </div>
+
+            <div class="mt-6 border-t border-white/10 pt-4 flex justify-between items-end">
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase">Department</p>
+                    <p class="font-bold text-sm">Medical Physiology</p>
+                </div>
+                <div class="text-right">
+                    <div class="h-6 w-24 bg-white mb-1"></div> <p class="mono-font text-xs tracking-widest text-slate-400">8829-192-33</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-cog text-slate-400"></i> Account Settings
+            </h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Full Name</label>
+                    <input type="text" id="input-name" class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm font-bold text-slate-700" readonly>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Email Address</label>
+                    <input type="text" id="input-email" class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm font-bold text-slate-700" readonly>
+                </div>
+                
+                <div class="pt-4 border-t border-slate-100">
+                    <p class="text-xs text-slate-500 mb-3">Target CGPA Goal</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="target-goal" placeholder="5.00" class="flex-1 p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm font-bold">
+                        <button onclick="saveGoal()" class="bg-slate-900 text-white px-4 py-3 rounded-lg font-bold text-sm">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // CONFIG (Your Keys)
+        const firebaseConfig = { apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew", authDomain: "splendids-academy-v2.firebaseapp.com", projectId: "splendids-academy-v2", storageBucket: "splendids-academy-v2.firebasestorage.app", messagingSenderId: "573697150601", appId: "1:573697150601:web:74c556c85b6be053018058", measurementId: "G-VVDT1PMHNX" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 1. POPULATE DATA
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const name = user.displayName || "Student";
+                const email = user.email;
+
+                // Update ID Card
+                document.getElementById('card-name').textContent = name;
+                
+                // Update Form
+                document.getElementById('input-name').value = name;
+                document.getElementById('input-email').value = email;
+                
+                // Load saved goal
+                const savedGoal = localStorage.getItem('my_target_cgpa');
+                if(savedGoal) document.getElementById('target-goal').value = savedGoal;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        // 2. SAVE FUNCTION
+        window.saveGoal = function() {
+            const goal = document.getElementById('target-goal').value;
+            localStorage.setItem('my_target_cgpa', goal);
+            alert("Goal Updated! 🎯");
+        }
+
+        // 3. LOGOUT
+        window.logout = function() {
+            signOut(auth).then(() => { window.location.href = "index.html"; });
+        }
+    </script>
+</body>
+                                                          </html>
