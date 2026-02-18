@@ -17,6 +17,10 @@
         
         /* Glass Effect */
         .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+        
+        /* Card Hover Effect */
+        .hover-card { transition: all 0.2s; }
+        .hover-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="min-h-screen">
@@ -68,13 +72,19 @@
                 <i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases
             </a>
 
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Tools</p>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Tools & Rank</p>
             
+            <a href="flashcards.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-bolt w-6 text-yellow-400"></i> Flashcards
+            </a>
+            <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+                <i class="fas fa-trophy w-6 text-orange-400"></i> Hall of Fame
+            </a>
             <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
-                <i class="fas fa-calculator w-6 text-yellow-400"></i> GP Forecaster
+                <i class="fas fa-calculator w-6 text-cyan-400"></i> GP Forecaster
             </a>
             <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
-                <i class="fas fa-user-graduate w-6 text-pink-400"></i> My Profile
+                <i class="fas fa-id-card w-6 text-pink-400"></i> Digital ID
             </a>
         </nav>
 
@@ -103,9 +113,36 @@
                 <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Modules Passed</div>
                 <div class="text-3xl font-extrabold text-slate-800" id="stat-passed">0</div>
             </div>
-             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
                 <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Target CGPA</div>
                 <div class="text-3xl font-extrabold text-emerald-600" id="stat-target">-.-</div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-fire text-orange-500"></i> The Daily Grind
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="flashcards.html" class="hover-card bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 p-5 rounded-2xl flex items-center gap-4">
+                    <div class="h-12 w-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Flashcard Blitz</h4>
+                        <p class="text-xs text-slate-500">Quick revision before exams.</p>
+                    </div>
+                </a>
+                
+                <a href="leaderboard.html" class="hover-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 p-5 rounded-2xl flex items-center gap-4 text-white">
+                    <div class="h-12 w-12 rounded-full bg-slate-700 text-yellow-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Hall of Fame</h4>
+                        <p class="text-xs text-slate-400">See where you stand.</p>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -141,46 +178,38 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Auth Check & Load Data
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const name = user.displayName || "Student";
                 document.getElementById('user-name-display').textContent = name;
                 document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
-                
-                // TRIGGER STATS LOAD
                 loadStats();
             } else {
                 window.location.href = "index.html";
             }
         });
 
-        // 🧠 FUNCTION TO READ PROGRESS FROM STORAGE
         function loadStats() {
-            // 1. Check CGPA Target (Saved from profile.html or calculator)
+            // Check CGPA Target
             const target = localStorage.getItem('my_target_cgpa');
             if(target) document.getElementById('stat-target').textContent = target;
 
-            // 2. Check Quiz Progress
+            // Check Quiz Progress
             let passedCount = 0;
             const feed = document.getElementById('activity-feed');
             let hasActivity = false;
 
-            // List of keys to check (Add more here as you build more quizzes)
             const checks = [
-                { key: 'ANA 211_beginner_passed', name: 'ANA 211: Beginner Level', type: 'Quiz' },
-                { key: 'ANA 211_intermediate_passed', name: 'ANA 211: Intermediate Level', type: 'Quiz' },
-                { key: 'ANA 211_advanced_passed', name: 'ANA 211: Advanced Level', type: 'Quiz' }
+                { key: 'ANA 211_beginner_passed', name: 'ANA 211: Beginner Level' },
+                { key: 'ANA 211_intermediate_passed', name: 'ANA 211: Intermediate Level' },
+                { key: 'ANA 211_advanced_passed', name: 'ANA 211: Advanced Level' }
             ];
 
             checks.forEach(item => {
                 if(localStorage.getItem(item.key) === 'true') {
                     passedCount++;
-                    
-                    // If first item found, clear the "Nothing yet" message
                     if(!hasActivity) { feed.innerHTML = ''; hasActivity = true; }
 
-                    // Add Card to Feed
                     const div = document.createElement('div');
                     div.className = "bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-center animate-fade-in";
                     div.innerHTML = `
@@ -194,11 +223,9 @@
                 }
             });
 
-            // Update Count
             document.getElementById('stat-passed').textContent = passedCount;
         }
 
-        // Logout
         window.logout = function() {
             signOut(auth).then(() => { window.location.href = "index.html"; });
         }
@@ -208,7 +235,6 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
             if (sidebar.classList.contains('sidebar-closed')) {
                 sidebar.classList.remove('sidebar-closed');
                 sidebar.classList.add('sidebar-open');
@@ -221,4 +247,4 @@
         }
     </script>
 </body>
-                    </html>
+                        </html>
