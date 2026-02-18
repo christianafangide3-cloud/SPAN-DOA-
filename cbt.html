@@ -29,22 +29,22 @@
             <a href="dashboard.html" class="text-teal-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
             <h1 class="font-bold text-lg tracking-tight">Assessment Engine</h1>
         </div>
-        <div class="text-xs font-bold text-teal-400 border border-teal-700 bg-teal-800 px-2 py-1 rounded">PHS 213</div>
+        <div class="text-xs font-bold text-teal-400 border border-teal-700 bg-teal-800 px-2 py-1 rounded">ANA 211</div>
     </nav>
 
     <div class="p-6 text-center">
-        <h2 class="text-2xl font-extrabold text-teal-900">Cell Physiology Track</h2>
+        <h2 class="text-2xl font-extrabold text-teal-900">Gross Anatomy Track</h2>
         <p class="text-sm text-teal-600">Complete modules in order to unlock the Final Exam.</p>
     </div>
 
     <div class="max-w-md mx-auto px-4 space-y-4">
 
-        <div id="level-1" class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-teal-500 relative overflow-hidden group hover:scale-105 transition-transform">
+        <div id="level-beginner" class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-teal-500 relative overflow-hidden group hover:scale-105 transition-transform">
             <div class="flex justify-between items-center">
                 <div>
-                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded uppercase">Module 1</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Cell Membrane</h3>
-                    <p class="text-xs text-slate-500 mt-1">20 Questions • 15 Mins</p>
+                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded uppercase">Level 1</span>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Beginner</h3>
+                    <p class="text-xs text-slate-500 mt-1">Bones & Joints • 30 Questions</p>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-teal-600 text-white flex items-center justify-center text-xl shadow-lg shadow-teal-200">
                     <i class="fas fa-play ml-1"></i>
@@ -53,15 +53,15 @@
             <div class="w-full bg-gray-200 rounded-full h-1.5 mt-4">
                 <div class="bg-teal-600 h-1.5 rounded-full" style="width: 0%"></div>
             </div>
-            <button onclick="startQuiz(1)" class="absolute inset-0 w-full h-full cursor-pointer opacity-0">Start</button>
+            <button onclick="startQuiz('beginner')" class="absolute inset-0 w-full h-full cursor-pointer opacity-0">Start</button>
         </div>
 
-        <div id="level-2" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
+        <div id="level-intermediate" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
             <div class="flex justify-between items-center">
                 <div>
-                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Module 2</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Transport Systems</h3>
-                    <p class="text-xs text-slate-500 mt-1">Active/Passive • 25 Questions</p>
+                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Level 2</span>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Intermediate</h3>
+                    <p class="text-xs text-slate-500 mt-1">Muscles & Nerves • 40 Questions</p>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
                     <i class="fas fa-lock locked-icon"></i>
@@ -69,16 +69,16 @@
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-4"></div>
             <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
-                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Module 1 to Unlock</span>
+                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Level 1 to Unlock</span>
             </div>
         </div>
 
-        <div id="level-3" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
+        <div id="level-advanced" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
             <div class="flex justify-between items-center">
                 <div>
                     <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Final Exam</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Course Certification</h3>
-                    <p class="text-xs text-slate-500 mt-1">Comprehensive • 50 Questions</p>
+                    <h3 class="font-bold text-xl text-slate-800 mt-1">Advanced</h3>
+                    <p class="text-xs text-slate-500 mt-1">Clinical Anatomy • 50 Questions</p>
                 </div>
                 <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
                     <i class="fas fa-lock locked-icon"></i>
@@ -86,7 +86,7 @@
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-4"></div>
              <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
-                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Module 2 to Unlock</span>
+                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Level 2 to Unlock</span>
             </div>
         </div>
 
@@ -109,28 +109,29 @@
 
         // --- THE UNLOCKING LOGIC ---
         window.checkProgress = function() {
-            // We simulate progress for now using LocalStorage
-            // In Phase 5, this will come from Firebase Database
-            const passedLevel1 = localStorage.getItem('phs213_lvl1_passed');
-            const passedLevel2 = localStorage.getItem('phs213_lvl2_passed');
+            // Check LocalStorage for saved progress (e.g., "ANA 211_beginner_passed")
+            const passedLevel1 = localStorage.getItem('ANA 211_beginner_passed');
+            const passedLevel2 = localStorage.getItem('ANA 211_intermediate_passed');
 
             if(passedLevel1 === 'true') {
-                unlockCard('level-2', 'teal');
+                unlockCard('level-intermediate', 'intermediate');
             }
             if(passedLevel2 === 'true') {
-                unlockCard('level-3', 'teal');
+                unlockCard('level-advanced', 'advanced');
             }
         }
 
-        function unlockCard(id, color) {
+        function unlockCard(id, levelName) {
             const card = document.getElementById(id);
+            if(!card) return;
+
             card.classList.remove('locked-card', 'border-gray-300');
-            card.classList.add('border-' + color +'-500', 'hover:scale-105', 'transition-transform');
+            card.classList.add('border-teal-500', 'hover:scale-105', 'transition-transform');
             
             // Remove Lock Icon
             const iconContainer = card.querySelector('.rounded-full');
             iconContainer.classList.remove('bg-gray-200', 'text-gray-400');
-            iconContainer.classList.add('bg-'+color+'-600', 'text-white', 'shadow-lg');
+            iconContainer.classList.add('bg-teal-600', 'text-white', 'shadow-lg');
             iconContainer.innerHTML = '<i class="fas fa-play ml-1"></i>';
 
             // Remove Overlay
@@ -140,20 +141,14 @@
             // Add Click Action
             const btn = document.createElement('button');
             btn.className = "absolute inset-0 w-full h-full cursor-pointer opacity-0";
-            const levelNum = id.split('-')[1];
-            btn.onclick = function() { startQuiz(levelNum); };
+            btn.onclick = function() { startQuiz(levelName); };
             card.appendChild(btn);
         }
 
-        // Navigation to the actual Quiz (We will build quiz-runner.html next)
-        window.startQuiz = function(level) {
-            // For demo: If they click Level 1, we let them pass instantly to test the lock
-            if(confirm("Start Module " + level + " Quiz? \n(Click OK to simulate PASSING for demo)")) {
-                // Simulate Passing
-                localStorage.setItem('phs213_lvl'+level+'_passed', 'true');
-                alert("🎉 Module Passed! Next level unlocking...");
-                location.reload(); // Reload to see the unlock
-            }
+        // Navigation to the actual Quiz
+        window.startQuiz = function(levelName) {
+            // We force "ANA 211" for now. Later we can make this dynamic.
+            window.location.href = `quiz-runner.html?course=ANA 211&level=${levelName}`;
         }
     </script>
 </body>
