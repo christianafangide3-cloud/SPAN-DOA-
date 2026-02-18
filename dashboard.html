@@ -52,16 +52,16 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-emerald-600 rounded-xl text-white font-bold shadow-lg shadow-emerald-900/20">
+            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-emerald-600 rounded-xl text-white font-bold shadow-lg shadow-emerald-900/20">
                 <i class="fas fa-home w-6"></i> Home Dashboard
             </a>
             
             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Academics</p>
             
-            <a href="notes.html" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+            <a href="notes.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
                 <i class="fas fa-book-open w-6 text-emerald-400"></i> Lecture Notes
             </a>
-            <a href="cbt.html" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+            <a href="cbt.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
                 <i class="fas fa-laptop-code w-6 text-blue-400"></i> CBT Assessments
             </a>
             <a href="clinical.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
@@ -73,7 +73,7 @@
             <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
                 <i class="fas fa-calculator w-6 text-yellow-400"></i> GP Forecaster
             </a>
-            <a href="#" onclick="alert('Coming in Phase 5!')" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
+            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-colors">
                 <i class="fas fa-user-graduate w-6 text-pink-400"></i> My Profile
             </a>
         </nav>
@@ -98,13 +98,27 @@
             </div>
         </div>
 
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Modules Passed</div>
+                <div class="text-3xl font-extrabold text-slate-800" id="stat-passed">0</div>
+            </div>
+             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Target CGPA</div>
+                <div class="text-3xl font-extrabold text-emerald-600" id="stat-target">-.-</div>
+            </div>
+        </div>
+
         <div class="mb-8">
             <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <i class="fas fa-history text-slate-400"></i> Recently Viewed
+                <i class="fas fa-history text-slate-400"></i> Recent Activity
             </h3>
-            <div class="bg-white rounded-2xl p-8 text-center border border-slate-200 border-dashed">
-                <div class="text-slate-300 text-4xl mb-2"><i class="fas fa-wind"></i></div>
-                <p class="text-slate-500 text-sm font-medium">Nothing viewed yet. Start studying to track progress!</p>
+            
+            <div id="activity-feed" class="space-y-3">
+                <div class="bg-slate-50 p-6 rounded-2xl text-center border border-slate-200 border-dashed">
+                    <div class="text-slate-300 text-3xl mb-2"><i class="fas fa-wind"></i></div>
+                    <p class="text-slate-500 text-sm font-medium">Nothing yet. Go pass a quiz!</p>
+                </div>
             </div>
         </div>
 
@@ -127,16 +141,62 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Auth Check
+        // Auth Check & Load Data
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 const name = user.displayName || "Student";
                 document.getElementById('user-name-display').textContent = name;
                 document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
+                
+                // TRIGGER STATS LOAD
+                loadStats();
             } else {
                 window.location.href = "index.html";
             }
         });
+
+        // 🧠 FUNCTION TO READ PROGRESS FROM STORAGE
+        function loadStats() {
+            // 1. Check CGPA Target (Saved from profile.html or calculator)
+            const target = localStorage.getItem('my_target_cgpa');
+            if(target) document.getElementById('stat-target').textContent = target;
+
+            // 2. Check Quiz Progress
+            let passedCount = 0;
+            const feed = document.getElementById('activity-feed');
+            let hasActivity = false;
+
+            // List of keys to check (Add more here as you build more quizzes)
+            const checks = [
+                { key: 'ANA 211_beginner_passed', name: 'ANA 211: Beginner Level', type: 'Quiz' },
+                { key: 'ANA 211_intermediate_passed', name: 'ANA 211: Intermediate Level', type: 'Quiz' },
+                { key: 'ANA 211_advanced_passed', name: 'ANA 211: Advanced Level', type: 'Quiz' }
+            ];
+
+            checks.forEach(item => {
+                if(localStorage.getItem(item.key) === 'true') {
+                    passedCount++;
+                    
+                    // If first item found, clear the "Nothing yet" message
+                    if(!hasActivity) { feed.innerHTML = ''; hasActivity = true; }
+
+                    // Add Card to Feed
+                    const div = document.createElement('div');
+                    div.className = "bg-white p-4 rounded-xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-center animate-fade-in";
+                    div.innerHTML = `
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">COMPLETED</p>
+                            <h4 class="font-bold text-slate-800 text-sm">${item.name}</h4>
+                        </div>
+                        <i class="fas fa-check-circle text-emerald-500 text-xl"></i>
+                    `;
+                    feed.appendChild(div);
+                }
+            });
+
+            // Update Count
+            document.getElementById('stat-passed').textContent = passedCount;
+        }
 
         // Logout
         window.logout = function() {
@@ -150,12 +210,10 @@
             const overlay = document.getElementById('sidebar-overlay');
             
             if (sidebar.classList.contains('sidebar-closed')) {
-                // Open
                 sidebar.classList.remove('sidebar-closed');
                 sidebar.classList.add('sidebar-open');
                 overlay.classList.remove('hidden');
             } else {
-                // Close
                 sidebar.classList.add('sidebar-closed');
                 sidebar.classList.remove('sidebar-open');
                 overlay.classList.add('hidden');
@@ -163,4 +221,4 @@
         }
     </script>
 </body>
-</html>
+                    </html>
