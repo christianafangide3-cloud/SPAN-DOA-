@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Session | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
+        body { font-family: 'Inter', sans-serif; user-select: none; } /* Prevent cheating by copy-paste */
+        
+        .option-card { transition: all 0.2s; cursor: pointer; }
+        .option-card:hover { transform: translateX(5px); border-color: #0d9488; background-color: #f0fdfa; }
+        .selected-option { background-color: #0d9488 !important; color: white !important; border-color: #0d9488 !important; }
+        
+        /* Timer Font */
+        .timer-font { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <div class="bg-white border-b border-slate-200 sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-sm">
+        <div>
+            <h1 class="text-xs font-bold text-slate-500 uppercase tracking-widest">PHS 213 • Module 1</h1>
+            <div class="font-bold text-slate-800">Cell Membrane Dynamics</div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <div class="bg-slate-100 px-4 py-2 rounded-lg flex items-center gap-2 border border-slate-200">
+                <i class="fas fa-clock text-emerald-600"></i>
+                <span id="timer" class="timer-font font-bold text-slate-800 text-lg">10:00</span>
+            </div>
+            <button onclick="quitQuiz()" class="text-slate-400 hover:text-red-500 transition"><i class="fas fa-times-circle text-xl"></i></button>
+        </div>
+    </div>
+
+    <div class="w-full bg-slate-200 h-1">
+        <div id="progress-bar" class="bg-emerald-500 h-1 transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <main class="flex-1 flex flex-col items-center justify-center p-4 max-w-3xl mx-auto w-full">
+        
+        <div class="w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Question <span id="q-number">1</span>/5</span>
+                    <span class="text-xs font-bold text-slate-400">10 Marks</span>
+                </div>
+                
+                <h2 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 leading-snug mb-8">
+                    Loading Question...
+                </h2>
+
+                <div id="options-container" class="space-y-3">
+                    </div>
+            </div>
+            
+            <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-between items-center">
+                <button onclick="prevQuestion()" id="btn-prev" class="px-6 py-2 rounded-lg text-slate-500 font-bold hover:bg-slate-200 transition disabled:opacity-50">Previous</button>
+                <button onclick="nextQuestion()" id="btn-next" class="px-6 py-2 rounded-lg bg-slate-900 text-white font-bold hover:bg-slate-800 transition shadow-lg shadow-slate-300">Next Question <i class="fas fa-arrow-right ml-2"></i></button>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="result-modal" class="fixed inset-0 bg-slate-900/90 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-95 transition-transform" id="result-card">
+            <div id="result-icon" class="h-20 w-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 id="result-title" class="text-3xl font-extrabold text-slate-800 mb-2">Quiz Completed!</h2>
+            <p class="text-slate-500 mb-6">You scored <span id="score-display" class="font-bold text-emerald-600 text-xl">0%</span></p>
+            
+            <div id="unlock-msg" class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl mb-6 hidden">
+                <p class="text-xs font-bold text-emerald-800">🔓 MODULE 2 UNLOCKED</p>
+            </div>
+
+            <button onclick="window.location.href='cbt.html'" class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold shadow-lg hover:bg-slate-800 transition">Return to Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. THE QUESTION BANK (EDIT THIS!) ---
+        const questions = [
+            {
+                question: "Which of the following is the primary component of the cell membrane bilayer?",
+                options: ["Proteins", "Phospholipids", "Carbohydrates", "Nucleic Acids"],
+                answer: 1 // (Index starts at 0. So 1 is 'Phospholipids')
+            },
+            {
+                question: "The resting membrane potential of a typical neuron is approximately:",
+                options: ["+60 mV", "-90 mV", "-70 mV", "0 mV"],
+                answer: 2 // (-70 mV)
+            },
+            {
+                question: "Which ion has the highest concentration OUTSIDE the cell?",
+                options: ["Potassium (K+)", "Sodium (Na+)", "Magnesium (Mg2+)", "Proteins"],
+                answer: 1 // (Sodium)
+            },
+            {
+                question: "Active transport requires energy in the form of:",
+                options: ["ADP", "ATP", "GTP", "NADH"],
+                answer: 1 // (ATP)
+            },
+            {
+                question: "Phagocytosis is a type of:",
+                options: ["Exocytosis", "Pinocytosis", "Endocytosis", "Passive Diffusion"],
+                answer: 2 // (Endocytosis)
+            }
+        ];
+
+        // --- 2. ENGINE VARIABLES ---
+        let currentQ = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null); // Stores user choices
+        let timeLeft = 600; // 10 minutes in seconds
+
+        // --- 3. INIT ---
+        window.onload = function() {
+            loadQuestion();
+            startTimer();
+        };
+
+        // --- 4. RENDER QUESTION ---
+        function loadQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('q-number').textContent = currentQ + 1;
+            document.getElementById('question-text').textContent = q.question;
+            
+            // Render Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = ''; // Clear old options
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('div');
+                btn.className = `option-card border-2 border-slate-200 rounded-xl p-4 font-medium text-slate-600 flex items-center gap-3`;
+                
+                // Check if previously selected
+                if (userAnswers[currentQ] === index) {
+                    btn.classList.add('selected-option');
+                }
+
+                btn.onclick = () => selectOption(index);
+                btn.innerHTML = `
+                    <div class="h-6 w-6 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                        ${String.fromCharCode(65 + index)}
+                    </div>
+                    <span>${opt}</span>
+                `;
+                container.appendChild(btn);
+            });
+
+            // Update Progress Bar
+            const progress = ((currentQ + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Button Logic
+            document.getElementById('btn-prev').disabled = currentQ === 0;
+            if(currentQ === questions.length - 1) {
+                document.getElementById('btn-next').innerHTML = `Submit Quiz <i class="fas fa-check-circle ml-2"></i>`;
+                document.getElementById('btn-next').classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+            } else {
+                document.getElementById('btn-next').innerHTML = `Next Question <i class="fas fa-arrow-right ml-2"></i>`;
+                document.getElementById('btn-next').classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+            }
+        }
+
+        // --- 5. INTERACTION ---
+        function selectOption(index) {
+            userAnswers[currentQ] = index;
+            loadQuestion(); // Re-render to show selection
+        }
+
+        function nextQuestion() {
+            if (currentQ < questions.length - 1) {
+                currentQ++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQ > 0) {
+                currentQ--;
+                loadQuestion();
+            }
+        }
+
+        // --- 6. TIMER LOGIC ---
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            const interval = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                timerEl.textContent = `${m}:${s}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        // --- 7. GRADING SYSTEM ---
+        function finishQuiz() {
+            // Calculate Score
+            let correctCount = 0;
+            questions.forEach((q, i) => {
+                if (userAnswers[i] === q.answer) correctCount++;
+            });
+
+            const percentage = (correctCount / questions.length) * 100;
+            
+            // Show Result Modal
+            const modal = document.getElementById('result-modal');
+            const scoreDisplay = document.getElementById('score-display');
+            const title = document.getElementById('result-title');
+            const icon = document.getElementById('result-icon');
+            const unlockMsg = document.getElementById('unlock-msg');
+            
+            modal.classList.remove('hidden');
+            scoreDisplay.textContent = `${percentage}%`;
+
+            if (percentage >= 50) {
+                // PASS
+                title.textContent = "Excellent Work!";
+                icon.className = "h-20 w-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 animate-bounce";
+                icon.innerHTML = '<i class="fas fa-trophy"></i>';
+                unlockMsg.classList.remove('hidden');
+                
+                // 🔥 THE MAGIC: Unlock Level 2 in Browser Memory 🔥
+                localStorage.setItem('phs213_lvl1_passed', 'true');
+                
+            } else {
+                // FAIL
+                title.textContent = "Keep Trying";
+                icon.className = "h-20 w-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6";
+                icon.innerHTML = '<i class="fas fa-times"></i>';
+                unlockMsg.classList.add('hidden');
+            }
+        }
+
+        function quitQuiz() {
+            if(confirm("Are you sure you want to quit? Progress will be lost.")) {
+                window.location.href = "cbt.html";
+            }
+        }
+    <script src="questions.js"></script>
+
+    <script>
+        // --- 1. SETTINGS & SETUP ---
+        // We get these from the URL (e.g., quiz-runner.html?course=ANA 211&level=beginner)
+        const urlParams = new URLSearchParams(window.location.search);
+        const COURSE_CODE = urlParams.get('course') || 'ANA 211'; // Default to ANA 211 if missing
+        const LEVEL = urlParams.get('level') || 'beginner';       // Default to beginner
+
+        // Select Questions based on Course & Level
+        let questions = [];
+        
+        if (QUESTION_VAULT[COURSE_CODE] && QUESTION_VAULT[COURSE_CODE][LEVEL]) {
+            questions = QUESTION_VAULT[COURSE_CODE][LEVEL];
+            
+            // Randomize Questions (Optional: Shuffle array)
+            questions.sort(() => Math.random() - 0.5);
+            
+            // Limit to 20 questions per session (if bank is larger)
+            questions = questions.slice(0, 20); 
+        } else {
+            alert("Error: Course data not found! Loading Demo...");
+            questions = [{q: "Demo: System Error", options: ["A", "B", "C", "D"], a: 0}];
+        }
+
+        // Update Header Titles
+        document.querySelector('h1').textContent = `${COURSE_CODE} • ${LEVEL.toUpperCase()}`;
+        
+        // --- 2. ENGINE VARIABLES ---
+        let currentQ = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timeLeft = 600; // 10 minutes
+
+        // --- 3. INIT ---
+        window.onload = function() {
+            loadQuestion();
+            startTimer();
+        };
+
+        // --- 4. RENDER QUESTION ---
+        function loadQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('q-number').textContent = currentQ + 1;
+            document.getElementById('question-text').textContent = q.q; // Note: Changed to q.q based on your data format
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('div');
+                btn.className = `option-card border-2 border-slate-200 rounded-xl p-4 font-medium text-slate-600 flex items-center gap-3`;
+                if (userAnswers[currentQ] === index) btn.classList.add('selected-option');
+
+                btn.onclick = () => selectOption(index);
+                btn.innerHTML = `
+                    <div class="h-6 w-6 rounded-full border-2 border-current flex items-center justify-center text-[10px] font-bold">
+                        ${String.fromCharCode(65 + index)}
+                    </div>
+                    <span>${opt}</span>
+                `;
+                container.appendChild(btn);
+            });
+
+            const progress = ((currentQ + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            document.getElementById('btn-prev').disabled = currentQ === 0;
+            if(currentQ === questions.length - 1) {
+                document.getElementById('btn-next').innerHTML = `Submit Quiz <i class="fas fa-check-circle ml-2"></i>`;
+                document.getElementById('btn-next').classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+            } else {
+                document.getElementById('btn-next').innerHTML = `Next Question <i class="fas fa-arrow-right ml-2"></i>`;
+                document.getElementById('btn-next').classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+            }
+        }
+
+        function selectOption(index) {
+            userAnswers[currentQ] = index;
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQ < questions.length - 1) {
+                currentQ++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQ > 0) {
+                currentQ--;
+                loadQuestion();
+            }
+        }
+
+        function startTimer() {
+            const timerEl = document.getElementById('timer');
+            const interval = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                timerEl.textContent = `${m}:${s}`;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function finishQuiz() {
+            let correctCount = 0;
+            questions.forEach((q, i) => {
+                if (userAnswers[i] === q.a) correctCount++; // Note: Changed to q.a
+            });
+
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            
+            const modal = document.getElementById('result-modal');
+            modal.classList.remove('hidden');
+            document.getElementById('score-display').textContent = `${percentage}%`;
+
+            const title = document.getElementById('result-title');
+            const icon = document.getElementById('result-icon');
+            const unlockMsg = document.getElementById('unlock-msg');
+
+            if (percentage >= 50) {
+                title.textContent = "Excellent Work!";
+                icon.className = "h-20 w-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 animate-bounce";
+                icon.innerHTML = '<i class="fas fa-trophy"></i>';
+                unlockMsg.classList.remove('hidden');
+                
+                // UNLOCK LOGIC: Save progress based on current course and level
+                // e.g., "ANA 211_beginner_passed"
+                localStorage.setItem(`${COURSE_CODE}_${LEVEL}_passed`, 'true');
+            } else {
+                title.textContent = "Keep Trying";
+                icon.className = "h-20 w-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6";
+                icon.innerHTML = '<i class="fas fa-times"></i>';
+                unlockMsg.classList.add('hidden');
+            }
+        }
+        
+        function quitQuiz() {
+            if(confirm("Quit quiz?")) window.history.back();
+        }
+    </script>
+</body>
+</html>
