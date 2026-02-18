@@ -1,5 +1,5 @@
-// Splendid's Academy Central Question Bank
-// format: courseCode -> difficulty -> questions
+// SPLENDID'S ACADEMY QUESTION VAULT
+// This file must be in the same folder as quiz-runner.html
 
 const QUESTION_VAULT = {
     "ANA 211": {
@@ -13,25 +13,21 @@ const QUESTION_VAULT = {
             { q: "Which bone forms the point of the elbow?", options: ["Radius", "Humerus", "Ulna", "Scapula"], a: 2 },
             { q: "The glenoid cavity is a feature of the:", options: ["Humerus", "Clavicle", "Scapula", "Sternum"], a: 2 },
             { q: "Which phalanges are found in the thumb?", options: ["Proximal, Middle, Distal", "Proximal and Distal only", "Middle and Distal only", "Proximal only"], a: 1 },
-            { q: "The metacarpals are found in the:", options: ["Wrist", "Palm", "Fingers", "Forearm"], a: 1 },
-            // ... (Paste the rest of your ANA 211 Beginner questions here)
+            { q: "The metacarpals are found in the:", options: ["Wrist", "Palm", "Fingers", "Forearm"], a: 1 }
         ],
         intermediate: [
-             // ... (Paste your ANA 211 Intermediate questions here)
-             { q: "Which muscle initiates the first 15 degrees of arm abduction?", options: ["Deltoid", "Supraspinatus", "Infraspinatus", "Subscapularis"], a: 1 },
-             // ...
+            { q: "Which muscle initiates the first 15 degrees of arm abduction?", options: ["Deltoid", "Supraspinatus", "Infraspinatus", "Subscapularis"], a: 1 },
+            { q: "The coracoid process provides attachment for which muscle?", options: ["Pectoralis major", "Pectoralis minor", "Latissimus dorsi", "Supraspinatus"], a: 1 },
+            { q: "Which nerve innervates the anterior compartment of the arm?", options: ["Radial", "Median", "Musculocutaneous", "Ulnar"], a: 2 },
+            { q: "The superficial palmar arch is formed mainly by the:", options: ["Radial artery", "Ulnar artery", "Brachial artery", "Axillary artery"], a: 1 },
+            { q: "Which carpal bone articulates with the first metacarpal (Thumb)?", options: ["Scaphoid", "Trapezium", "Trapezoid", "Capitate"], a: 1 }
         ],
         advanced: [
-             // ... (Paste your ANA 211 Advanced questions here)
-             { q: "Erb-Duchenne palsy ('Waiter's Tip' hand) results from injury to:", options: ["Lower trunk (C8-T1)", "Upper trunk (C5-C6)", "Posterior cord", "Long thoracic nerve"], a: 1 },
-             // ...
-        ]
-    },
-    
-    // FUTURE COURSES (Just add them like this later)
-    "PHS 213": {
-        beginner: [
-            { q: "The powerhouse of the cell is:", options: ["Nucleus", "Mitochondria", "Ribosome", "Golgi"], a: 1 }
+            { q: "Erb-Duchenne palsy ('Waiter's Tip' hand) results from injury to:", options: ["Lower trunk (C8-T1)", "Upper trunk (C5-C6)", "Posterior cord", "Long thoracic nerve"], a: 1 },
+            { q: "Klumpke's palsy ('Claw Hand') involves injury to:", options: ["C5-C6", "C8-T1", "C7", "C5 only"], a: 1 },
+            { q: "Wrist drop is the classic sign of injury to the:", options: ["Median nerve", "Ulnar nerve", "Radial nerve", "Axillary nerve"], a: 2 },
+            { q: "Fracture of the surgical neck of the humerus endangers the:", options: ["Radial nerve", "Axillary nerve", "Ulnar nerve", "Median nerve"], a: 1 },
+            { q: "Fracture of the medial epicondyle often injures the:", options: ["Radial nerve", "Median nerve", "Ulnar nerve", "Musculocutaneous nerve"], a: 2 }
         ]
     }
 };
