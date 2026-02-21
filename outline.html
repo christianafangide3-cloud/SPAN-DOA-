@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Outlines | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Accordion Animation */
+        .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
+        .accordion-content.open { max-height: 1000px; opacity: 1; }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .open-icon { transform: rotate(180deg); }
+        
+        /* Custom Checkbox */
+        .topic-checkbox:checked + label { text-decoration: line-through; color: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <a href="dashboard.html" class="text-slate-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
+            <h1 class="font-bold text-lg tracking-tight">Official Syllabi 🗺️</h1>
+        </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto p-4 md:p-6 mt-4">
+        
+        <div class="mb-8 text-center">
+            <h2 class="text-2xl font-extrabold text-slate-800">Master Course Outlines</h2>
+            <p class="text-sm text-slate-500 mt-2">Track your reading progress. Check off topics as you conquer them.</p>
+        </div>
+
+        <div class="space-y-4" id="outlines-container">
+            </div>
+
+    </div>
+
+    <script>
+        // The Master Syllabus Data
+        const syllabusData = [
+            {
+                code: "ANA 211", title: "Gross Anatomy (Limbs)", color: "emerald", icon: "fa-bone",
+                topics: [
+                    "Introduction to Upper Limb Bones", "Pectoral Region & Axilla", "Arm & Cubital Fossa", "Forearm & Hand",
+                    "Nerves & Vessels of Upper Limb", "Introduction to Lower Limb Bones", "Gluteal Region & Thigh", 
+                    "Popliteal Fossa & Leg", "Foot Arches & Joints", "Clinical Anatomy of the Limbs"
+                ]
+            },
+            {
+                code: "ANA 213", title: "General Embryology", color: "cyan", icon: "fa-baby",
+                topics: [
+                    "Gametogenesis (Spermatogenesis & Oogenesis)", "Fertilization & Implantation", "Bilaminar Germ Disc (Week 2)",
+                    "Gastrulation & Trilaminar Disc (Week 3)", "Embryonic Period (Weeks 4-8)", "Fetal Period & Placenta",
+                    "Fetal Membranes & Twinning", "Teratology & Congenital Malformations"
+                ]
+            },
+            {
+                code: "PHS 211", title: "Intro & Blood Physiology", color: "red", icon: "fa-tint",
+                topics: [
+                    "Composition & Functions of Blood", "Plasma Proteins & Properties", "Erythropoiesis & RBC Function",
+                    "Hemoglobin & Iron Metabolism", "Leukocytes & Immunity", "Platelets & Hemostasis (Coagulation)",
+                    "Blood Groups & Transfusion", "Anemias & Jaundice"
+                ]
+            },
+            {
+                code: "PHS 212", title: "Excitable Tissues", color: "amber", icon: "fa-bolt",
+                topics: [
+                    "Structure of Neuron & Neuroglia", "Resting Membrane Potential", "Action Potential & Propagation",
+                    "Synaptic Transmission & Neurotransmitters", "Neuromuscular Junction", "Skeletal Muscle Mechanics",
+                    "Excitation-Contraction Coupling", "Smooth & Cardiac Muscle Physiology"
+                ]
+            },
+            {
+                code: "PHS 213", title: "Cell Physiology & Biophysics", color: "purple", icon: "fa-microchip",
+                topics: [
+                    "Cell Membrane Structure & Fluid Mosaic Model", "Organelles & Cytoskeleton", "Transport Across Membranes",
+                    "Osmosis, Diffusion & Active Transport", "Donnan Equilibrium & Nernst Equation", "Intercellular Connections",
+                    "Cell Cycle & Apoptosis"
+                ]
+            },
+            {
+                code: "MBC 211", title: "General Biochemistry", color: "blue", icon: "fa-dna",
+                topics: [
+                    "Water, pH, and Buffers", "Chemistry of Carbohydrates", "Chemistry of Amino Acids & Proteins",
+                    "Protein Structure & Folding", "Chemistry of Lipids", "Enzymology & Kinetics", "Nucleic Acids (DNA/RNA)"
+                ]
+            },
+            {
+                code: "GST 212", title: "Philosophy & Logic", color: "slate", icon: "fa-brain",
+                topics: [
+                    "Introduction to Philosophy", "Branches of Philosophy", "Laws of Thought & Logic",
+                    "Types of Arguments (Deductive/Inductive)", "Informal Fallacies", "Categorical Propositions & Syllogisms",
+                    "Symbolic Logic", "History of Scientific Thought"
+                ]
+            }
+        ];
+
+        const container = document.getElementById('outlines-container');
+
+        // Render the UI
+        syllabusData.forEach((course, index) => {
+            const card = document.createElement('div');
+            card.className = `bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden`;
+            
+            // Generate Topics HTML
+            let topicsHTML = '';
+            course.topics.forEach((topic, tIndex) => {
+                const storageKey = `read_${course.code}_${tIndex}`;
+                const isChecked = localStorage.getItem(storageKey) === 'true' ? 'checked' : '';
+                
+                topicsHTML += `
+                    <div class="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-lg transition border-b border-slate-100 last:border-0">
+                        <input type="checkbox" id="${storageKey}" class="topic-checkbox mt-1 h-4 w-4 text-${course.color}-600 rounded border-slate-300 focus:ring-${course.color}-500" ${isChecked} onchange="saveProgress('${storageKey}', this.checked)">
+                        <label for="${storageKey}" class="text-sm text-slate-700 font-medium cursor-pointer leading-snug select-none">${topic}</label>
+                    </div>
+                `;
+            });
+
+            // Card HTML
+            card.innerHTML = `
+                <button onclick="toggleAccordion('content-${index}', 'icon-${index}')" class="w-full p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition focus:outline-none border-l-4 border-${course.color}-500">
+                    <div class="flex items-center gap-4">
+                        <div class="h-10 w-10 rounded-full bg-${course.color}-100 text-${course.color}-600 flex items-center justify-center text-lg">
+                            <i class="fas ${course.icon}"></i>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-bold text-slate-800 text-lg leading-tight">${course.code}</h3>
+                            <p class="text-xs text-slate-500 font-medium">${course.title}</p>
+                        </div>
+                    </div>
+                    <div class="text-slate-400 p-2"><i id="icon-${index}" class="fas fa-chevron-down accordion-icon"></i></div>
+                </button>
+                <div id="content-${index}" class="accordion-content bg-slate-50/50">
+                    <div class="p-4 pt-0">
+                        <div class="bg-white rounded-xl border border-slate-200 p-2 shadow-inner">
+                            ${topicsHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // UI Toggle Function
+        window.toggleAccordion = function(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            // Close others (Optional: Remove this block if you want multiple open at once)
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                if(el.id !== contentId) el.classList.remove('open');
+            });
+            document.querySelectorAll('.accordion-icon').forEach(el => {
+                if(el.id !== iconId) el.classList.remove('open-icon');
+            });
+
+            // Toggle current
+            content.classList.toggle('open');
+            icon.classList.toggle('open-icon');
+        }
+
+        // Save progress to memory
+        window.saveProgress = function(key, isChecked) {
+            localStorage.setItem(key, isChecked);
+        }
+    </script>
+</body>
+</html>
