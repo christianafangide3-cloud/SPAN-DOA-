@@ -1,187 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VBNBLV0DSS');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Exam Vault | Splendid's Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-slate-900 text-slate-200 min-h-screen font-sans selection:bg-cyan-500 selection:text-white pb-20">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        /* Premium Glass Effect */
+        .glass-header { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+        }
 
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 z-50 px-4 py-4 shadow-[0_4px_30px_rgba(6,182,212,0.15)]">
+        /* Custom Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 8s ease-in-out infinite 2s; }
+
+        /* Custom Radio Button Styling */
+        input[type="radio"] { display: none; }
+        .option-label { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        input[type="radio"]:checked + .option-box {
+            background-color: rgba(6, 182, 212, 0.1);
+            border-color: #06b6d4;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+        input[type="radio"]:checked + .option-box .radio-indicator {
+            background-color: #06b6d4;
+            border-color: #06b6d4;
+            box-shadow: 0 0 8px #06b6d4;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 min-h-screen font-sans selection:bg-cyan-500 selection:text-white pb-24 relative overflow-x-hidden">
+
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-cyan-900/20 blur-[100px] animate-float"></div>
+        <div class="absolute bottom-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-900/20 blur-[120px] animate-float-delayed"></div>
+    </div>
+
+    <header class="glass-header border-b border-cyan-500/20 sticky top-0 z-50 px-4 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div>
                 <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tighter">
                     THE EXAM VAULT
                 </h1>
-                <p class="text-xs text-cyan-200 font-bold tracking-widest uppercase">Live Mock Simulator</p>
+                <p class="text-[10px] text-cyan-200/70 font-bold tracking-widest uppercase" id="header-subtitle">Live Mock Simulator</p>
             </div>
-            <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-white transition-colors">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
+            
+            <div class="flex items-center gap-4">
+                <div id="exam-timer" class="hidden flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+                    <i class="fas fa-clock text-cyan-400 animate-pulse text-sm"></i>
+                    <span class="font-mono font-bold text-white tracking-wider" id="time-display">15:00</span>
+                </div>
+                <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg focus:outline-none active:scale-95">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div id="progress-container" class="hidden absolute bottom-0 left-0 w-full h-1 bg-slate-800">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 w-0 transition-all duration-300 ease-out"></div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-4 mt-6">
+    <main class="max-w-4xl mx-auto p-4 mt-4 relative z-10">
         
-        <div id="vault-intro" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl">
-    <div class="text-center mb-6">
-        <h2 class="text-2xl font-black text-white mb-2 tracking-tighter">Select Target Module</h2>
-        <p class="text-slate-400 text-sm">Choose your course. The engine will extract 50 random questions from the lecturer's core material.</p>
-    </div>
+        <div id="vault-intro" class="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-[2rem] p-6 md:p-10 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 text-slate-700/30 text-[10rem] transform rotate-12"><i class="fas fa-server"></i></div>
+            
+            <div class="text-center mb-8 relative z-10">
+                <span class="bg-cyan-500/10 text-cyan-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-cyan-500/20 mb-4 inline-block">System Ready</span>
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tighter drop-shadow-md">Select Target Module</h2>
+                <p class="text-slate-400 text-sm font-medium max-w-md mx-auto">Choose your extraction parameters. The engine will randomly pull exactly 50 high-yield questions from the core material.</p>
+            </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button onclick="igniteEngine('PHS211')" class="group relative overflow-hidden bg-slate-900 border border-red-500/30 hover:border-red-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]">
-            <div class="text-red-500 text-3xl mb-2"><i class="fas fa-heartbeat"></i></div>
-            <h3 class="text-white font-bold text-lg">PHS 211</h3>
-            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-red-400">Launch Physiology</p>
-        </button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                <button onclick="igniteEngine('PHS211')" class="group relative overflow-hidden bg-slate-900 border border-red-500/30 hover:border-red-500 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(239,68,68,0.15)] text-left flex flex-col items-center text-center active:scale-95">
+                    <div class="h-16 w-16 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 text-3xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-heartbeat"></i></div>
+                    <h3 class="text-white font-black text-xl tracking-tight">PHS 211</h3>
+                    <p class="text-slate-500 text-xs mt-1 font-bold uppercase tracking-widest group-hover:text-red-400 transition-colors">Launch Physiology</p>
+                </button>
 
-        <button onclick="igniteEngine('MBC211')" class="group relative overflow-hidden bg-slate-900 border border-blue-500/30 hover:border-blue-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-            <div class="text-blue-500 text-3xl mb-2"><i class="fas fa-dna"></i></div>
-            <h3 class="text-white font-bold text-lg">MBC 211</h3>
-            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-blue-400">Launch Biochemistry</p>
-        </button>
+                <button onclick="igniteEngine('MBC211')" class="group relative overflow-hidden bg-slate-900 border border-blue-500/30 hover:border-blue-500 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(59,130,246,0.15)] text-left flex flex-col items-center text-center active:scale-95">
+                    <div class="h-16 w-16 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 text-3xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-dna"></i></div>
+                    <h3 class="text-white font-black text-xl tracking-tight">MBC 211</h3>
+                    <p class="text-slate-500 text-xs mt-1 font-bold uppercase tracking-widest group-hover:text-blue-400 transition-colors">Launch Biochemistry</p>
+                </button>
 
-        <button onclick="igniteEngine('ANA211')" class="group relative overflow-hidden bg-slate-900 border border-green-500/30 hover:border-green-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(34,197,94,0.2)]">
-            <div class="text-green-500 text-3xl mb-2"><i class="fas fa-bone"></i></div>
-            <h3 class="text-white font-bold text-lg">Anatomy</h3>
-            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-green-400">Launch Gross Anatomy</p>
-        </button>
-    </div>
-</div>
+                <button onclick="igniteEngine('ANA211')" class="group relative overflow-hidden bg-slate-900 border border-emerald-500/30 hover:border-emerald-500 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(16,185,129,0.15)] text-left flex flex-col items-center text-center active:scale-95">
+                    <div class="h-16 w-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-3xl mb-4 group-hover:scale-110 transition-transform"><i class="fas fa-bone"></i></div>
+                    <h3 class="text-white font-black text-xl tracking-tight">ANA 211</h3>
+                    <p class="text-slate-500 text-xs mt-1 font-bold uppercase tracking-widest group-hover:text-emerald-400 transition-colors">Launch Gross Anatomy</p>
+                </button>
+            </div>
+        </div>
+
+        <div id="exam-stats" class="hidden mb-4 flex justify-between items-center bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="course-title-display">Course</span>
+            <span class="text-sm font-black text-cyan-400 bg-cyan-900/50 px-3 py-1 rounded-md" id="questions-attempted">0 / 50 Answered</span>
+        </div>
 
         <div id="exam-container" class="hidden space-y-6">
             </div>
 
-        <div id="submit-container" class="hidden mt-8 text-center">
-            <button onclick="calculateScore()" class="w-full md:w-auto px-10 py-4 bg-green-600 hover:bg-green-500 text-white font-black rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.4)] tracking-widest">
-                SUBMIT & ANALYZE <i class="fas fa-chart-line ml-2"></i>
+        <div id="submit-container" class="hidden mt-8 text-center sticky bottom-6 z-40">
+            <button onclick="calculateScore()" class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-2xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.3)] tracking-widest text-lg active:scale-95 border border-emerald-400/50">
+                SUBMIT FOR DIAGNOSTIC <i class="fas fa-fingerprint ml-2"></i>
             </button>
         </div>
 
-        <div id="score-display" class="hidden bg-slate-800 border border-cyan-500 rounded-2xl p-8 text-center mt-6 shadow-2xl">
-            <h3 class="text-lg text-slate-300 font-bold uppercase tracking-widest mb-2">Final Diagnostic</h3>
-            <div id="final-score" class="text-6xl font-black text-white mb-4">--/50</div>
-            <button onclick="location.reload()" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors">
-                RE-ROLL QUESTIONS <i class="fas fa-redo ml-2"></i>
-            </button>
+        <div id="score-display" class="hidden bg-slate-800 border border-cyan-500 rounded-[2rem] p-8 text-center mt-6 shadow-[0_0_50px_rgba(6,182,212,0.15)] relative overflow-hidden">
+            <div class="absolute -right-4 -top-4 text-cyan-500/10 text-8xl"><i class="fas fa-chart-pie"></i></div>
+            <div class="relative z-10">
+                <span class="bg-slate-900 text-cyan-400 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-slate-700 mb-4 inline-block">Simulation Complete</span>
+                <h3 class="text-2xl text-white font-black tracking-tight mb-2">Final Diagnostic</h3>
+                <div id="final-score" class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-lg">--/50</div>
+                
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button onclick="reviewExam()" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-xl transition-all active:scale-95 shadow-[0_5px_20px_rgba(6,182,212,0.3)] flex items-center justify-center gap-2">
+                        <i class="fas fa-search"></i> REVIEW ANSWERS
+                    </button>
+                    <button onclick="location.reload()" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-colors active:scale-95 shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-redo"></i> RE-ROLL VAULT
+                    </button>
+                </div>
+                <button onclick="window.location.href='dashboard.html'" class="mt-4 w-full md:w-auto px-8 py-3 bg-slate-900 border border-slate-600 hover:bg-slate-800 text-slate-300 font-bold rounded-xl transition-colors active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                    <i class="fas fa-home"></i> RETURN TO HQ
+                </button>
+            </div>
         </div>
 
     </main>
 
     <script>
-        // 1. THE MULTI-COURSE MASTER VAULT
-const courseVault = {
-    
-    // 🔴 PHYSIOLOGY (PHS 211)
-    "PHS211": [
-        {
-            question: "During the cardiac cycle, which specific event corresponds to the closure of the atrioventricular (mitral and tricuspid) valves?",
-            options: [
-                "Isovolumetric ventricular relaxation",
-                "Rapid ventricular ejection",
-                "Isovolumetric ventricular contraction",
-                "Atrial systole"
-            ],
-            correctAnswer: 2
-        },
-        // Add 99 more PHS questions here...
-    ],
-
-    // 🔵 BIOCHEMISTRY (MBC 211)
-    "MBC211": [
-        {
-            question: "According to the Michaelis-Menten equation $V_0 = \\frac{V_{max}[S]}{K_m + [S]}$, what does it mean when the substrate concentration $[S]$ is exactly equal to $K_m$?",
-            options: [
-                "The enzyme is fully saturated.",
-                "The initial velocity is half of the maximal velocity ($V_{max}/2$).",
-                "The reaction has reached equilibrium.",
-                "The enzyme is denatured."
-            ],
-            correctAnswer: 1
-        },
-        // Add 99 more MBC questions here...
-    ],
-
-    // 🟢 ANATOMY (ANA 211)
-    "ANA211": [
-        {
-            question: "A patient presents with 'wrist drop' following a mid-shaft fracture of the humerus. Which nerve has been compromised in the radial groove?",
-            options: [
-                "Median Nerve",
-                "Ulnar Nerve",
-                "Axillary Nerve",
-                "Radial Nerve"
-            ],
-            correctAnswer: 3
-        }
-        // Add 99 more Anatomy questions here...
-    ],
-
-    // ⚡ PHYSIOLOGY (PHS 212)
-    "PHS212": [
-        {
+        // 1. THE MULTI-COURSE MASTER VAULT (With Explanations)
+        const courseVault = {
             
-};
+            // 🔴 PHYSIOLOGY (PHS 211)
+            "PHS211": [
+                {
+                    question: "During the cardiac cycle, which specific event corresponds to the closure of the atrioventricular (mitral and tricuspid) valves?",
+                    options: [
+                        "Isovolumetric ventricular relaxation",
+                        "Rapid ventricular ejection",
+                        "Isovolumetric ventricular contraction",
+                        "Atrial systole"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The closure of the AV valves produces the first heart sound (S1) and marks the beginning of ventricular systole, specifically the 'isovolumetric contraction' phase where pressure rises rapidly but volume remains constant."
+                }
+            ],
+
+            // 🔵 BIOCHEMISTRY (MBC 211)
+            "MBC211": [
+                {
+                    question: "According to the Michaelis-Menten equation ( V0 = (Vmax * [S]) / (Km + [S]) ), what does it mean when the substrate concentration [S] is exactly equal to Km?",
+                    options: [
+                        "The enzyme is fully saturated.",
+                        "The initial velocity is half of the maximal velocity (Vmax/2).",
+                        "The reaction has reached equilibrium.",
+                        "The enzyme is denatured."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "When [S] = Km, the equation simplifies to V0 = (Vmax * Km) / (2Km), which equals Vmax/2. Remember, a lower Km indicates a higher affinity of the enzyme for its substrate!"
+                }
+            ],
+
+            // 🟢 ANATOMY (ANA 211)
+            "ANA211": [
+                {
+                    question: "A patient presents with 'wrist drop' following a mid-shaft fracture of the humerus. Which nerve has been compromised in the radial groove?",
+                    options: [
+                        "Median Nerve",
+                        "Ulnar Nerve",
+                        "Axillary Nerve",
+                        "Radial Nerve"
+                    ],
+                    correctAnswer: 3,
+                    explanation: "The radial nerve spirals around the posterior surface of the humerus in the radial groove. A mid-shaft fracture commonly damages it here, denervating the extensor muscles of the forearm, causing wrist drop."
+                }
+            ]
+        };
 
         let selectedQuestions = [];
         let userAnswers = [];
+        let questionsAttemptedCount = 0;
+        let timerInterval;
 
-        // 2. THE TARGETED RANDOMIZATION ENGINE
-function igniteEngine(courseCode) {
-    // 1. Check if the course has questions
-    if (!courseVault[courseCode] || courseVault[courseCode].length === 0) {
-        alert("System Notice: Questions for " + courseCode + " are currently being uploaded by the Director of Academics. Check back shortly.");
-        return;
-    }
+        // 2. THE ENGINE IGNITION
+        function igniteEngine(courseCode) {
+            if (!courseVault[courseCode] || courseVault[courseCode].length === 0) {
+                alert("System Notice: The Director is currently uploading materials for " + courseCode + ".");
+                return;
+            }
 
-    // 2. Hide intro, show exam area
-    document.getElementById('vault-intro').classList.add('hidden');
-    document.getElementById('exam-container').classList.remove('hidden');
-    document.getElementById('submit-container').classList.remove('hidden');
+            document.getElementById('vault-intro').classList.add('hidden');
+            document.getElementById('exam-stats').classList.remove('hidden');
+            document.getElementById('exam-container').classList.remove('hidden');
+            document.getElementById('submit-container').classList.remove('hidden');
+            document.getElementById('exam-timer').classList.remove('hidden');
+            document.getElementById('progress-container').classList.remove('hidden');
+            
+            document.getElementById('course-title-display').innerText = courseCode + " SIMULATION";
 
-    // 3. Grab the specific course array and shuffle it
-    let targetDatabase = courseVault[courseCode];
-    let shuffled = [...targetDatabase];
-    
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
+            let targetDatabase = courseVault[courseCode];
+            let shuffled = [...targetDatabase];
+            
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
 
-    // 4. Slice up to 50 questions
-    selectedQuestions = shuffled.slice(0, 50);
-    userAnswers = new Array(selectedQuestions.length).fill(null);
+            selectedQuestions = shuffled.slice(0, Math.min(50, shuffled.length));
+            userAnswers = new Array(selectedQuestions.length).fill(null);
+            
+            updateProgressUI();
+            startTimer(15 * 60); // SET TO 15 MINUTES
+            renderExam();
+        }
 
-    // 5. Render
-    renderExam();
-}
+        // 3. THE 15-MINUTE TIMER
+        function startTimer(durationInSeconds) {
+            let timer = durationInSeconds;
+            const display = document.getElementById('time-display');
+            
+            timerInterval = setInterval(function () {
+                let minutes = parseInt(timer / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
 
-        // 3. THE RENDER ENGINE
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (timer < 300) {
+                    display.classList.remove('text-white');
+                    display.classList.add('text-red-500', 'animate-pulse');
+                }
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    calculateScore(); 
+                }
+            }, 1000);
+        }
+
+        // 4. THE RENDER ENGINE
         function renderExam() {
             const container = document.getElementById('exam-container');
-            container.innerHTML = ''; // Clear previous
+            container.innerHTML = ''; 
 
             selectedQuestions.forEach((q, qIndex) => {
                 let optionsHTML = '';
                 q.options.forEach((opt, optIndex) => {
                     optionsHTML += `
-                        <label class="block p-3 border border-slate-700 rounded-lg hover:bg-slate-700/50 cursor-pointer transition-colors mb-2">
-                            <input type="radio" name="q${qIndex}" value="${optIndex}" onchange="recordAnswer(${qIndex}, ${optIndex})" class="mr-3 accent-cyan-500">
-                            <span class="text-sm text-slate-300">${opt}</span>
+                        <label class="block relative mb-3 cursor-pointer option-label group">
+                            <input type="radio" name="q${qIndex}" value="${optIndex}" onchange="recordAnswer(${qIndex}, ${optIndex})">
+                            <div class="option-box flex items-center p-4 border border-slate-700 bg-slate-800/50 rounded-xl group-hover:bg-slate-700 transition-colors">
+                                <div class="radio-indicator w-5 h-5 rounded-full border-2 border-slate-500 mr-4 flex-shrink-0 transition-colors"></div>
+                                <span class="text-sm md:text-base text-slate-300 font-medium">${opt}</span>
+                            </div>
                         </label>
                     `;
                 });
 
                 const questionHTML = `
-                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                        <div class="flex items-start gap-3 mb-4">
-                            <span class="bg-cyan-900 text-cyan-400 font-black px-3 py-1 rounded-md text-sm">${qIndex + 1}</span>
-                            <h3 class="text-slate-100 font-bold leading-relaxed">${q.question}</h3>
+                    <div class="reveal-on-scroll bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 shadow-lg" style="animation-delay: ${Math.min(qIndex * 0.05, 1)}s">
+                        <div class="flex items-start gap-4 mb-5 border-b border-slate-700/50 pb-4">
+                            <div class="bg-gradient-to-br from-cyan-600 to-blue-600 text-white font-black h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner">
+                                ${qIndex + 1}
+                            </div>
+                            <h3 class="text-slate-100 font-bold leading-relaxed text-lg tracking-tight">${q.question}</h3>
                         </div>
-                        <div class="pl-12">
+                        <div class="pl-0 md:pl-12">
                             ${optionsHTML}
                         </div>
                     </div>
@@ -190,12 +312,25 @@ function igniteEngine(courseCode) {
             });
         }
 
-        // 4. THE GRADING ENGINE
         function recordAnswer(qIndex, optIndex) {
+            if (userAnswers[qIndex] === null) {
+                questionsAttemptedCount++;
+                updateProgressUI();
+            }
             userAnswers[qIndex] = optIndex;
         }
 
+        function updateProgressUI() {
+            const total = selectedQuestions.length;
+            document.getElementById('questions-attempted').innerText = `${questionsAttemptedCount} / ${total} Answered`;
+            const percentage = (questionsAttemptedCount / total) * 100;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+        }
+
+        // 5. THE GRADING ENGINE
         function calculateScore() {
+            clearInterval(timerInterval);
+
             let score = 0;
             selectedQuestions.forEach((q, index) => {
                 if (userAnswers[index] === q.correctAnswer) {
@@ -203,15 +338,125 @@ function igniteEngine(courseCode) {
                 }
             });
 
-            // Hide exam, show score
+            document.getElementById('exam-stats').classList.add('hidden');
             document.getElementById('exam-container').classList.add('hidden');
             document.getElementById('submit-container').classList.add('hidden');
+            document.getElementById('exam-timer').classList.add('hidden');
+            document.getElementById('progress-container').classList.add('hidden');
             
             const scoreDisplay = document.getElementById('score-display');
             scoreDisplay.classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score} / ${selectedQuestions.length}`;
             
-            // Scroll to top to see score
+            const scoreElement = document.getElementById('final-score');
+            let currentScore = 0;
+            const scoreInterval = setInterval(() => {
+                if (currentScore >= score) {
+                    clearInterval(scoreInterval);
+                    scoreElement.innerText = `${score} / ${selectedQuestions.length}`;
+                    
+                    const percentage = (score / selectedQuestions.length) * 100;
+                    if (percentage >= 70) scoreElement.classList.add('text-emerald-400');
+                    else if (percentage >= 50) scoreElement.classList.add('text-yellow-400');
+                    else scoreElement.classList.add('text-red-400');
+                } else {
+                    currentScore++;
+                    scoreElement.innerText = `${currentScore} / ${selectedQuestions.length}`;
+                }
+            }, 30);
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 6. THE POST-MORTEM REVIEW ENGINE
+        function reviewExam() {
+            document.getElementById('score-display').classList.add('hidden');
+            const container = document.getElementById('exam-container');
+            container.classList.remove('hidden');
+            container.innerHTML = ''; 
+
+            // Add a header for review mode
+            container.innerHTML = `
+                <div class="bg-cyan-900/30 border border-cyan-500/50 p-4 rounded-xl mb-6 text-center">
+                    <h2 class="text-cyan-400 font-black tracking-widest uppercase"><i class="fas fa-search"></i> Diagnostic Review Mode</h2>
+                    <p class="text-xs text-slate-400 mt-1">Review your mistakes. Read the Director's Rationales.</p>
+                </div>
+            `;
+
+            selectedQuestions.forEach((q, qIndex) => {
+                let optionsHTML = '';
+                const userAns = userAnswers[qIndex];
+                
+                q.options.forEach((opt, optIndex) => {
+                    let bgClass = 'bg-slate-800/50';
+                    let borderClass = 'border-slate-700';
+                    let textClass = 'text-slate-300';
+                    let iconHTML = '';
+
+                    // Identify Correct vs Incorrect
+                    if (optIndex === q.correctAnswer) {
+                        bgClass = 'bg-emerald-900/30';
+                        borderClass = 'border-emerald-500';
+                        textClass = 'text-emerald-400 font-bold';
+                        iconHTML = '<i class="fas fa-check-circle text-emerald-500 ml-auto text-xl"></i>';
+                    } else if (optIndex === userAns && userAns !== q.correctAnswer) {
+                        bgClass = 'bg-red-900/30';
+                        borderClass = 'border-red-500';
+                        textClass = 'text-red-400';
+                        iconHTML = '<i class="fas fa-times-circle text-red-500 ml-auto text-xl"></i>';
+                    }
+
+                    optionsHTML += `
+                        <div class="flex items-center p-4 border ${borderClass} ${bgClass} rounded-xl mb-3 transition-all">
+                            <span class="text-sm md:text-base ${textClass}">${opt}</span>
+                            ${iconHTML}
+                        </div>
+                    `;
+                });
+
+                // Director's Rationale Block
+                const explanationHTML = q.explanation ? `
+                    <div class="mt-4 p-4 bg-blue-900/20 border border-blue-500/30 rounded-xl">
+                        <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2 flex items-center gap-2">
+                            <i class="fas fa-lightbulb"></i> Director's Rationale
+                        </span>
+                        <p class="text-sm text-blue-100 leading-relaxed">${q.explanation}</p>
+                    </div>
+                ` : '';
+
+                const questionHTML = `
+                    <div class="bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 shadow-lg mb-6">
+                        <div class="flex items-start gap-4 mb-5 border-b border-slate-700/50 pb-4">
+                            <div class="bg-slate-700 text-slate-300 font-black h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner">
+                                ${qIndex + 1}
+                            </div>
+                            <h3 class="text-slate-100 font-bold leading-relaxed text-lg tracking-tight">${q.question}</h3>
+                        </div>
+                        <div class="pl-0 md:pl-12">
+                            ${optionsHTML}
+                            ${explanationHTML}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHTML;
+            });
+            
+            // Bottom Action Buttons for Review Mode
+            container.innerHTML += `
+                <div class="text-center mt-8 pb-10 flex flex-col md:flex-row justify-center gap-4">
+                    <button onclick="backToScore()" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-colors active:scale-95 shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-arrow-left"></i> BACK TO SCORE
+                    </button>
+                    <button onclick="location.reload()" class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl transition-colors active:scale-95 shadow-lg flex items-center justify-center gap-2">
+                        <i class="fas fa-redo"></i> RE-ROLL VAULT
+                    </button>
+                </div>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToScore() {
+            document.getElementById('exam-container').classList.add('hidden');
+            document.getElementById('score-display').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
