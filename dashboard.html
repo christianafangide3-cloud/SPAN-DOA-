@@ -2,33 +2,48 @@
 <html lang="en">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VBNBLV0DSS');
-</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VBNBLV0DSS');
+    </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Splendid's Academy | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; 
+            -webkit-tap-highlight-color: transparent; /* Removes mobile tap flash */
+        }
+        
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+
         /* Sidebar Animation */
-        #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #sidebar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar-open { transform: translateX(0); }
         .sidebar-closed { transform: translateX(-100%); }
         
-        /* Glass Effect */
-        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
+        /* Premium Glass Effect */
+        .glass-nav { 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6); 
+        }
         
-        /* Advanced Hover Physics */
-        .hover-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hover-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.1); }
+        /* Advanced Hover/Active Physics */
+        .hover-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @media (hover: hover) {
+            .hover-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.08); }
+        }
+        .hover-card:active { transform: scale(0.98); } /* Tactile feedback for mobile */
 
         /* Custom Animations */
         @keyframes gradient-xy {
@@ -40,18 +55,40 @@
             animation: gradient-xy 4s ease infinite;
         }
 
-        /* Timeline styling */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 8s ease-in-out infinite 2s; }
+
+        /* Intersection Observer Animation Classes */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .timeline-line { position: absolute; left: 1.25rem; top: 0; bottom: 0; width: 2px; background: #e2e8f0; z-index: 0; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen relative overflow-x-hidden">
 
-    <nav class="glass-nav fixed w-full top-0 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-emerald-300/20 blur-[80px] animate-float"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-teal-300/20 blur-[100px] animate-float-delayed"></div>
+    </div>
+
+    <nav class="glass-nav fixed w-full top-0 z-50 px-4 py-3 flex justify-between items-center">
         <div class="flex items-center gap-4">
-            <button onclick="toggleSidebar()" class="text-slate-700 text-xl hover:text-emerald-600 transition-colors p-2 rounded-lg hover:bg-slate-100">
+            <button onclick="toggleSidebar()" class="text-slate-700 text-xl hover:text-emerald-600 transition-colors p-2 rounded-xl hover:bg-slate-100/50 focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 class="font-extrabold text-lg text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-teal-600 tracking-tight">Splendid's Academy</h1>
+            <h1 class="font-extrabold text-lg text-transparent bg-clip-text bg-gradient-to-r from-emerald-800 to-teal-600 tracking-tight drop-shadow-sm">Splendid's Academy</h1>
         </div>
         
         <div class="flex items-center gap-3">
@@ -65,176 +102,191 @@
                     Online
                 </p>
             </div>
-            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-100 to-teal-200 flex items-center justify-center text-emerald-700 font-bold border border-emerald-300 shadow-inner">
-                <i class="fas fa-user"></i>
+            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-100 to-teal-200 flex items-center justify-center text-emerald-700 font-bold border border-emerald-300 shadow-sm hover:shadow-md transition-shadow">
+                <i class="fas fa-user text-sm"></i>
             </div>
         </div>
     </nav>
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/60 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden backdrop-blur-sm transition-opacity"></div>
     
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-slate-900 text-white z-50 sidebar-closed shadow-2xl flex flex-col border-r border-slate-800">
-        <div class="p-6 border-b border-slate-800 flex justify-between items-center">
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-slate-900/95 backdrop-blur-xl text-white z-50 sidebar-closed shadow-2xl flex flex-col border-r border-slate-700/50">
+        <div class="p-6 border-b border-slate-800/50 flex justify-between items-center">
             <div>
-                <h2 class="font-black text-xl text-white">Command Menu</h2>
-                <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">System Navigation</p>
+                <h2 class="font-black text-xl text-white tracking-tight">Command Menu</h2>
+                <p class="text-[10px] text-teal-400 font-bold uppercase tracking-widest">System Navigation</p>
             </div>
-            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white transition-colors"><i class="fas fa-times text-xl"></i></button>
+            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white transition-colors p-2"><i class="fas fa-times text-xl"></i></button>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl text-white font-bold shadow-lg shadow-emerald-900/40">
+        <nav class="flex-1 overflow-y-auto p-4 space-y-2 pb-20 custom-scrollbar">
+            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl text-white font-bold shadow-lg shadow-emerald-900/30 transform transition-transform active:scale-95">
                 <i class="fas fa-home w-6"></i> Home Dashboard
             </a>
             
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Academics</p>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Academics</p>
             
-            <a href="outline.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="outline.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-list-ul w-6 text-indigo-400"></i> Course Outlines
             </a>
-            <a href="notes.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="notes.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-book-open w-6 text-emerald-400"></i> Lecture Notes
             </a>
-            <a href="hub.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
-                <i class="fas fa-laptop-code w-6 text-blue-400"></i> CBT Assessments
+            <a href="hub.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all relative overflow-hidden group">
+                <i class="fas fa-laptop-code w-6 text-blue-400 group-hover:animate-pulse"></i> CBT Assessments
             </a>
-            <a href="clinical.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
-                <i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases
+            <a href="clinical.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all opacity-50 cursor-not-allowed">
+                <i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases <span class="text-[8px] bg-slate-700 px-2 py-0.5 rounded ml-auto">SOON</span>
             </a>
 
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2 px-4">Tools & Rank</p>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Tools & Rank</p>
             
-            <a href="flashcards.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="flashcards.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-bolt w-6 text-yellow-400"></i> Flashcards
             </a>
-            <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-trophy w-6 text-orange-400"></i> Hall of Fame
             </a>
-            <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-calculator w-6 text-cyan-400"></i> GP Forecaster
             </a>
-            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-id-card w-6 text-pink-400"></i> Digital ID
             </a>
         </nav>
 
-        <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()" class="flex items-center justify-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl transition-all font-bold">
+        <div class="p-4 border-t border-slate-800/50 bg-slate-900/90 pb-safe">
+            <button onclick="logout()" class="flex items-center justify-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20 rounded-xl transition-all font-bold active:scale-95">
                 <i class="fas fa-sign-out-alt"></i> Terminate Session
             </button>
         </div>
     </aside>
 
-    <main class="pt-24 px-4 pb-12 max-w-4xl mx-auto space-y-8">
+    <main class="pt-24 px-4 pb-12 max-w-4xl mx-auto space-y-8 relative z-10">
         
-        <div class="bg-gradient-to-br from-emerald-800 via-teal-700 to-slate-900 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
+        <div class="reveal-on-scroll bg-gradient-to-br from-emerald-800 via-teal-700 to-slate-900 rounded-[2rem] p-8 text-white shadow-2xl shadow-teal-900/20 relative overflow-hidden">
             <div class="absolute right-0 top-0 h-full w-2/3 bg-white/5 skew-x-12 transform origin-top-right transition-transform duration-1000 hover:skew-x-0"></div>
-            <div class="absolute -bottom-12 -right-12 text-[10rem] opacity-5"><i class="fas fa-shield-alt"></i></div>
+            <div class="absolute -bottom-8 -right-8 text-[12rem] opacity-[0.03] transform rotate-12"><i class="fas fa-shield-alt"></i></div>
             <div class="relative z-10">
-                <div class="inline-block px-3 py-1 mb-3 rounded-full bg-emerald-500/20 border border-emerald-400/30 backdrop-blur-sm">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-emerald-500/20 border border-emerald-400/30 backdrop-blur-md">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span class="text-[10px] font-black tracking-widest uppercase text-emerald-200">System Status: Optimal</span>
                 </div>
                 <h2 id="welcome-msg" class="text-4xl md:text-5xl font-black mb-3 tracking-tight">Welcome Back!</h2>
-                <p class="text-emerald-100/80 text-sm md:text-base font-medium max-w-lg leading-relaxed">The 200-Level battleground requires strategic preparation. Open your menu to access the CBT Vaults and GP Forecaster.</p>
+                <p class="text-emerald-50/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">The 200-Level battleground requires strategic preparation. Execute your study plan utilizing the CBT Vaults and GP Forecaster.</p>
             </div>
         </div>
 
-        <div class="relative overflow-hidden rounded-3xl p-1 bg-gradient-to-r from-red-600 via-purple-600 to-indigo-600 animate-gradient-xy shadow-[0_0_40px_rgba(124,58,237,0.25)] hover-card">
+        <div class="reveal-on-scroll relative overflow-hidden rounded-3xl p-[2px] bg-gradient-to-r from-red-500 via-purple-600 to-indigo-500 animate-gradient-xy shadow-[0_10px_40px_-10px_rgba(147,51,234,0.4)] hover-card">
             <div class="bg-slate-900 rounded-[22px] p-6 md:p-8 h-full relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 z-10">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] pointer-events-none animate-pulse"></div>
                 
-                <div class="flex-1 relative z-10">
-                    <div class="flex flex-wrap items-center gap-2 mb-3">
-                        <span class="bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase tracking-widest animate-pulse border border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.6)]">DEFCON 1</span>
-                        <span class="bg-purple-900/50 text-purple-300 text-[10px] font-bold px-3 py-1 rounded-md uppercase tracking-widest border border-purple-500/30"><i class="fas fa-bolt text-yellow-400 mr-1"></i> Core Week Exclusive</span>
+                <div class="flex-1 relative z-10 w-full text-center md:text-left">
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-4">
+                        <span class="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase tracking-widest animate-pulse border border-red-400/50 shadow-[0_0_20px_rgba(239,68,68,0.5)] flex items-center gap-1.5">
+                            <i class="fas fa-exclamation-triangle"></i> DEFCON 1
+                        </span>
+                        <span class="bg-purple-900/50 text-purple-200 text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-widest border border-purple-500/30">
+                            <i class="fas fa-bolt text-yellow-400 mr-1"></i> Core Week Protocol
+                        </span>
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-200 mb-2 tracking-tighter">The Exam Vault</h2>
-                    <p class="text-slate-400 text-sm md:text-base font-medium leading-relaxed max-w-lg">
-                        Direct extraction from Lecturer Core Materials. The engine pulls <span class="text-white font-bold">50 random questions</span> per session. Prepare for deployment.
+                    <h2 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-200 mb-3 tracking-tighter drop-shadow-sm">The Exam Vault</h2>
+                    <p class="text-slate-400 text-sm md:text-base font-medium leading-relaxed max-w-lg mx-auto md:mx-0">
+                        Direct extraction from Lecturer Core Materials. The engine pulls <span class="text-white font-bold bg-white/10 px-1 rounded">50 random questions</span> per session. Prepare for deployment.
                     </p>
                 </div>
                 
                 <div class="w-full md:w-auto relative z-10">
-                    <button onclick="window.location.href='simulator.html'" class="w-full relative group overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-4 text-white font-black tracking-widest uppercase shadow-[0_10px_30px_rgba(147,51,234,0.4)] transition-all hover:scale-105">
-                        <span class="relative z-10 flex items-center justify-center gap-2">Enter Simulator <i class="fas fa-fingerprint text-xl animate-pulse"></i></span>
+                    <button onclick="window.location.href='simulator.html'" class="w-full relative group overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-4 text-white font-black tracking-widest uppercase shadow-[0_10px_30px_rgba(147,51,234,0.5)] transition-all active:scale-95">
+                        <span class="relative z-10 flex items-center justify-center gap-3">
+                            Enter Simulator 
+                            <i class="fas fa-fingerprint text-xl group-hover:scale-110 transition-transform"></i>
+                        </span>
                         <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
+                        <div class="absolute inset-0 rounded-2xl border-2 border-white/20 animate-ping opacity-20"></div>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover-card relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 text-slate-50 text-7xl"><i class="fas fa-check-circle"></i></div>
+        <div class="reveal-on-scroll grid grid-cols-2 gap-4">
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-sm border border-slate-200/60 hover-card relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 text-blue-50 text-7xl transform group-hover:rotate-12 transition-transform duration-500"><i class="fas fa-check-circle"></i></div>
                 <div class="relative z-10 flex justify-between items-start">
                     <div>
                         <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Modules Passed</div>
-                        <div class="text-5xl font-black text-slate-800 tracking-tighter" id="stat-passed">0</div>
+                        <div class="text-5xl font-black text-slate-800 tracking-tighter tabular-nums" id="stat-passed">0</div>
                     </div>
-                    <div class="h-12 w-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-tasks"></i></div>
+                    <div class="h-12 w-12 bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-blue-200/50"><i class="fas fa-tasks"></i></div>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 hover-card relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 text-slate-50 text-7xl"><i class="fas fa-bullseye"></i></div>
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-sm border border-slate-200/60 hover-card relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 text-emerald-50 text-7xl transform group-hover:-rotate-12 transition-transform duration-500"><i class="fas fa-bullseye"></i></div>
                 <div class="relative z-10 flex justify-between items-start">
                     <div>
                         <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Target CGPA</div>
-                        <div class="text-5xl font-black text-emerald-600 tracking-tighter" id="stat-target">-.-</div>
+                        <div class="text-5xl font-black text-emerald-600 tracking-tighter tabular-nums" id="stat-target">-.-</div>
                     </div>
-                    <div class="h-12 w-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-chart-line"></i></div>
+                    <div class="h-12 w-12 bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-200/50"><i class="fas fa-chart-line"></i></div>
                 </div>
             </div>
         </div>
 
-        <div>
+        <div class="reveal-on-scroll">
             <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-xl tracking-tight">
-                <i class="fas fa-satellite-dish text-blue-500"></i> Intelligence Feed
+                <i class="fas fa-satellite-dish text-blue-500 animate-pulse"></i> Intelligence Feed
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg hover-card border border-slate-800">
-                    <div class="absolute top-0 right-0 bg-blue-600 text-[10px] font-black px-4 py-1.5 rounded-bl-xl uppercase tracking-widest">System Update</div>
-                    <h4 class="font-black text-xl mb-2 mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">V2.0 is Live 🚀</h4>
-                    <p class="text-sm text-slate-400 leading-relaxed mb-4 font-medium">The new CBT engine, Flashcard Blitz, and Digital ID systems are now operational. Clinical Rounds will unlock next week.</p>
-                    <a href="profile.html" class="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1">Set up your ID Card <i class="fas fa-arrow-right text-[10px]"></i></a>
+                <div class="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg hover-card border border-slate-800 group">
+                    <div class="absolute top-0 right-0 bg-gradient-to-r from-blue-600 to-blue-500 text-[10px] font-black px-4 py-1.5 rounded-bl-xl uppercase tracking-widest shadow-md">System Update</div>
+                    <div class="absolute -bottom-8 -left-8 text-slate-800 text-7xl transform group-hover:scale-110 transition-transform duration-500"><i class="fas fa-rocket"></i></div>
+                    <div class="relative z-10">
+                        <h4 class="font-black text-xl mb-2 mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">V2.0 is Live 🚀</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4 font-medium">The new CBT engine, Flashcard Blitz, and Digital ID systems are operational.</p>
+                        <a href="profile.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 px-3 py-1.5 rounded-lg transition-colors">
+                            Set up ID Card <i class="fas fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-3xl p-6 shadow-sm hover-card relative overflow-hidden">
-                    <div class="absolute -right-6 -bottom-6 text-indigo-100 text-8xl"><i class="fas fa-chess-knight"></i></div>
+                <div class="bg-gradient-to-br from-indigo-50 to-white border border-indigo-100/80 rounded-3xl p-6 shadow-sm hover-card relative overflow-hidden group">
+                    <div class="absolute -right-6 -bottom-6 text-indigo-100/50 text-8xl transform group-hover:rotate-12 transition-transform duration-500"><i class="fas fa-chess-knight"></i></div>
                     <div class="relative z-10">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="h-10 w-10 bg-indigo-600 text-white shadow-[0_5px_15px_rgba(79,70,229,0.4)] rounded-xl flex items-center justify-center text-lg"><i class="fas fa-brain"></i></div>
+                            <div class="h-10 w-10 bg-indigo-600 text-white shadow-[0_5px_15px_rgba(79,70,229,0.3)] rounded-xl flex items-center justify-center text-lg"><i class="fas fa-brain"></i></div>
                             <h4 class="font-black text-indigo-900 text-lg">Director's Strategy</h4>
                         </div>
-                        <p class="text-sm text-indigo-900/80 leading-relaxed font-medium">"Five of your exams begin at exactly <span class="font-black text-indigo-900 bg-indigo-200/50 px-1.5 py-0.5 rounded">08:00 AM</span>. Align your circadian rhythm now. Stop late-night cramming. Train your brain to peak at dawn."</p>
+                        <p class="text-sm text-indigo-900/80 leading-relaxed font-medium">"Five of your exams begin at exactly <span class="font-black text-indigo-900 bg-indigo-200/50 px-1.5 py-0.5 rounded shadow-sm">08:00 AM</span>. Align your circadian rhythm now. Stop late-night cramming. Train your brain to peak at dawn."</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div>
+        <div class="reveal-on-scroll">
             <div class="flex justify-between items-end mb-6">
                 <h3 class="font-black text-slate-800 flex items-center gap-2 text-xl tracking-tight">
-                    <i class="fas fa-crosshairs text-red-500"></i> Command Center
+                    <i class="fas fa-crosshairs text-red-500 focus-target"></i> Command Center
                 </h3>
-                <span class="text-[10px] bg-red-100 text-red-600 font-black px-3 py-1.5 rounded-md uppercase tracking-widest border border-red-200 animate-pulse shadow-sm">Live Schedule</span>
+                <span class="text-[10px] bg-red-100 text-red-600 font-black px-3 py-1.5 rounded-md uppercase tracking-widest border border-red-200 animate-pulse shadow-sm flex items-center gap-1.5">
+                    <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span> Live Schedule
+                </span>
             </div>
 
-            <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-xl border border-slate-100 relative overflow-hidden">
-                <div class="timeline-line hidden md:block border-dashed"></div>
-                
+            <div class="bg-white/80 backdrop-blur-md rounded-[2rem] p-6 md:p-8 shadow-xl shadow-slate-200/40 border border-slate-100 relative overflow-hidden">
+                <div class="timeline-line hidden md:block border-dashed border-slate-300"></div>
                 <div class="space-y-6 relative z-10" id="vertical-timetable">
                     </div>
             </div>
         </div>
 
-        <div>
+        <div class="reveal-on-scroll">
             <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-xl tracking-tight">
                 <i class="fas fa-bolt text-yellow-500"></i> The Daily Grind
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="flashcards.html" class="hover-card bg-white border border-slate-200 p-6 rounded-3xl flex items-center gap-5 shadow-sm">
-                    <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-yellow-100 to-amber-100 text-amber-600 flex items-center justify-center text-2xl transform -rotate-6 border border-amber-200 shadow-inner">
+                <a href="flashcards.html" class="hover-card bg-white/80 backdrop-blur-md border border-slate-200/60 p-5 rounded-3xl flex items-center gap-5 shadow-sm group">
+                    <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-yellow-100 to-amber-100 text-amber-600 flex items-center justify-center text-2xl transform group-hover:-rotate-12 transition-transform duration-300 border border-amber-200/50 shadow-inner">
                         <i class="fas fa-clone"></i>
                     </div>
                     <div>
@@ -243,8 +295,8 @@
                     </div>
                 </a>
                 
-                <a href="leaderboard.html" class="hover-card bg-white border border-slate-200 p-6 rounded-3xl flex items-center gap-5 shadow-sm">
-                    <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-orange-100 to-red-100 text-orange-600 flex items-center justify-center text-2xl transform rotate-6 border border-orange-200 shadow-inner">
+                <a href="leaderboard.html" class="hover-card bg-white/80 backdrop-blur-md border border-slate-200/60 p-5 rounded-3xl flex items-center gap-5 shadow-sm group">
+                    <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-orange-100 to-red-100 text-orange-600 flex items-center justify-center text-2xl transform group-hover:rotate-12 transition-transform duration-300 border border-orange-200/50 shadow-inner">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div>
@@ -255,13 +307,13 @@
             </div>
         </div>
 
-        <div>
+        <div class="reveal-on-scroll">
             <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-xl tracking-tight">
                 <i class="fas fa-history text-slate-400"></i> Recent Activity
             </h3>
             
             <div id="activity-feed" class="space-y-3">
-                <div class="bg-slate-50 p-8 rounded-3xl text-center border-2 border-slate-200 border-dashed">
+                <div class="bg-slate-50/80 backdrop-blur-sm p-8 rounded-3xl text-center border-2 border-slate-200 border-dashed">
                     <div class="text-slate-300 text-5xl mb-4 transform hover:rotate-180 transition-transform duration-700"><i class="fas fa-wind"></i></div>
                     <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Your log is empty. Hit the books!</p>
                 </div>
@@ -294,9 +346,26 @@
                 document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
                 loadStats();
             } else {
+                // Ensure redirect logic operates smoothly
                 window.location.href = "index.html";
             }
         });
+
+        // Animation logic for counting numbers
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // easeOutQuart
+                const easeOut = 1 - Math.pow(1 - progress, 4); 
+                obj.innerHTML = Math.floor(easeOut * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
 
         function loadStats() {
             const target = localStorage.getItem('my_target_cgpa');
@@ -317,7 +386,7 @@
                         if(!hasActivity) { feed.innerHTML = ''; hasActivity = true; }
 
                         const div = document.createElement('div');
-                        div.className = "bg-white p-5 rounded-2xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-center transition-all hover:shadow-md";
+                        div.className = "reveal-on-scroll is-visible bg-white p-5 rounded-2xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-center transition-all hover:shadow-md hover:-translate-y-1";
                         div.innerHTML = `
                             <div>
                                 <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-0.5">COMPLETED</p>
@@ -327,18 +396,21 @@
                                 <i class="fas fa-check text-emerald-500 text-lg"></i>
                             </div>
                         `;
-                        feed.appendChild(div);
+                        feed.prepend(div); // Add newest to top
                     }
                 });
             });
 
-            document.getElementById('stat-passed').textContent = passedCount;
+            // Trigger the count animation
+            const statElement = document.getElementById('stat-passed');
+            animateValue(statElement, 0, passedCount, 1500);
         }
 
         window.logout = function() { signOut(auth).then(() => { window.location.href = "index.html"; }); }
     </script>
 
     <script>
+        // Sidebar Logic
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -353,6 +425,7 @@
             }
         }
 
+        // Timetable Rendering
         const exams = [
             { d: "MAR 03", t: "11:00 AM", c: "PHS 211", title: "Blood & Body Fluids", v: "Annex", bg: "bg-red-50", border: "border-red-500", text: "text-red-700", icon: "fa-tint" },
             { d: "MAR 04", t: "11:00 AM", c: "MBC 211", title: "General Biochemistry", v: "Annex", bg: "bg-blue-50", border: "border-blue-500", text: "text-blue-700", icon: "fa-dna" },
@@ -365,17 +438,19 @@
         ];
 
         const timetableContainer = document.getElementById('vertical-timetable');
-        exams.forEach(ex => {
+        exams.forEach((ex, index) => {
             const item = document.createElement('div');
-            item.className = "flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center group hover-card relative";
+            // Added reveal-on-scroll class dynamically and style transition delay for staggered load
+            item.className = "reveal-on-scroll flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center group hover-card relative";
+            item.style.transitionDelay = `${index * 100}ms`; 
             
             item.innerHTML = `
-                <div class="hidden md:flex flex-col items-center min-w-[80px]">
-                    <span class="text-xs font-black text-slate-400 mb-1 tracking-wider">${ex.d}</span>
-                    <div class="h-4 w-4 rounded-full ${ex.bg} border-4 ${ex.border} z-10 shadow-sm group-hover:scale-150 transition-transform duration-300"></div>
+                <div class="hidden md:flex flex-col items-center min-w-[80px] z-10">
+                    <span class="text-xs font-black text-slate-400 mb-1 tracking-wider group-hover:text-slate-600 transition-colors">${ex.d}</span>
+                    <div class="h-4 w-4 rounded-full ${ex.bg} border-4 ${ex.border} shadow-sm group-hover:scale-150 transition-transform duration-300"></div>
                 </div>
 
-                <div class="flex-1 w-full ${ex.bg} border-l-4 ${ex.border} rounded-r-2xl rounded-l-md p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm border border-slate-100">
+                <div class="flex-1 w-full ${ex.bg} border-l-4 ${ex.border} rounded-r-2xl rounded-l-md p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm border-t border-r border-b border-slate-100/50">
                     <div class="flex items-center gap-4">
                         <div class="h-12 w-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 ${ex.text} text-xl transform group-hover:-rotate-6 transition-transform">
                             <i class="fas ${ex.icon}"></i>
@@ -392,7 +467,7 @@
                     
                     <div class="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between gap-3 sm:gap-2">
                         <span class="text-xs font-bold text-slate-500 flex items-center gap-1"><i class="fas fa-map-marker-alt opacity-50"></i> ${ex.v}</span>
-                        <button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-slate-900 hover:bg-slate-800 text-white text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/20 flex items-center gap-2 group-hover:scale-105">
+                        <button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-slate-900 hover:bg-slate-800 text-white text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/20 flex items-center gap-2 active:scale-95 group-hover:pr-4">
                             Drill Now <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                         </button>
                     </div>
@@ -400,6 +475,29 @@
             `;
             timetableContainer.appendChild(item);
         });
+
+        // Intersection Observer for Scroll Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            // Select all elements with the reveal class
+            document.querySelectorAll('.reveal-on-scroll').forEach((elem) => {
+                observer.observe(elem);
+            });
+        });
     </script>
 </body>
-                                                                                                            </html>
+</html>
