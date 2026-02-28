@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Exam Vault | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-200 min-h-screen font-sans selection:bg-cyan-500 selection:text-white pb-20">
+
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 z-50 px-4 py-4 shadow-[0_4px_30px_rgba(6,182,212,0.15)]">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tighter">
+                    THE EXAM VAULT
+                </h1>
+                <p class="text-xs text-cyan-200 font-bold tracking-widest uppercase">Live Mock Simulator</p>
+            </div>
+            <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 mt-6">
+        
+        <div id="vault-intro" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-2xl">
+            <div class="h-16 w-16 bg-red-500/10 rounded-full flex items-center justify-center text-red-500 text-3xl mx-auto mb-4 border border-red-500/20">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-2">Initialize Core Week Simulation</h2>
+            <p class="text-slate-400 text-sm mb-6 max-w-md mx-auto">
+                The engine will now extract 50 random, high-yield questions from the master database. No two exams are identical. Prepare for deployment.
+            </p>
+            <button onclick="igniteEngine()" class="w-full md:w-auto px-10 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-black rounded-xl transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] tracking-widest">
+                COMMENCE DRILL <i class="fas fa-play ml-2"></i>
+            </button>
+        </div>
+
+        <div id="exam-container" class="hidden space-y-6">
+            </div>
+
+        <div id="submit-container" class="hidden mt-8 text-center">
+            <button onclick="calculateScore()" class="w-full md:w-auto px-10 py-4 bg-green-600 hover:bg-green-500 text-white font-black rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.4)] tracking-widest">
+                SUBMIT & ANALYZE <i class="fas fa-chart-line ml-2"></i>
+            </button>
+        </div>
+
+        <div id="score-display" class="hidden bg-slate-800 border border-cyan-500 rounded-2xl p-8 text-center mt-6 shadow-2xl">
+            <h3 class="text-lg text-slate-300 font-bold uppercase tracking-widest mb-2">Final Diagnostic</h3>
+            <div id="final-score" class="text-6xl font-black text-white mb-4">--/50</div>
+            <button onclick="location.reload()" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors">
+                RE-ROLL QUESTIONS <i class="fas fa-redo ml-2"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // 1. THE MASTER DATABASE (Paste your 100+ lecturer questions here)
+        // I have pre-loaded 3 Distinction-level placeholders to set the standard.
+        const masterDatabase = [
+            {
+                question: "Which of the following describes the correct sequence of the sliding filament mechanism in skeletal muscle?",
+                options: [
+                    "ATP binds to myosin head -> Cross-bridge detaches -> ATP hydrolyzed -> Myosin head cocks -> Cross-bridge forms -> Power stroke",
+                    "Calcium binds to tropomyosin -> Actin active sites exposed -> Myosin binds actin -> Power stroke -> ATP binds -> Detachment",
+                    "ATP hydrolyzed -> Myosin head cocks -> Cross-bridge forms -> Power stroke -> ATP binds to myosin head -> Cross-bridge detaches",
+                    "Action potential travels down T-tubule -> Ryanodine receptors close -> Calcium pumped into SR -> Relaxation"
+                ],
+                correctAnswer: 2 // Index of the correct option (0-based)
+            },
+            {
+                question: "In enzyme kinetics (MBC 211), a competitive inhibitor will have which of the following effects on the Lineweaver-Burk plot?",
+                options: [
+                    "Decreases Vmax, Km remains unchanged",
+                    "Increases Km, Vmax remains unchanged",
+                    "Decreases both Vmax and Km proportionately",
+                    "Increases Vmax, decreases Km"
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Regarding the Popliteal Fossa, which structure is located most superficially and laterally?",
+                options: [
+                    "Popliteal Vein",
+                    "Popliteal Artery",
+                    "Tibial Nerve",
+                    "Common Fibular (Peroneal) Nerve"
+                ],
+                correctAnswer: 3
+            }
+            // Add the rest of the 100+ questions here following this exact format.
+        ];
+
+        let selectedQuestions = [];
+        let userAnswers = [];
+
+        // 2. THE RANDOMIZATION ENGINE (Fisher-Yates Shuffle)
+        function igniteEngine() {
+            // Hide intro, show exam area
+            document.getElementById('vault-intro').classList.add('hidden');
+            document.getElementById('exam-container').classList.remove('hidden');
+            document.getElementById('submit-container').classList.remove('hidden');
+
+            // Shuffle the master database
+            let shuffled = [...masterDatabase];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+
+            // Slice exactly 50 questions (or less if your array has < 50 for now)
+            selectedQuestions = shuffled.slice(0, 50);
+            userAnswers = new Array(selectedQuestions.length).fill(null);
+
+            renderExam();
+        }
+
+        // 3. THE RENDER ENGINE
+        function renderExam() {
+            const container = document.getElementById('exam-container');
+            container.innerHTML = ''; // Clear previous
+
+            selectedQuestions.forEach((q, qIndex) => {
+                let optionsHTML = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHTML += `
+                        <label class="block p-3 border border-slate-700 rounded-lg hover:bg-slate-700/50 cursor-pointer transition-colors mb-2">
+                            <input type="radio" name="q${qIndex}" value="${optIndex}" onchange="recordAnswer(${qIndex}, ${optIndex})" class="mr-3 accent-cyan-500">
+                            <span class="text-sm text-slate-300">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                const questionHTML = `
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
+                        <div class="flex items-start gap-3 mb-4">
+                            <span class="bg-cyan-900 text-cyan-400 font-black px-3 py-1 rounded-md text-sm">${qIndex + 1}</span>
+                            <h3 class="text-slate-100 font-bold leading-relaxed">${q.question}</h3>
+                        </div>
+                        <div class="pl-12">
+                            ${optionsHTML}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHTML;
+            });
+        }
+
+        // 4. THE GRADING ENGINE
+        function recordAnswer(qIndex, optIndex) {
+            userAnswers[qIndex] = optIndex;
+        }
+
+        function calculateScore() {
+            let score = 0;
+            selectedQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            });
+
+            // Hide exam, show score
+            document.getElementById('exam-container').classList.add('hidden');
+            document.getElementById('submit-container').classList.add('hidden');
+            
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / ${selectedQuestions.length}`;
+            
+            // Scroll to top to see score
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
