@@ -25,18 +25,32 @@
 
     <main class="max-w-4xl mx-auto p-4 mt-6">
         
-        <div id="vault-intro" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 text-center shadow-2xl">
-            <div class="h-16 w-16 bg-red-500/10 rounded-full flex items-center justify-center text-red-500 text-3xl mx-auto mb-4 border border-red-500/20">
-                <i class="fas fa-fingerprint"></i>
-            </div>
-            <h2 class="text-2xl font-black text-white mb-2">Initialize Core Week Simulation</h2>
-            <p class="text-slate-400 text-sm mb-6 max-w-md mx-auto">
-                The engine will now extract 50 random, high-yield questions from the master database. No two exams are identical. Prepare for deployment.
-            </p>
-            <button onclick="igniteEngine()" class="w-full md:w-auto px-10 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-black rounded-xl transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] tracking-widest">
-                COMMENCE DRILL <i class="fas fa-play ml-2"></i>
-            </button>
-        </div>
+        <div id="vault-intro" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl">
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-black text-white mb-2 tracking-tighter">Select Target Module</h2>
+        <p class="text-slate-400 text-sm">Choose your course. The engine will extract 50 random questions from the lecturer's core material.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button onclick="igniteEngine('PHS211')" class="group relative overflow-hidden bg-slate-900 border border-red-500/30 hover:border-red-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+            <div class="text-red-500 text-3xl mb-2"><i class="fas fa-heartbeat"></i></div>
+            <h3 class="text-white font-bold text-lg">PHS 211</h3>
+            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-red-400">Launch Physiology</p>
+        </button>
+
+        <button onclick="igniteEngine('MBC211')" class="group relative overflow-hidden bg-slate-900 border border-blue-500/30 hover:border-blue-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+            <div class="text-blue-500 text-3xl mb-2"><i class="fas fa-dna"></i></div>
+            <h3 class="text-white font-bold text-lg">MBC 211</h3>
+            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-blue-400">Launch Biochemistry</p>
+        </button>
+
+        <button onclick="igniteEngine('ANA211')" class="group relative overflow-hidden bg-slate-900 border border-green-500/30 hover:border-green-500 rounded-xl p-4 transition-all hover:shadow-[0_0_20px_rgba(34,197,94,0.2)]">
+            <div class="text-green-500 text-3xl mb-2"><i class="fas fa-bone"></i></div>
+            <h3 class="text-white font-bold text-lg">Anatomy</h3>
+            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest group-hover:text-green-400">Launch Gross Anatomy</p>
+        </button>
+    </div>
+</div>
 
         <div id="exam-container" class="hidden space-y-6">
             </div>
@@ -58,65 +72,92 @@
     </main>
 
     <script>
-        // 1. THE MASTER DATABASE (Paste your 100+ lecturer questions here)
-        // I have pre-loaded 3 Distinction-level placeholders to set the standard.
-        const masterDatabase = [
-            {
-                question: "Which of the following describes the correct sequence of the sliding filament mechanism in skeletal muscle?",
-                options: [
-                    "ATP binds to myosin head -> Cross-bridge detaches -> ATP hydrolyzed -> Myosin head cocks -> Cross-bridge forms -> Power stroke",
-                    "Calcium binds to tropomyosin -> Actin active sites exposed -> Myosin binds actin -> Power stroke -> ATP binds -> Detachment",
-                    "ATP hydrolyzed -> Myosin head cocks -> Cross-bridge forms -> Power stroke -> ATP binds to myosin head -> Cross-bridge detaches",
-                    "Action potential travels down T-tubule -> Ryanodine receptors close -> Calcium pumped into SR -> Relaxation"
-                ],
-                correctAnswer: 2 // Index of the correct option (0-based)
-            },
-            {
-                question: "In enzyme kinetics (MBC 211), a competitive inhibitor will have which of the following effects on the Lineweaver-Burk plot?",
-                options: [
-                    "Decreases Vmax, Km remains unchanged",
-                    "Increases Km, Vmax remains unchanged",
-                    "Decreases both Vmax and Km proportionately",
-                    "Increases Vmax, decreases Km"
-                ],
-                correctAnswer: 1
-            },
-            {
-                question: "Regarding the Popliteal Fossa, which structure is located most superficially and laterally?",
-                options: [
-                    "Popliteal Vein",
-                    "Popliteal Artery",
-                    "Tibial Nerve",
-                    "Common Fibular (Peroneal) Nerve"
-                ],
-                correctAnswer: 3
-            }
-            // Add the rest of the 100+ questions here following this exact format.
-        ];
+        // 1. THE MULTI-COURSE MASTER VAULT
+const courseVault = {
+    
+    // 🔴 PHYSIOLOGY (PHS 211)
+    "PHS211": [
+        {
+            question: "During the cardiac cycle, which specific event corresponds to the closure of the atrioventricular (mitral and tricuspid) valves?",
+            options: [
+                "Isovolumetric ventricular relaxation",
+                "Rapid ventricular ejection",
+                "Isovolumetric ventricular contraction",
+                "Atrial systole"
+            ],
+            correctAnswer: 2
+        },
+        // Add 99 more PHS questions here...
+    ],
+
+    // 🔵 BIOCHEMISTRY (MBC 211)
+    "MBC211": [
+        {
+            question: "According to the Michaelis-Menten equation $V_0 = \\frac{V_{max}[S]}{K_m + [S]}$, what does it mean when the substrate concentration $[S]$ is exactly equal to $K_m$?",
+            options: [
+                "The enzyme is fully saturated.",
+                "The initial velocity is half of the maximal velocity ($V_{max}/2$).",
+                "The reaction has reached equilibrium.",
+                "The enzyme is denatured."
+            ],
+            correctAnswer: 1
+        },
+        // Add 99 more MBC questions here...
+    ],
+
+    // 🟢 ANATOMY (ANA 211)
+    "ANA211": [
+        {
+            question: "A patient presents with 'wrist drop' following a mid-shaft fracture of the humerus. Which nerve has been compromised in the radial groove?",
+            options: [
+                "Median Nerve",
+                "Ulnar Nerve",
+                "Axillary Nerve",
+                "Radial Nerve"
+            ],
+            correctAnswer: 3
+        }
+        // Add 99 more Anatomy questions here...
+    ],
+
+    // ⚡ PHYSIOLOGY (PHS 212)
+    "PHS212": [
+        {
+            
+};
 
         let selectedQuestions = [];
         let userAnswers = [];
 
-        // 2. THE RANDOMIZATION ENGINE (Fisher-Yates Shuffle)
-        function igniteEngine() {
-            // Hide intro, show exam area
-            document.getElementById('vault-intro').classList.add('hidden');
-            document.getElementById('exam-container').classList.remove('hidden');
-            document.getElementById('submit-container').classList.remove('hidden');
+        // 2. THE TARGETED RANDOMIZATION ENGINE
+function igniteEngine(courseCode) {
+    // 1. Check if the course has questions
+    if (!courseVault[courseCode] || courseVault[courseCode].length === 0) {
+        alert("System Notice: Questions for " + courseCode + " are currently being uploaded by the Director of Academics. Check back shortly.");
+        return;
+    }
 
-            // Shuffle the master database
-            let shuffled = [...masterDatabase];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
+    // 2. Hide intro, show exam area
+    document.getElementById('vault-intro').classList.add('hidden');
+    document.getElementById('exam-container').classList.remove('hidden');
+    document.getElementById('submit-container').classList.remove('hidden');
 
-            // Slice exactly 50 questions (or less if your array has < 50 for now)
-            selectedQuestions = shuffled.slice(0, 50);
-            userAnswers = new Array(selectedQuestions.length).fill(null);
+    // 3. Grab the specific course array and shuffle it
+    let targetDatabase = courseVault[courseCode];
+    let shuffled = [...targetDatabase];
+    
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
 
-            renderExam();
-        }
+    // 4. Slice up to 50 questions
+    selectedQuestions = shuffled.slice(0, 50);
+    userAnswers = new Array(selectedQuestions.length).fill(null);
+
+    // 5. Render
+    renderExam();
+}
 
         // 3. THE RENDER ENGINE
         function renderExam() {
