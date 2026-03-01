@@ -54,7 +54,7 @@
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(15px);
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         @keyframes fadeIn {
@@ -79,9 +79,9 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <div id="exam-timer" class="hidden flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+                <div id="exam-timer" class="hidden flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner">
                     <i class="fas fa-clock text-cyan-400 animate-pulse text-sm"></i>
-                    <span class="font-mono font-bold text-white tracking-wider" id="time-display">15:00</span>
+                    <span class="font-mono font-black text-white tracking-wider" id="time-display">15:00</span>
                 </div>
                 <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg focus:outline-none active:scale-95">
                     <i class="fas fa-times text-xl"></i>
@@ -102,7 +102,7 @@
             <div class="text-center mb-8 relative z-10">
                 <span class="bg-cyan-500/10 text-cyan-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-cyan-500/20 mb-4 inline-block">System Ready</span>
                 <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tighter drop-shadow-md">Select Target Module</h2>
-                <p class="text-slate-400 text-sm font-medium max-w-md mx-auto">Choose your extraction parameters. The engine will randomly pull exactly 50 high-yield questions from the core material.</p>
+                <p class="text-slate-400 text-sm font-medium max-w-md mx-auto">Choose your extraction parameters. The engine will randomly pull exactly <span class="text-white font-bold">35 high-yield questions</span> from the core material.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
@@ -128,24 +128,18 @@
 
         <div id="exam-stats" class="hidden mb-4 flex justify-between items-center bg-slate-800/50 p-3 rounded-xl border border-slate-700">
             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="course-title-display">Course</span>
-            <span class="text-sm font-black text-cyan-400 bg-cyan-900/50 px-3 py-1 rounded-md" id="questions-attempted">0 / 50 Answered</span>
+            <span class="text-sm font-black text-cyan-400 bg-cyan-900/50 px-3 py-1 rounded-md border border-cyan-800" id="questions-attempted">0 / 35 Answered</span>
         </div>
 
-        <div id="exam-container" class="hidden space-y-6">
+        <div id="exam-container" class="hidden w-full">
             </div>
-
-        <div id="submit-container" class="hidden mt-8 text-center sticky bottom-6 z-40">
-            <button onclick="calculateScore()" class="w-full md:w-auto px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-2xl transition-all shadow-[0_10px_30px_rgba(16,185,129,0.3)] tracking-widest text-lg active:scale-95 border border-emerald-400/50">
-                SUBMIT FOR DIAGNOSTIC <i class="fas fa-fingerprint ml-2"></i>
-            </button>
-        </div>
 
         <div id="score-display" class="hidden bg-slate-800 border border-cyan-500 rounded-[2rem] p-8 text-center mt-6 shadow-[0_0_50px_rgba(6,182,212,0.15)] relative overflow-hidden">
             <div class="absolute -right-4 -top-4 text-cyan-500/10 text-8xl"><i class="fas fa-chart-pie"></i></div>
             <div class="relative z-10">
                 <span class="bg-slate-900 text-cyan-400 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-slate-700 mb-4 inline-block">Simulation Complete</span>
                 <h3 class="text-2xl text-white font-black tracking-tight mb-2">Final Diagnostic</h3>
-                <div id="final-score" class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-lg">--/50</div>
+                <div id="final-score" class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-6 drop-shadow-lg">--/35</div>
                 
                 <div class="flex flex-col md:flex-row gap-4 justify-center">
                     <button onclick="reviewExam()" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-xl transition-all active:scale-95 shadow-[0_5px_20px_rgba(6,182,212,0.3)] flex items-center justify-center gap-2">
@@ -166,11 +160,21 @@
     <script>
         // 1. THE MULTI-COURSE MASTER VAULT (With Explanations)
         const courseVault = {
-
             
-            // 🔴 PHYSIOLOGY (PHS 211) 
-            
-                    
+            // 🔴 PHYSIOLOGY (PHS 211)
+            "PHS211": [
+                {
+                    question: "During the cardiac cycle, which specific event corresponds to the closure of the atrioventricular (mitral and tricuspid) valves?",
+                    options: [
+                        "Isovolumetric ventricular relaxation",
+                        "Rapid ventricular ejection",
+                        "Isovolumetric ventricular contraction",
+                        "Atrial systole"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The closure of the AV valves produces the first heart sound (S1) and marks the beginning of ventricular systole, specifically the 'isovolumetric contraction' phase where pressure rises rapidly but volume remains constant."
+                }
+            ],
 
             // 🔵 BIOCHEMISTRY (MBC 211)
             "MBC211": [
@@ -207,6 +211,7 @@
         let userAnswers = [];
         let questionsAttemptedCount = 0;
         let timerInterval;
+        let currentQuestionIndex = 0; // NEW: Pagination Tracker
 
         // 2. THE ENGINE IGNITION
         function igniteEngine(courseCode) {
@@ -218,7 +223,6 @@
             document.getElementById('vault-intro').classList.add('hidden');
             document.getElementById('exam-stats').classList.remove('hidden');
             document.getElementById('exam-container').classList.remove('hidden');
-            document.getElementById('submit-container').classList.remove('hidden');
             document.getElementById('exam-timer').classList.remove('hidden');
             document.getElementById('progress-container').classList.remove('hidden');
             
@@ -232,12 +236,14 @@
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
 
-            selectedQuestions = shuffled.slice(0, Math.min(50, shuffled.length));
+            // Benchmark set to strictly 35 questions
+            selectedQuestions = shuffled.slice(0, Math.min(35, shuffled.length));
             userAnswers = new Array(selectedQuestions.length).fill(null);
+            currentQuestionIndex = 0; // Reset index
             
             updateProgressUI();
-            startTimer(15 * 60); // SET TO 15 MINUTES
-            renderExam();
+            startTimer(15 * 60); // 15 MINUTES
+            renderCurrentQuestion(); // Call Pagination Engine
         }
 
         // 3. THE 15-MINUTE TIMER
@@ -266,42 +272,86 @@
             }, 1000);
         }
 
-        // 4. THE RENDER ENGINE
-        function renderExam() {
+        // 4. THE PAGINATION RENDER ENGINE
+        function renderCurrentQuestion() {
             const container = document.getElementById('exam-container');
-            container.innerHTML = ''; 
-
-            selectedQuestions.forEach((q, qIndex) => {
-                let optionsHTML = '';
-                q.options.forEach((opt, optIndex) => {
-                    optionsHTML += `
-                        <label class="block relative mb-3 cursor-pointer option-label group">
-                            <input type="radio" name="q${qIndex}" value="${optIndex}" onchange="recordAnswer(${qIndex}, ${optIndex})">
-                            <div class="option-box flex items-center p-4 border border-slate-700 bg-slate-800/50 rounded-xl group-hover:bg-slate-700 transition-colors">
-                                <div class="radio-indicator w-5 h-5 rounded-full border-2 border-slate-500 mr-4 flex-shrink-0 transition-colors"></div>
-                                <span class="text-sm md:text-base text-slate-300 font-medium">${opt}</span>
-                            </div>
-                        </label>
-                    `;
-                });
-
-                const questionHTML = `
-                    <div class="reveal-on-scroll bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 shadow-lg" style="animation-delay: ${Math.min(qIndex * 0.05, 1)}s">
-                        <div class="flex items-start gap-4 mb-5 border-b border-slate-700/50 pb-4">
-                            <div class="bg-gradient-to-br from-cyan-600 to-blue-600 text-white font-black h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner">
-                                ${qIndex + 1}
-                            </div>
-                            <h3 class="text-slate-100 font-bold leading-relaxed text-lg tracking-tight">${q.question}</h3>
+            const q = selectedQuestions[currentQuestionIndex];
+            const qIndex = currentQuestionIndex;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                // Check if user already answered this when going back/forward
+                const isChecked = userAnswers[qIndex] === optIndex ? 'checked' : '';
+                
+                optionsHTML += `
+                    <label class="block relative mb-3 cursor-pointer option-label group">
+                        <input type="radio" name="q${qIndex}" value="${optIndex}" onchange="recordAnswer(${qIndex}, ${optIndex})" ${isChecked}>
+                        <div class="option-box flex items-center p-4 border border-slate-700 bg-slate-800/50 rounded-xl group-hover:bg-slate-700 transition-colors">
+                            <div class="radio-indicator w-5 h-5 rounded-full border-2 border-slate-500 mr-4 flex-shrink-0 transition-colors"></div>
+                            <span class="text-sm md:text-base text-slate-300 font-medium">${opt}</span>
                         </div>
-                        <div class="pl-0 md:pl-12">
-                            ${optionsHTML}
-                        </div>
-                    </div>
+                    </label>
                 `;
-                container.innerHTML += questionHTML;
             });
+
+            // Dynamic Navigation Buttons Logic
+            const isFirst = qIndex === 0;
+            const isLast = qIndex === selectedQuestions.length - 1;
+            
+            let navHTML = `<div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-700/50">`;
+            
+            // Previous Button (Hidden on first question)
+            if (!isFirst) {
+                navHTML += `<button onclick="prevQuestion()" class="px-5 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-colors active:scale-95 flex items-center gap-2 text-sm"><i class="fas fa-arrow-left"></i> PREV</button>`;
+            } else {
+                navHTML += `<div></div>`; // Empty div to keep flexbox layout aligned
+            }
+            
+            // Next OR Submit Button
+            if (!isLast) {
+                navHTML += `<button onclick="nextQuestion()" class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-black rounded-xl transition-colors active:scale-95 flex items-center gap-2 shadow-[0_5px_15px_rgba(6,182,212,0.3)] tracking-widest">NEXT <i class="fas fa-arrow-right"></i></button>`;
+            } else {
+                navHTML += `<button onclick="calculateScore()" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black rounded-xl transition-all shadow-[0_5px_15px_rgba(16,185,129,0.4)] flex items-center gap-2 tracking-widest border border-emerald-400/50">SUBMIT <i class="fas fa-fingerprint"></i></button>`;
+            }
+            
+            navHTML += `</div>`;
+
+            // Compile the Final Question Card
+            const questionHTML = `
+                <div class="reveal-on-scroll bg-slate-800/80 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-slate-700 shadow-xl w-full">
+                    <div class="flex items-start gap-4 mb-6 pb-4">
+                        <div class="bg-gradient-to-br from-cyan-600 to-blue-600 text-white font-black h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner text-lg border border-cyan-400/30">
+                            ${qIndex + 1}
+                        </div>
+                        <h3 class="text-slate-100 font-bold leading-relaxed text-lg md:text-xl tracking-tight mt-1">${q.question}</h3>
+                    </div>
+                    <div class="pl-0 md:pl-14">
+                        ${optionsHTML}
+                    </div>
+                    ${navHTML}
+                </div>
+            `;
+            
+            container.innerHTML = questionHTML;
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top for mobile UX
         }
 
+        // Pagination Controllers
+        function nextQuestion() {
+            if (currentQuestionIndex < selectedQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderCurrentQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderCurrentQuestion();
+            }
+        }
+
+        // Answer Tracking
         function recordAnswer(qIndex, optIndex) {
             if (userAnswers[qIndex] === null) {
                 questionsAttemptedCount++;
@@ -330,7 +380,6 @@
 
             document.getElementById('exam-stats').classList.add('hidden');
             document.getElementById('exam-container').classList.add('hidden');
-            document.getElementById('submit-container').classList.add('hidden');
             document.getElementById('exam-timer').classList.add('hidden');
             document.getElementById('progress-container').classList.add('hidden');
             
@@ -357,14 +406,13 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 6. THE POST-MORTEM REVIEW ENGINE
+        // 6. THE POST-MORTEM REVIEW ENGINE (Kept as continuous scroll for easy reading)
         function reviewExam() {
             document.getElementById('score-display').classList.add('hidden');
             const container = document.getElementById('exam-container');
             container.classList.remove('hidden');
             container.innerHTML = ''; 
 
-            // Add a header for review mode
             container.innerHTML = `
                 <div class="bg-cyan-900/30 border border-cyan-500/50 p-4 rounded-xl mb-6 text-center">
                     <h2 class="text-cyan-400 font-black tracking-widest uppercase"><i class="fas fa-search"></i> Diagnostic Review Mode</h2>
@@ -382,7 +430,6 @@
                     let textClass = 'text-slate-300';
                     let iconHTML = '';
 
-                    // Identify Correct vs Incorrect
                     if (optIndex === q.correctAnswer) {
                         bgClass = 'bg-emerald-900/30';
                         borderClass = 'border-emerald-500';
@@ -403,7 +450,6 @@
                     `;
                 });
 
-                // Director's Rationale Block
                 const explanationHTML = q.explanation ? `
                     <div class="mt-4 p-4 bg-blue-900/20 border border-blue-500/30 rounded-xl">
                         <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2 flex items-center gap-2">
@@ -430,7 +476,6 @@
                 container.innerHTML += questionHTML;
             });
             
-            // Bottom Action Buttons for Review Mode
             container.innerHTML += `
                 <div class="text-center mt-8 pb-10 flex flex-col md:flex-row justify-center gap-4">
                     <button onclick="backToScore()" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition-colors active:scale-95 shadow-lg flex items-center justify-center gap-2">
