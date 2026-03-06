@@ -19,18 +19,14 @@
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #f8fafc; 
-            -webkit-tap-highlight-color: transparent; /* Removes mobile tap flash */
+            -webkit-tap-highlight-color: transparent;
         }
         
-        /* Smooth Scrolling */
         html { scroll-behavior: smooth; }
-
-        /* Sidebar Animation */
         #sidebar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar-open { transform: translateX(0); }
         .sidebar-closed { transform: translateX(-100%); }
         
-        /* Premium Glass Effect */
         .glass-nav { 
             background: rgba(255, 255, 255, 0.75); 
             backdrop-filter: blur(16px); 
@@ -38,14 +34,12 @@
             border-bottom: 1px solid rgba(226, 232, 240, 0.6); 
         }
         
-        /* Advanced Hover/Active Physics */
         .hover-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         @media (hover: hover) {
             .hover-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.08); }
         }
-        .hover-card:active { transform: scale(0.98); } /* Tactile feedback for mobile */
+        .hover-card:active { transform: scale(0.98); }
 
-        /* Custom Animations */
         @keyframes gradient-xy {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -62,7 +56,6 @@
         .animate-float { animation: float 6s ease-in-out infinite; }
         .animate-float-delayed { animation: float 8s ease-in-out infinite 2s; }
 
-        /* Intersection Observer Animation Classes */
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(20px);
@@ -72,7 +65,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
         .timeline-line { position: absolute; left: 1.25rem; top: 0; bottom: 0; width: 2px; background: #e2e8f0; z-index: 0; }
     </style>
 </head>
@@ -173,7 +165,7 @@
                     <span class="text-[10px] font-black tracking-widest uppercase text-emerald-200">System Status: Optimal</span>
                 </div>
                 <h2 id="welcome-msg" class="text-4xl md:text-5xl font-black mb-3 tracking-tight">Welcome Back!</h2>
-                <p class="text-emerald-50/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">The 200-Level battleground requires strategic preparation. Execute your study plan utilizing the CBT Vaults and GP Forecaster.</p>
+                <p class="text-emerald-50/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">Phase 1 of Core Week is cleared. Do not break formation. Execute your study plan utilizing the CBT Vaults and GP Forecaster.</p>
             </div>
         </div>
 
@@ -184,22 +176,22 @@
                 <div class="flex-1 relative z-10 w-full text-center md:text-left">
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-4">
                         <span class="bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase tracking-widest animate-pulse border border-red-400/50 shadow-[0_0_20px_rgba(239,68,68,0.5)] flex items-center gap-1.5">
-                            <i class="fas fa-exclamation-triangle"></i> QUICK EXAMS TEST
+                            <i class="fas fa-exclamation-triangle"></i> ACTIVE PROTOCOL
                         </span>
                         <span class="bg-purple-900/50 text-purple-200 text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-widest border border-purple-500/30">
-                            <i class="fas fa-bolt text-yellow-400 mr-1"></i> Core Week Protocol
+                            <i class="fas fa-bolt text-yellow-400 mr-1"></i> Core Week Exclusive
                         </span>
                     </div>
                     <h2 class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-200 mb-3 tracking-tighter drop-shadow-sm">The Exam Vault</h2>
                     <p class="text-slate-400 text-sm md:text-base font-medium leading-relaxed max-w-lg mx-auto md:mx-0">
-                        Direct extraction from Lecturer Core Materials. The engine pulls <span class="text-white font-bold bg-white/10 px-1 rounded">35 random questions</span> per session. prepare for deployment.
+                        Direct extraction from Lecturer Core Materials. The engine pulls <span class="text-white font-bold bg-white/10 px-1 rounded">35 random questions</span> per session. Prepare for deployment.
                     </p>
                 </div>
                 
                 <div class="w-full md:w-auto relative z-10">
                     <button onclick="window.location.href='simulator.html'" class="w-full relative group overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-4 text-white font-black tracking-widest uppercase shadow-[0_10px_30px_rgba(147,51,234,0.5)] transition-all active:scale-95">
                         <span class="relative z-10 flex items-center justify-center gap-3">
-                            GROSS ANATOMY (ANA211) IS LIVE 🔥
+                            EXCITABLE TISSUES (PHS212) IS LIVE 🔥
                             <i class="fas fa-fingerprint text-xl group-hover:scale-110 transition-transform"></i>
                         </span>
                         <div class="absolute inset-0 h-full w-full bg-white/20 scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100"></div>
@@ -228,37 +220,6 @@
                         <div class="text-5xl font-black text-emerald-600 tracking-tighter tabular-nums" id="stat-target">-.-</div>
                     </div>
                     <div class="h-12 w-12 bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-emerald-200/50"><i class="fas fa-chart-line"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll">
-            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-xl tracking-tight">
-                <i class="fas fa-satellite-dish text-blue-500 animate-pulse"></i> Intelligence Feed
-            </h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden shadow-lg hover-card border border-slate-800 group">
-                    <div class="absolute top-0 right-0 bg-gradient-to-r from-blue-600 to-blue-500 text-[10px] font-black px-4 py-1.5 rounded-bl-xl uppercase tracking-widest shadow-md">System Update</div>
-                    <div class="absolute -bottom-8 -left-8 text-slate-800 text-7xl transform group-hover:scale-110 transition-transform duration-500"><i class="fas fa-rocket"></i></div>
-                    <div class="relative z-10">
-                        <h4 class="font-black text-xl mb-2 mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">V2.0 is Live 🚀</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed mb-4 font-medium">The new CBT engine, Flashcard Blitz, and Digital ID systems are operational.</p>
-                        <a href="profile.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 bg-blue-500/10 px-3 py-1.5 rounded-lg transition-colors">
-                            Set up ID Card <i class="fas fa-arrow-right text-[10px]"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-br from-indigo-50 to-white border border-indigo-100/80 rounded-3xl p-6 shadow-sm hover-card relative overflow-hidden group">
-                    <div class="absolute -right-6 -bottom-6 text-indigo-100/50 text-8xl transform group-hover:rotate-12 transition-transform duration-500"><i class="fas fa-chess-knight"></i></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="h-10 w-10 bg-indigo-600 text-white shadow-[0_5px_15px_rgba(79,70,229,0.3)] rounded-xl flex items-center justify-center text-lg"><i class="fas fa-brain"></i></div>
-                            <h4 class="font-black text-indigo-900 text-lg">Director's Strategy</h4>
-                        </div>
-                        <p class="text-sm text-indigo-900/80 leading-relaxed font-medium">"Five of your exams begin at exactly <span class="font-black text-indigo-900 bg-indigo-200/50 px-1.5 py-0.5 rounded shadow-sm">08:00 AM</span>. Align your circadian rhythm now. Stop late-night cramming. Train your brain to peak at dawn."</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -307,19 +268,6 @@
             </div>
         </div>
 
-        <div class="reveal-on-scroll">
-            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-xl tracking-tight">
-                <i class="fas fa-history text-slate-400"></i> Recent Activity
-            </h3>
-            
-            <div id="activity-feed" class="space-y-3">
-                <div class="bg-slate-50/80 backdrop-blur-sm p-8 rounded-3xl text-center border-2 border-slate-200 border-dashed">
-                    <div class="text-slate-300 text-5xl mb-4 transform hover:rotate-180 transition-transform duration-700"><i class="fas fa-wind"></i></div>
-                    <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Your log is empty. Hit the books!</p>
-                </div>
-            </div>
-        </div>
-
     </main>
 
     <script type="module">
@@ -346,18 +294,15 @@
                 document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
                 loadStats();
             } else {
-                // Ensure redirect logic operates smoothly
                 window.location.href = "index.html";
             }
         });
 
-        // Animation logic for counting numbers
         function animateValue(obj, start, end, duration) {
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                // easeOutQuart
                 const easeOut = 1 - Math.pow(1 - progress, 4); 
                 obj.innerHTML = Math.floor(easeOut * (end - start) + start);
                 if (progress < 1) {
@@ -372,9 +317,6 @@
             if(target) document.getElementById('stat-target').textContent = target;
 
             let passedCount = 0;
-            const feed = document.getElementById('activity-feed');
-            let hasActivity = false;
-
             const courses = ["ANA 211", "ANA 213", "PHS 211", "PHS 212", "PHS 213", "PHS 214", "MBC 211", "GST 212"];
             const levels = ["beginner", "intermediate", "advanced"];
             
@@ -383,25 +325,10 @@
                     const key = `${course}_${level}_passed`;
                     if(localStorage.getItem(key) === 'true') {
                         passedCount++;
-                        if(!hasActivity) { feed.innerHTML = ''; hasActivity = true; }
-
-                        const div = document.createElement('div');
-                        div.className = "reveal-on-scroll is-visible bg-white p-5 rounded-2xl shadow-sm border-l-4 border-emerald-500 flex justify-between items-center transition-all hover:shadow-md hover:-translate-y-1";
-                        div.innerHTML = `
-                            <div>
-                                <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-0.5">COMPLETED</p>
-                                <h4 class="font-black text-slate-800 text-base">${course}: <span class="text-slate-500 font-semibold">${level.charAt(0).toUpperCase() + level.slice(1)}</span></h4>
-                            </div>
-                            <div class="h-10 w-10 bg-emerald-50 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-emerald-500 text-lg"></i>
-                            </div>
-                        `;
-                        feed.prepend(div); // Add newest to top
                     }
                 });
             });
 
-            // Trigger the count animation
             const statElement = document.getElementById('stat-passed');
             animateValue(statElement, 0, passedCount, 1500);
         }
@@ -410,7 +337,6 @@
     </script>
 
     <script>
-        // Sidebar Logic
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -425,79 +351,93 @@
             }
         }
 
-        // Timetable Rendering
+        // UPDATED TIMETABLE LOGIC
         const exams = [
-            { d: "MAR 03", t: "11:00 AM", c: "PHS 211", title: "Blood & Body Fluids", v: "Annex", bg: "bg-red-50", border: "border-red-500", text: "text-red-700", icon: "fa-tint" },
-            { d: "MAR 04", t: "11:00 AM", c: "MBC 211", title: "General Biochemistry", v: "Annex", bg: "bg-blue-50", border: "border-blue-500", text: "text-blue-700", icon: "fa-dna" },
-            { d: "MAR 05", t: "08:00 AM", c: "ANA 211", title: "Gross Anatomy", v: "Annex", bg: "bg-emerald-50", border: "border-emerald-500", text: "text-emerald-700", icon: "fa-bone" },
-            { d: "MAR 09", t: "08:00 AM", c: "PHS 212", title: "Excitable Tissues", v: "Annex", bg: "bg-amber-50", border: "border-amber-500", text: "text-amber-700", icon: "fa-bolt" },
-            { d: "MAR 12", t: "08:00 AM", c: "PHS 213", title: "Cell Physiology", v: "Annex", bg: "bg-purple-50", border: "border-purple-500", text: "text-purple-700", icon: "fa-microchip" },
-            { d: "MAR 13", t: "08:00 AM", c: "PHS 214", title: "Lab Physiology", v: "Annex", bg: "bg-pink-50", border: "border-pink-500", text: "text-pink-700", icon: "fa-flask" },
-            { d: "MAR 20", t: "08:00 AM", c: "ANA 213", title: "Embryology", v: "Annex", bg: "bg-cyan-50", border: "border-cyan-500", text: "text-cyan-700", icon: "fa-baby" },
-            { d: "TBD", t: "Unspecified", c: "GST 212", title: "Philosophy & Logic", v: "Main Campus", bg: "bg-slate-100", border: "border-slate-500", text: "text-slate-700", icon: "fa-brain" }
+            { d: "MAR 03", t: "11:00 AM", c: "PHS 211", title: "Blood & Body Fluids", v: "Annex", bg: "bg-red-50", border: "border-red-500", text: "text-red-700", icon: "fa-tint", status: "completed" },
+            { d: "MAR 04", t: "11:00 AM", c: "MBC 211", title: "General Biochemistry", v: "Annex", bg: "bg-blue-50", border: "border-blue-500", text: "text-blue-700", icon: "fa-dna", status: "completed" },
+            { d: "MAR 05", t: "08:00 AM", c: "ANA 211", title: "Gross Anatomy", v: "Annex", bg: "bg-emerald-50", border: "border-emerald-500", text: "text-emerald-700", icon: "fa-bone", status: "completed" },
+            { d: "MAR 09", t: "08:00 AM", c: "PHS 212", title: "Excitable Tissues", v: "Annex", bg: "bg-amber-50", border: "border-amber-500", text: "text-amber-700", icon: "fa-bolt", status: "pending" },
+            { d: "MAR 12", t: "08:00 AM", c: "UUYPHS213", title: "Cell Physiology", v: "Annex", bg: "bg-purple-50", border: "border-purple-500", text: "text-purple-700", icon: "fa-microchip", status: "pending" },
+            { d: "MAR 13", t: "08:00 AM", c: "PHS 214", title: "Lab Physiology", v: "Physiology Lab", bg: "bg-pink-50", border: "border-pink-500", text: "text-pink-700", icon: "fa-flask", status: "pending" },
+            { d: "MAR 20", t: "08:00 AM", c: "ANA 213", title: "Embryology", v: "Annex", bg: "bg-cyan-50", border: "border-cyan-500", text: "text-cyan-700", icon: "fa-baby", status: "pending" }
         ];
 
         const timetableContainer = document.getElementById('vertical-timetable');
+        let nextTargetAssigned = false;
+
         exams.forEach((ex, index) => {
+            let isCompleted = ex.status === 'completed';
+            let isNext = !isCompleted && !nextTargetAssigned;
+            if (isNext) nextTargetAssigned = true;
+
             const item = document.createElement('div');
-            // Added reveal-on-scroll class dynamically and style transition delay for staggered load
-            item.className = "reveal-on-scroll flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center group hover-card relative";
+            item.className = "reveal-on-scroll flex flex-col md:flex-row gap-4 md:gap-8 items-start md:items-center group relative " + (isCompleted ? "opacity-70 grayscale-[0.3]" : "hover-card");
             item.style.transitionDelay = `${index * 100}ms`; 
-            
+
+            let badgeHtml = isNext ? `<div class="absolute -top-3 -right-2 bg-red-600 text-white text-[9px] font-black px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-[0_0_20px_rgba(239,68,68,0.6)] animate-bounce z-20 border border-red-400">NEXT TARGET</div>` : '';
+
+            let actionHtml = '';
+            if (isCompleted) {
+                actionHtml = `<div class="bg-slate-100 text-slate-500 text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl border border-slate-200 flex items-center gap-2"><i class="fas fa-check-double text-emerald-500 text-sm"></i> Cleared</div>`;
+            } else if (isNext) {
+                actionHtml = `<button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-red-600 hover:bg-red-500 text-white text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl transition-all shadow-[0_10px_20px_rgba(239,68,68,0.4)] flex items-center gap-2 active:scale-95 group-hover:pr-4 relative overflow-hidden"><span class="relative z-10 flex items-center gap-2">Attack <i class="fas fa-crosshairs group-hover:rotate-90 transition-transform duration-300"></i></span></button>`;
+            } else {
+                actionHtml = `<button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-slate-900 hover:bg-slate-800 text-white text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/20 flex items-center gap-2 active:scale-95 group-hover:pr-4">Drill Now <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i></button>`;
+            }
+
+            let courseClass = isCompleted ? "text-slate-400" : "text-slate-800";
+            let bgClass = isCompleted ? "bg-slate-50" : ex.bg;
+            let borderClass = isCompleted ? "border-slate-300" : ex.border;
+            let textClass = isCompleted ? "text-slate-400" : ex.text;
+
             item.innerHTML = `
+                ${badgeHtml}
                 <div class="hidden md:flex flex-col items-center min-w-[80px] z-10">
-                    <span class="text-xs font-black text-slate-400 mb-1 tracking-wider group-hover:text-slate-600 transition-colors">${ex.d}</span>
-                    <div class="h-4 w-4 rounded-full ${ex.bg} border-4 ${ex.border} shadow-sm group-hover:scale-150 transition-transform duration-300"></div>
+                    <span class="text-xs font-black text-slate-400 mb-1 tracking-wider ${!isCompleted ? 'group-hover:text-slate-600 transition-colors' : ''}">${ex.d}</span>
+                    <div class="h-4 w-4 rounded-full ${bgClass} border-4 ${borderClass} shadow-sm ${!isCompleted ? 'group-hover:scale-150 transition-transform duration-300' : ''}"></div>
                 </div>
 
-                <div class="flex-1 w-full ${ex.bg} border-l-4 ${ex.border} rounded-r-2xl rounded-l-md p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm border-t border-r border-b border-slate-100/50">
-                    <div class="flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 ${ex.text} text-xl transform group-hover:-rotate-6 transition-transform">
+                <div class="flex-1 w-full ${bgClass} border-l-4 ${borderClass} rounded-r-2xl rounded-l-md p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm border-t border-r border-b ${isNext ? 'border-red-200/50 shadow-red-500/10' : 'border-slate-100/50'} relative overflow-hidden">
+                    ${isCompleted ? '<div class="absolute -right-4 top-1/2 transform -translate-y-1/2 text-8xl text-slate-900/[0.03] font-black -rotate-12 pointer-events-none z-0"><i class="fas fa-stamp"></i></div>' : ''}
+                    
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="h-12 w-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-slate-100 ${textClass} text-xl transform ${!isCompleted ? 'group-hover:-rotate-6 transition-transform' : ''}">
                             <i class="fas ${ex.icon}"></i>
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="md:hidden text-[10px] font-black text-slate-500 uppercase">${ex.d}</span>
-                                <span class="text-[10px] font-mono text-slate-600 font-bold bg-white/60 px-2 py-0.5 rounded-md shadow-sm border border-slate-200"><i class="far fa-clock text-[9px]"></i> ${ex.t}</span>
+                                <span class="text-[10px] font-mono text-slate-500 font-bold bg-white/60 px-2 py-0.5 rounded-md shadow-sm border border-slate-200"><i class="far fa-clock text-[9px]"></i> ${ex.t}</span>
                             </div>
-                            <h4 class="font-black text-xl text-slate-800 leading-none mb-1 tracking-tight">${ex.c}</h4>
-                            <p class="text-xs font-bold ${ex.text}">${ex.title}</p>
+                            <h4 class="font-black text-xl ${courseClass} leading-none mb-1 tracking-tight ${isCompleted ? 'line-through decoration-slate-300 decoration-2' : ''}">${ex.c}</h4>
+                            <p class="text-xs font-bold ${textClass} ${isCompleted ? 'line-through decoration-slate-300' : ''}">${ex.title}</p>
                         </div>
                     </div>
                     
-                    <div class="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between gap-3 sm:gap-2">
-                        <span class="text-xs font-bold text-slate-500 flex items-center gap-1"><i class="fas fa-map-marker-alt opacity-50"></i> ${ex.v}</span>
-                        <button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-slate-900 hover:bg-slate-800 text-white text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/20 flex items-center gap-2 active:scale-95 group-hover:pr-4">
-                            Drill Now <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </button>
+                    <div class="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between gap-3 sm:gap-2 relative z-10">
+                        <span class="text-xs font-bold text-slate-400 flex items-center gap-1"><i class="fas fa-map-marker-alt opacity-50"></i> ${ex.v}</span>
+                        ${actionHtml}
                     </div>
                 </div>
             `;
             timetableContainer.appendChild(item);
         });
 
-        // Intersection Observer for Scroll Animations
         document.addEventListener("DOMContentLoaded", () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // Run once
+                        observer.unobserve(entry.target); 
                     }
                 });
             }, observerOptions);
 
-            // Select all elements with the reveal class
             document.querySelectorAll('.reveal-on-scroll').forEach((elem) => {
                 observer.observe(elem);
             });
         });
     </script>
 </body>
-</html>
+                        </html>
