@@ -2,100 +2,390 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcard Blitz | Splendid's Academy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Grand Flashcard Blitz | Splendid's Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                            success: '#10b981', /* Emerald 500 */
+                            danger: '#f43f5e'   /* Rose 500 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f0f9ff; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; 
+        }
 
-        /* FLIP CARD EFFECT */
-        .perspective { perspective: 1000px; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ambient Background Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        /* 3D FLIP CARD EFFECT */
+        .perspective { perspective: 1200px; }
         .card-inner {
-            position: relative; width: 100%; height: 100%;
-            transition: transform 0.6s; transform-style: preserve-3d;
+            position: relative; 
+            width: 100%; 
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); 
+            transform-style: preserve-3d;
+            cursor: pointer;
         }
         .flipped .card-inner { transform: rotateY(180deg); }
+        
         .card-front, .card-back {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
-            border-radius: 1.5rem; padding: 2rem; text-align: center;
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden;
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            border-radius: 1.5rem; 
+            padding: 2rem; 
+            text-align: center;
         }
-        .card-front { background: white; color: #1e293b; }
-        .card-back { background: #0ea5e9; color: white; transform: rotateY(180deg); }
+
+        .card-front { 
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-back { 
+            background: linear-gradient(135deg, #083344 0%, #164e63 100%);
+            border: 2px solid #06b6d4;
+            transform: rotateY(180deg); 
+            box-shadow: 0 0 40px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col h-screen relative">
 
-    <nav class="bg-sky-900 text-white p-4 flex justify-between items-center shadow-lg">
-        <a href="dashboard.html"><i class="fas fa-arrow-left"></i></a>
-        <h1 class="font-bold">⚡ Flashcard Blitz</h1>
-        <div class="text-xs bg-sky-700 px-2 py-1 rounded">PHS 211</div>
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[400px] h-[400px] top-[-5%] left-[-5%]"></div>
+    <div class="bg-flare bg-emerald-900 w-[500px] h-[500px] bottom-[-10%] right-[-10%]" style="animation-delay: -4s;"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav p-4 flex justify-between items-center z-10">
+        <button onclick="window.location.href='dashboard.html'" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="text-center">
+            <h1 class="font-black text-lg tracking-tight">Flashcard Blitz</h1>
+            <p class="text-[10px] text-cyan-400 font-mono tracking-widest uppercase" id="deck-title">GRAND VAULT • PHS 211, 212, 213 & ANA 213</p>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+            <i class="fas fa-bolt"></i>
+        </div>
     </nav>
 
-    <div class="flex-1 flex flex-col items-center justify-center p-6 perspective">
+    <!-- Progress Bar -->
+    <div class="w-full h-1.5 bg-slate-800 z-10">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-300 w-0"></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 perspective z-10 w-full max-w-lg mx-auto">
         
-        <div class="w-full max-w-sm h-80 cursor-pointer group" onclick="flipCard()" id="flashcard">
-            <div class="card-inner">
-                <div class="card-front border-2 border-slate-200">
-                    <div>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 block">Question</span>
-                        <h2 id="card-q" class="text-2xl font-bold">Tap to Start</h2>
-                        <p class="text-xs text-slate-300 mt-8">(Tap to flip)</p>
+        <!-- Active Flashcard -->
+        <div id="flashcard-container" class="w-full flex-1 max-h-[400px] flex flex-col items-center justify-center w-full">
+            <div class="flex justify-between w-full mb-4 px-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Cards Left: <span id="cards-left" class="text-cyan-400">0</span></span>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Mastered: <span id="cards-mastered" class="text-emerald-400">0</span></span>
+            </div>
+
+            <div class="w-full h-64 md:h-80" onclick="flipCard()" id="flashcard">
+                <div class="card-inner">
+                    <!-- Front (Question) -->
+                    <div class="card-front">
+                        <div class="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 mb-6 shadow-inner">
+                            <i class="fas fa-question text-xl"></i>
+                        </div>
+                        <h2 id="card-q" class="text-xl md:text-2xl font-bold leading-snug text-white">Initializing Deck...</h2>
+                        <span id="card-tag" class="absolute top-4 right-4 text-[9px] font-mono bg-slate-800 px-2 py-1 rounded border border-slate-700 text-cyan-400">COURSE</span>
+                        <p class="text-[10px] font-mono text-cyan-500 mt-8 uppercase tracking-widest animate-pulse border border-cyan-500/30 px-3 py-1 rounded-full bg-cyan-500/10">Tap to Reveal Answer</p>
                     </div>
-                </div>
-                <div class="card-back border-2 border-sky-600">
-                    <div>
-                        <span class="text-xs font-bold text-sky-200 uppercase tracking-widest mb-4 block">Answer</span>
-                        <h2 id="card-a" class="text-2xl font-bold">Loading...</h2>
+                    
+                    <!-- Back (Answer) -->
+                    <div class="card-back">
+                        <div class="w-12 h-12 rounded-full bg-cyan-900/50 border border-cyan-400 flex items-center justify-center text-cyan-300 mb-4 shadow-[0_0_10px_rgba(6,182,212,0.5)]">
+                            <i class="fas fa-lightbulb text-xl"></i>
+                        </div>
+                        <h2 id="card-a" class="text-xl md:text-2xl font-black text-white leading-tight">...</h2>
                     </div>
                 </div>
             </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex w-full gap-4">
+                <button onclick="markForgot()" id="btn-forgot" class="action-btn flex-1 bg-slate-900 border border-rose-500/50 text-rose-400 py-4 rounded-2xl font-bold hover:bg-rose-600 hover:text-white shadow-lg flex items-center justify-center gap-2 opacity-50 pointer-events-none transition-all">
+                    <i class="fas fa-times-circle text-lg"></i> Forgot
+                </button>
+                <button onclick="markGotIt()" id="btn-gotit" class="action-btn flex-1 bg-slate-900 border border-emerald-500/50 text-emerald-400 py-4 rounded-2xl font-bold hover:bg-emerald-600 hover:text-white shadow-lg flex items-center justify-center gap-2 opacity-50 pointer-events-none transition-all">
+                    <i class="fas fa-check-circle text-lg"></i> Got It
+                </button>
+            </div>
         </div>
 
-        <div class="mt-8 flex gap-4">
-            <button onclick="nextCard()" class="bg-red-100 text-red-600 px-6 py-3 rounded-xl font-bold hover:bg-red-200 transition"><i class="fas fa-times"></i> Forgot</button>
-            <button onclick="nextCard()" class="bg-green-100 text-green-600 px-6 py-3 rounded-xl font-bold hover:bg-green-200 transition"><i class="fas fa-check"></i> Got it</button>
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="hidden w-full text-center fade-in bg-slate-900/80 backdrop-blur-xl border border-emerald-500/30 p-8 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.2)]">
+            <div class="text-7xl mb-6 text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="text-3xl font-black text-white mb-2">Grand Deck Mastered!</h2>
+            <p class="text-slate-400 mb-8 font-medium">You have successfully committed all concepts to memory. Distinction standard achieved.</p>
+            
+            <div class="flex flex-col gap-3">
+                <button onclick="initializeDeck()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-4 rounded-xl font-bold hover:scale-[1.02] transition-transform shadow-lg">
+                    <i class="fas fa-redo mr-2"></i> Restart Blitz
+                </button>
+                <button onclick="window.location.href='dashboard.html'" class="w-full bg-slate-800 border border-slate-700 text-slate-300 py-4 rounded-xl font-bold hover:bg-slate-700 transition-colors">
+                    <i class="fas fa-home mr-2"></i> Return to Command Center
+                </button>
+            </div>
         </div>
-        
+
     </div>
 
     <script>
-        const deck = [
-            { q: "Resting Membrane Potential of a neuron?", a: "-70 mV" },
-            { q: "Primary ion OUTSIDE the cell?", a: "Sodium (Na+)" },
-            { q: "Primary ion INSIDE the cell?", a: "Potassium (K+)" },
-            { q: "What is Active Transport?", a: "Movement against gradient requiring ATP" },
-            { q: "Life span of a RBC?", a: "120 Days" },
-            { q: "Where are RBCs destroyed?", a: "Spleen" },
-            { q: "Volume of blood in adult male?", a: "5 - 6 Liters" }
+        // --- MASSIVE DISTINCTION DECK (PHS 211, PHS 212, PHS 213, ANA 213) ---
+        const masterDeck = [
+            // PHS 211: Hematology & Intro
+            { course: "PHS 211", q: "What is the Resting Membrane Potential of a typical large nerve fiber?", a: "-90 mV" },
+            { course: "PHS 211", q: "Which primary cation is heavily concentrated OUTSIDE the cell?", a: "Sodium (Na+)" },
+            { course: "PHS 211", q: "Which primary cation is heavily concentrated INSIDE the cell?", a: "Potassium (K+)" },
+            { course: "PHS 211", q: "Where are senescent (old) RBCs primarily destroyed?", a: "The Spleen (Reticuloendothelial System)" },
+            { course: "PHS 211", q: "Which specific blood group is the universal donor for packed red cells?", a: "Group O Negative" },
+            { course: "PHS 211", q: "Which leukocyte acts as the 'first responder' to acute bacterial infections?", a: "Neutrophils" },
+            { course: "PHS 211", q: "Which hormone, produced by the kidneys in response to hypoxia, stimulates RBC production?", a: "Erythropoietin (EPO)" },
+            { course: "PHS 211", q: "Which plasma protein is primarily responsible for maintaining Blood Colloid Osmotic Pressure?", a: "Albumin" },
+            { course: "PHS 211", q: "What is the specific function of the enzyme Carbonic Anhydrase in RBCs?", a: "Rapidly converts CO2 into soluble Bicarbonate ions." },
+            { course: "PHS 211", q: "Which immunoglobulin is a massive pentamer and the first to respond in a primary infection?", a: "IgM" },
+            { course: "PHS 211", q: "Which immunoglobulin is the only one that can cross the placenta?", a: "IgG" },
+            { course: "PHS 211", q: "A 'Shift to the Left' in a WBC count indicates?", a: "An increase in immature neutrophils (Band cells), usually from acute infection." },
+            
+            // PHS 212: Excitable Tissues
+            { course: "PHS 212", q: "The rapid Depolarization phase of an Action Potential is caused by?", a: "Rapid influx of Sodium (Na+) ions" },
+            { course: "PHS 212", q: "The Repolarization phase of an Action Potential is caused by?", a: "Efflux of Potassium (K+) ions" },
+            { course: "PHS 212", q: "What is the exact stoichiometry of the Na+/K+ ATPase pump?", a: "3 Na+ OUT and 2 K+ IN (Consumes 1 ATP)" },
+            { course: "PHS 212", q: "Which cells produce the myelin sheath in the Peripheral Nervous System (PNS)?", a: "Schwann cells" },
+            { course: "PHS 212", q: "Which cells produce the myelin sheath in the Central Nervous System (CNS)?", a: "Oligodendrocytes" },
+            { course: "PHS 212", q: "What specific molecular event dictates the Absolute Refractory Period?", a: "The inactivation (closure of the ball-and-chain gate) of voltage-gated Na+ channels." },
+            { course: "PHS 212", q: "In skeletal muscle, Calcium binds to which specific protein to initiate contraction?", a: "Troponin C" },
+            { course: "PHS 212", q: "In smooth muscle, which protein acts as the calcium sensor instead of troponin?", a: "Calmodulin" },
+            { course: "PHS 212", q: "What is the pathophysiology of Myasthenia Gravis?", a: "Autoantibodies destroy post-synaptic Nicotinic Acetylcholine receptors at the NMJ." },
+            { course: "PHS 212", q: "How does Botulinum toxin (Botox) cause flaccid paralysis?", a: "It cleaves SNARE proteins, completely blocking the exocytosis/release of Acetylcholine." },
+            { course: "PHS 212", q: "What causes the 'Hyperpolarization' (undershoot) phase of an action potential?", a: "Voltage-gated K+ channels are slow to close, allowing too much K+ to leak out." },
+            { course: "PHS 212", q: "How do local anesthetics like Lidocaine prevent pain?", a: "They block voltage-gated Na+ channels, stopping action potential generation." },
+
+            // PHS 213: Cell Physiology & Pathology
+            { course: "PHS 213", q: "Cystic Fibrosis is caused by a mutation in the CFTR protein. What is CFTR?", a: "An ATP-binding cassette (ABC) transporter that functions as a Chloride (Cl-) channel." },
+            { course: "PHS 213", q: "What is the mechanism of action of Cardiac Glycosides (like Digoxin)?", a: "They inhibit the Na+/K+ ATPase, which indirectly increases intracellular Calcium, strengthening heart contractions." },
+            { course: "PHS 213", q: "Which GLUT transporter is strictly insulin-dependent and found in muscle/fat?", a: "GLUT4" },
+            { course: "PHS 213", q: "Which GLUT transporter has high affinity and acts as the 'Brain Feeder'?", a: "GLUT3" },
+            { course: "PHS 213", q: "Which GLUT transporter acts as a 'Glucose Sensor' in the Liver and Pancreas?", a: "GLUT2" },
+            { course: "PHS 213", q: "How does SGLT1 move glucose against its concentration gradient in the gut?", a: "Secondary Active Symport (It uses the downward gradient of Na+ to drag glucose in)." },
+            { course: "PHS 213", q: "What acts as the 'Universal Fire Alarm' signaling severe cell membrane damage?", a: "Massive localized influx of Calcium (Ca2+) ions." },
+            { course: "PHS 213", q: "Describe the 'Patch' mechanism of cell membrane repair.", a: "Intracellular vesicles/lysosomes migrate to the tear and fuse with the membrane to patch the hole." },
+            { course: "PHS 213", q: "What is the primary clinical biomarker used to measure Lipid Peroxidation damage?", a: "MDA (Malondialdehyde)" },
+            { course: "PHS 213", q: "How does Cholera toxin cause massive secretory diarrhea?", a: "It permanently activates Adenylyl Cyclase, causing a massive increase in cAMP which forces Cl- (and water) out of the cell." },
+            { course: "PHS 213", q: "According to the Ion Channel Hypothesis of Alzheimer's, Amyloid-Beta forms what in the membrane?", a: "Non-specific pores that allow unregulated, toxic Calcium influx into neurons." },
+
+            // ANA 213: Embryology
+            { course: "ANA 213", q: "In which specific segment of the uterine tube does fertilization most commonly occur?", a: "The Ampulla" },
+            { course: "ANA 213", q: "On approximately what day post-fertilization does implantation of the blastocyst begin?", a: "Day 6" },
+            { course: "ANA 213", q: "The Central Nervous System (Brain and Spinal Cord) is derived from which primary germ layer?", a: "Ectoderm" },
+            { course: "ANA 213", q: "The skeletal, muscular, and cardiovascular systems are derived from which germ layer?", a: "Mesoderm" },
+            { course: "ANA 213", q: "Which embryological structure acts as the primary inducer for the formation of the Neural Plate?", a: "The Notochord" },
+            { course: "ANA 213", q: "Failure of the cranial (anterior) neuropore to close results in which fatal defect?", a: "Anencephaly" },
+            { course: "ANA 213", q: "Failure of the caudal (posterior) neuropore to close results in which defect?", a: "Spina Bifida" },
+            { course: "ANA 213", q: "Which infamous teratogenic drug from the 1950s caused severe limb defects (Amelia/Phocomelia)?", a: "Thalidomide" },
+            { course: "ANA 213", q: "Which extra-embryonic membrane serves as the first site of haemopoiesis (blood formation)?", a: "The Yolk Sac" },
+            { course: "ANA 213", q: "In fetal circulation, the Ductus Venosus shunts highly oxygenated blood from the umbilical vein directly into the:", a: "Inferior Vena Cava (IVC), bypassing the liver." },
+            { course: "ANA 213", q: "In fetal circulation, the Foramen Ovale allows blood to shunt directly from the:", a: "Right Atrium to the Left Atrium (bypassing the lungs)." },
+            { course: "ANA 213", q: "Which Pharyngeal Arch gives rise to the muscles of mastication and the trigeminal nerve (CN V)?", a: "The First Pharyngeal Arch (Mandibular Arch)" },
+            { course: "ANA 213", q: "What is the postnatal anatomical remnant of the Ductus Arteriosus?", a: "Ligamentum Arteriosum" }
         ];
 
-        let index = 0;
+        let activeDeck = [];
+        let currentIndex = 0;
+        let totalCards = 0;
+        let isFlipped = false;
+
+        const flashcardEl = document.getElementById('flashcard');
+        const qEl = document.getElementById('card-q');
+        const aEl = document.getElementById('card-a');
+        const tagEl = document.getElementById('card-tag');
+        const btnForgot = document.getElementById('btn-forgot');
+        const btnGotIt = document.getElementById('btn-gotit');
+        const progressEl = document.getElementById('progress-bar');
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function initializeDeck() {
+            // Load and shuffle the massive master deck
+            activeDeck = shuffle([...masterDeck]);
+            totalCards = activeDeck.length;
+            currentIndex = 0;
+            isFlipped = false;
+
+            // Reset UI
+            document.getElementById('completion-screen').classList.add('hidden');
+            document.getElementById('flashcard-container').classList.remove('hidden');
+            flashcardEl.classList.remove('flipped');
+            
+            updateUI();
+            renderCard();
+        }
 
         function flipCard() {
-            document.getElementById('flashcard').classList.toggle('flipped');
-        }
-
-        function nextCard() {
-            // Reset Flip
-            document.getElementById('flashcard').classList.remove('flipped');
+            isFlipped = !isFlipped;
+            flashcardEl.classList.toggle('flipped');
             
-            // Wait for flip back, then change text
-            setTimeout(() => {
-                index = (index + 1) % deck.length; // Loop forever
-                document.getElementById('card-q').textContent = deck[index].q;
-                document.getElementById('card-a').textContent = deck[index].a;
-            }, 300);
+            // Enable action buttons only when the answer is revealed
+            if (isFlipped) {
+                btnForgot.classList.remove('opacity-50', 'pointer-events-none');
+                btnGotIt.classList.remove('opacity-50', 'pointer-events-none');
+            } else {
+                btnForgot.classList.add('opacity-50', 'pointer-events-none');
+                btnGotIt.classList.add('opacity-50', 'pointer-events-none');
+            }
         }
 
-        // Init
-        window.onload = () => {
-            document.getElementById('card-q').textContent = deck[0].q;
-            document.getElementById('card-a').textContent = deck[0].a;
-        };
+        function renderCard() {
+            if (activeDeck.length === 0) {
+                showCompletion();
+                return;
+            }
+
+            const currentCard = activeDeck[currentIndex];
+            
+            // Wait for flip animation to finish before changing text if it was flipped
+            if (isFlipped) {
+                flashcardEl.classList.remove('flipped');
+                isFlipped = false;
+                
+                // Disable buttons again
+                btnForgot.classList.add('opacity-50', 'pointer-events-none');
+                btnGotIt.classList.add('opacity-50', 'pointer-events-none');
+
+                setTimeout(() => {
+                    qEl.textContent = currentCard.q;
+                    aEl.textContent = currentCard.a;
+                    tagEl.textContent = currentCard.course;
+                }, 300); // Matches CSS transition duration
+            } else {
+                qEl.textContent = currentCard.q;
+                aEl.textContent = currentCard.a;
+                tagEl.textContent = currentCard.course;
+            }
+        }
+
+        function markForgot() {
+            if (!isFlipped) return;
+            // Move the current card to the back of the deck to review again (SRS Principle)
+            const card = activeDeck.splice(currentIndex, 1)[0];
+            activeDeck.push(card);
+            
+            if (currentIndex >= activeDeck.length) {
+                currentIndex = 0;
+            }
+            renderCard();
+        }
+
+        function markGotIt() {
+            if (!isFlipped) return;
+            // Remove the card from the active deck completely
+            activeDeck.splice(currentIndex, 1);
+            
+            if (currentIndex >= activeDeck.length) {
+                currentIndex = 0;
+            }
+            
+            updateUI();
+            renderCard();
+        }
+
+        function updateUI() {
+            const mastered = totalCards - activeDeck.length;
+            document.getElementById('cards-left').textContent = activeDeck.length;
+            document.getElementById('cards-mastered').textContent = mastered;
+            
+            const pct = (mastered / totalCards) * 100;
+            progressEl.style.width = `${pct}%`;
+        }
+
+        function showCompletion() {
+            document.getElementById('flashcard-container').classList.add('hidden');
+            document.getElementById('completion-screen').classList.remove('hidden');
+        }
+
+        // Boot the system
+        window.onload = initializeDeck;
+
     </script>
 </body>
 </html>
