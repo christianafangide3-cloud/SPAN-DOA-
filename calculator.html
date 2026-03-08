@@ -91,30 +91,80 @@
         };
 
         function addCourseRow() {
-            const container = document.getElementById('course-list');
-            const div = document.createElement('div');
-            div.className = "flex gap-2 items-center";
-            div.innerHTML = `
-                <input type="text" placeholder="Course (e.g. PHS 211)" class="flex-1 p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm font-bold text-slate-700 outline-sky-500">
-                <select class="w-24 p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm font-bold text-slate-700 outline-sky-500 course-unit">
-                    <option value="3">3 Units</option>
-                    <option value="2">2 Units</option>
-                    <option value="1">1 Unit</option>
-                    <option value="4">4 Units</option>
-                </select>
-            `;
-            container.appendChild(div);
+    const container = document.getElementById('course-list');
+
+    const div = document.createElement('div');
+    div.className = "grid grid-cols-3 gap-2";
+
+    div.innerHTML = `
+        <input type="text"
+        placeholder="Course Code"
+        class="p-3 bg-slate-50 rounded-lg border text-sm">
+
+        <select class="course-unit p-3 bg-slate-50 rounded-lg border">
+            <option value="1">1 Unit</option>
+            <option value="2">2 Units</option>
+            <option value="3">3 Units</option>
+            <option value="4">4 Units</option>
+        </select>
+
+        <select class="course-grade p-3 bg-slate-50 rounded-lg border">
+            <option value="5">A</option>
+            <option value="4">B</option>
+            <option value="3">C</option>
+            <option value="2">D</option>
+            <option value="1">E</option>
+            <option value="0">F</option>
+        </select>
+    `;
+
+    container.appendChild(div);
         }
 
         function calculateFate() {
-            const currentCGPA = parseFloat(document.getElementById('current-cgpa').value) || 0;
-            const unitsCovered = parseFloat(document.getElementById('units-covered').value) || 0;
-            const targetCGPA = parseFloat(document.getElementById('target-cgpa').value);
 
-            if (!targetCGPA) {
-                alert("Please enter a Target CGPA!");
-                return;
-            }
+    const currentCGPA = parseFloat(document.getElementById('current-cgpa').value) || 0;
+    const unitsCovered = parseFloat(document.getElementById('units-covered').value) || 0;
+
+    const units = document.querySelectorAll('.course-unit');
+    const grades = document.querySelectorAll('.course-grade');
+
+    let totalUnits = 0;
+    let totalPoints = 0;
+
+    for (let i = 0; i < units.length; i++) {
+
+        const unit = parseInt(units[i].value);
+        const grade = parseInt(grades[i].value);
+
+        totalUnits += unit;
+        totalPoints += unit * grade;
+
+    }
+
+    const semesterGPA = totalPoints / totalUnits;
+
+    const previousPoints = currentCGPA * unitsCovered;
+
+    const newCGPA = (previousPoints + totalPoints) / (unitsCovered + totalUnits);
+
+    document.getElementById("prediction-text").innerHTML = `
+        <div class="space-y-2">
+
+        <div class="text-lg font-bold">
+        Semester GPA: ${semesterGPA.toFixed(2)}
+        </div>
+
+        <div class="text-3xl font-extrabold text-sky-600">
+        New CGPA: ${newCGPA.toFixed(2)}
+        </div>
+
+        </div>
+    `;
+
+    document.getElementById("result-box").classList.remove("hidden");
+
+        }
 
             // Get current semester units
             const unitInputs = document.querySelectorAll('.course-unit');
