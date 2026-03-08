@@ -425,14 +425,14 @@
 
             let badgeHtml = isNext ? `<div class="absolute -top-3 -right-2 bg-red-600 text-white text-[9px] font-black px-3 py-1 rounded-lg uppercase tracking-widest shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-pulse z-20 border border-red-400">NEXT TARGET</div>` : '';
 
-            // ALL ACTIVE BUTTONS NOW ROUTE FLAWLESSLY TO SIMULATOR.HTML
+            // RESTORED ORIGINAL CBT ROUTING
             let actionHtml = '';
             if (isCompleted) {
                 actionHtml = `<div class="bg-emerald-900/30 text-emerald-400 text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl border border-emerald-500/20 flex items-center gap-2"><i class="fas fa-check-double"></i> Cleared</div>`;
             } else if (isNext) {
-                actionHtml = `<button onclick="window.location.href='simulator.html'" class="bg-red-600 hover:bg-red-500 text-white text-[10px] uppercase tracking-widest font-black px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center gap-2 active:scale-95 group-hover:pr-4">Simulate <i class="fas fa-crosshairs"></i></button>`;
+                actionHtml = `<button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-red-600 hover:bg-red-500 text-white text-[10px] uppercase tracking-widest font-black px-6 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center gap-2 active:scale-95 group-hover:pr-4">Attack <i class="fas fa-crosshairs"></i></button>`;
             } else {
-                actionHtml = `<button onclick="window.location.href='simulator.html'" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] uppercase tracking-widest font-black px-6 py-3 rounded-xl transition-all shadow-lg border border-slate-700 flex items-center gap-2 active:scale-95 group-hover:border-cyan-500/50">Enter Vault <i class="fas fa-arrow-right"></i></button>`;
+                actionHtml = `<button onclick="window.location.href='cbt.html?course=${encodeURIComponent(ex.c)}'" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] uppercase tracking-widest font-black px-6 py-3 rounded-xl transition-all shadow-lg border border-slate-700 flex items-center gap-2 active:scale-95 group-hover:border-cyan-500/50">Drill Now <i class="fas fa-arrow-right"></i></button>`;
             }
 
             let borderGlow = isNext ? "border-red-500/50 shadow-[inset_4px_0_0_rgba(239,68,68,1)]" : `border-l-4 border-${ex.color}-500 border-t border-r border-b border-slate-700/50`;
@@ -487,4 +487,4 @@
         });
     </script>
 </body>
-</html>
+                    </html>
