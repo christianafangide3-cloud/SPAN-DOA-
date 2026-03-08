@@ -83,14 +83,18 @@
     </div>
 
     <script>
-        // Initial setup
-        window.onload = function() {
-            addCourseRow(); // Add first row
-            addCourseRow(); // Add second row
-            addCourseRow(); // Add third row
-        };
 
-        function addCourseRow() {
+// INITIAL SETUP
+window.onload = function () {
+    addCourseRow();
+    addCourseRow();
+    addCourseRow();
+};
+
+
+// ADD COURSE ROW
+function addCourseRow() {
+
     const container = document.getElementById('course-list');
 
     const div = document.createElement('div');
@@ -119,100 +123,105 @@
     `;
 
     container.appendChild(div);
-        }
+}
 
-        function calculateFate() {
+
+
+// MAIN CALCULATOR
+function calculateFate() {
 
     const currentCGPA = parseFloat(document.getElementById('current-cgpa').value) || 0;
     const unitsCovered = parseFloat(document.getElementById('units-covered').value) || 0;
+    const targetCGPA = parseFloat(document.getElementById('target-cgpa').value) || 0;
 
-    const units = document.querySelectorAll('.course-unit');
-    const grades = document.querySelectorAll('.course-grade');
+    const unitInputs = document.querySelectorAll('.course-unit');
+    const gradeInputs = document.querySelectorAll('.course-grade');
 
-    let totalUnits = 0;
-    let totalPoints = 0;
+    let semesterUnits = 0;
+    let semesterPoints = 0;
 
-    for (let i = 0; i < units.length; i++) {
+    // CALCULATE SEMESTER GPA
+    for (let i = 0; i < unitInputs.length; i++) {
 
-        const unit = parseInt(units[i].value);
-        const grade = parseInt(grades[i].value);
+        const unit = parseInt(unitInputs[i].value);
+        const grade = parseInt(gradeInputs[i].value);
 
-        totalUnits += unit;
-        totalPoints += unit * grade;
+        semesterUnits += unit;
+        semesterPoints += unit * grade;
 
     }
 
-    const semesterGPA = totalPoints / totalUnits;
+    const semesterGPA = semesterPoints / semesterUnits;
 
+    // CALCULATE NEW CGPA
     const previousPoints = currentCGPA * unitsCovered;
+    const newCGPA = (previousPoints + semesterPoints) / (unitsCovered + semesterUnits);
 
-    const newCGPA = (previousPoints + totalPoints) / (unitsCovered + totalUnits);
+    // FORECAST TARGET
+    let forecastMessage = "";
 
-    document.getElementById("prediction-text").innerHTML = `
-        <div class="space-y-2">
+    if (targetCGPA > 0) {
 
-        <div class="text-lg font-bold">
-        Semester GPA: ${semesterGPA.toFixed(2)}
+        const totalUnits = unitsCovered + semesterUnits;
+        const requiredTotalPoints = targetCGPA * totalUnits;
+        const pointsNeeded = requiredTotalPoints - previousPoints;
+        const requiredGPA = pointsNeeded / semesterUnits;
+
+        if (requiredGPA > 5.0) {
+
+            forecastMessage = `
+            <div class="text-red-600 font-bold mt-4">
+            Impossible target. You would need GPA ${requiredGPA.toFixed(2)}
+            </div>
+            `;
+
+        } else if (requiredGPA <= 0) {
+
+            forecastMessage = `
+            <div class="text-green-600 font-bold mt-4">
+            Target already secured. Just pass your courses.
+            </div>
+            `;
+
+        } else {
+
+            forecastMessage = `
+            <div class="text-sky-700 font-bold mt-4">
+            To reach ${targetCGPA}, you need GPA ${requiredGPA.toFixed(2)} this semester
+            </div>
+            `;
+
+        }
+    }
+
+
+    // DISPLAY RESULTS
+    const resultText = document.getElementById("prediction-text");
+
+    resultText.innerHTML = `
+
+        <div class="space-y-4">
+
+            <div>
+            <div class="text-sm text-slate-500">Semester GPA</div>
+            <div class="text-3xl font-bold">${semesterGPA.toFixed(2)}</div>
+            </div>
+
+            <div>
+            <div class="text-sm text-slate-500">Projected CGPA</div>
+            <div class="text-4xl font-extrabold text-sky-600">${newCGPA.toFixed(2)}</div>
+            </div>
+
+            ${forecastMessage}
+
         </div>
 
-        <div class="text-3xl font-extrabold text-sky-600">
-        New CGPA: ${newCGPA.toFixed(2)}
-        </div>
-
-        </div>
     `;
 
     document.getElementById("result-box").classList.remove("hidden");
 
-        }
+}
 
-            // Get current semester units
-            const unitInputs = document.querySelectorAll('.course-unit');
-            let semesterUnits = 0;
-            unitInputs.forEach(input => semesterUnits += parseInt(input.value));
-
-            // MATH LOGIC:
-            // (CurrentPoints + RequiredPoints) / (TotalUnits) = TargetCGPA
-            // CurrentPoints = CurrentCGPA * UnitsCovered
-            // TotalUnits = UnitsCovered + SemesterUnits
-            
-            const currentPoints = currentCGPA * unitsCovered;
-            const totalUnits = unitsCovered + semesterUnits;
-            const requiredTotalPoints = targetCGPA * totalUnits;
-            const pointsNeeded = requiredTotalPoints - currentPoints;
-            const requiredGPA = pointsNeeded / semesterUnits;
-
-            const resultBox = document.getElementById('result-box');
-            const resultText = document.getElementById('prediction-text');
-            resultBox.classList.remove('hidden');
-
-            if (requiredGPA > 5.0) {
-                resultText.innerHTML = `
-                    <span class="text-red-600 font-bold text-lg">IMPOSSIBLE MISSION 🚫</span><br>
-                    To hit ${targetCGPA}, you would need a GPA of <strong class="text-red-600">${requiredGPA.toFixed(2)}</strong> this semester.<br>
-                    Even 5.0 is not enough. Try lowering your target slightly or taking more units.
-                `;
-            } else if (requiredGPA <= 0) {
-                 resultText.innerHTML = `
-                    <span class="text-emerald-600 font-bold text-lg">ALREADY SECURED ✅</span><br>
-                    You have already banked enough points! Just pass your courses, and you will exceed ${targetCGPA}.
-                `;
-            } else {
-                resultText.innerHTML = `
-                    To reach <strong class="text-sky-700">${targetCGPA}</strong>, you need a GPA of:<br>
-                    <span class="text-4xl font-extrabold text-sky-600 block my-3">${requiredGPA.toFixed(2)}</span>
-                    <span class="text-xs uppercase font-bold text-slate-400">This Semester</span><br><br>
-                    Strategy: You need mostly <strong>${getGrade(requiredGPA)}'s</strong> to make this happen.
-                `;
-            }
-        }
-
-        function getGrade(gpa) {
-            if(gpa >= 4.5) return "A";
-            if(gpa >= 3.5) return "B";
-            if(gpa >= 2.5) return "C";
-            return "Miracle";
-        }
     </script>
 </body>
 </html>
