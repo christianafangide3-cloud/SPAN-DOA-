@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -105,7 +106,7 @@
         
         <div class="flex items-center gap-4">
             <div class="hidden md:flex flex-col items-end">
-                <p id="user-name-display" class="text-xs font-bold text-white">Director</p>
+                <p id="user-name-display" class="text-xs font-bold text-white">Student</p>
                 <p class="text-[10px] text-cyan-400 font-black uppercase tracking-widest flex items-center gap-1">
                     <span class="relative flex h-2 w-2">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -114,8 +115,8 @@
                     System Active
                 </p>
             </div>
-            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-white font-bold border border-cyan-400/30 shadow-lg cursor-pointer hover:scale-105 transition-transform">
-                <i class="fas fa-user-shield text-sm"></i>
+            <div onclick="window.location.href='profile.html'" class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-white font-bold border border-cyan-400/30 shadow-lg cursor-pointer hover:scale-105 transition-transform">
+                <i class="fas fa-user text-sm"></i>
             </div>
         </div>
     </nav>
@@ -128,30 +129,44 @@
         <div class="p-6 border-b border-slate-800 flex justify-between items-center">
             <div>
                 <h2 class="font-black text-xl text-white tracking-tight">Command Menu</h2>
-                <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Navigation</p>
+                <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">GitHub Root Navigation</p>
             </div>
             <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white transition-colors p-2"><i class="fas fa-times text-xl"></i></button>
         </div>
 
         <nav class="flex-1 overflow-y-auto p-4 space-y-2 pb-20 custom-scrollbar">
             <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl text-white font-bold shadow-lg shadow-cyan-900/30 transform transition-transform active:scale-95">
-                <i class="fas fa-crosshairs w-6"></i> Command Center
+                <i class="fas fa-home w-6"></i> Home Dashboard
             </a>
             
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Academics</p>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Academic Resources</p>
+            <a href="outline.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-list-ul w-6 text-indigo-400"></i> Course Outlines
+            </a>
+            <a href="notes.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-book-open w-6 text-emerald-400"></i> Core Lecture Notes
+            </a>
+            <a href="clinical.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases
+            </a>
+
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Testing & Evaluation</p>
             <a href="simulator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all group">
                 <i class="fas fa-laptop-code w-6 text-cyan-400 group-hover:animate-pulse"></i> The Exam Vault
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-800 hover:text-slate-300 rounded-xl transition-all cursor-not-allowed">
-                <i class="fas fa-book-open w-6"></i> Core Notes <span class="text-[8px] bg-slate-800 border border-slate-700 px-2 py-0.5 rounded ml-auto">LOCKED</span>
+            <a href="flashcards.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-bolt w-6 text-yellow-400"></i> Flashcards
             </a>
 
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Tools & Rank</p>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
-                <i class="fas fa-bolt w-6 text-yellow-400"></i> Flashcards
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+            <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
                 <i class="fas fa-calculator w-6 text-emerald-400"></i> GP Forecaster
+            </a>
+            <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-trophy w-6 text-orange-400"></i> Hall of Fame
+            </a>
+            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl transition-all">
+                <i class="fas fa-id-card w-6 text-pink-400"></i> Digital Profile
             </a>
         </nav>
 
@@ -164,7 +179,21 @@
 
     <main class="pt-24 px-4 pb-12 max-w-5xl mx-auto space-y-8 relative z-10">
         
-        <!-- Director's Directive Banner -->
+        <!-- Welcome Header -->
+        <div class="reveal-on-scroll bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute right-0 top-0 h-full w-2/3 bg-white/5 skew-x-12 transform origin-top-right transition-transform duration-1000 hover:skew-x-0"></div>
+            <div class="absolute -bottom-8 -right-8 text-[12rem] opacity-[0.03] transform rotate-12"><i class="fas fa-shield-alt"></i></div>
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-emerald-500/20 border border-emerald-400/30 backdrop-blur-md">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-[10px] font-black tracking-widest uppercase text-emerald-200">System Status: Optimal</span>
+                </div>
+                <h2 id="welcome-msg" class="text-4xl md:text-5xl font-black mb-3 tracking-tight">Welcome Back!</h2>
+                <p class="text-slate-300 text-sm md:text-base font-medium max-w-lg leading-relaxed">Phase 1 of Core Week is cleared. Do not break formation. Execute your study plan utilizing your custom integrated toolset.</p>
+            </div>
+        </div>
+
+        <!-- Director's Directive Banner (Targeted for PHS 212) -->
         <div class="reveal-on-scroll bg-red-950/40 border border-red-500/30 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg shadow-red-900/20">
             <div class="flex items-center gap-4">
                 <div class="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 text-xl border border-red-500/50 flex-shrink-0 animate-pulse">
@@ -172,7 +201,7 @@
                 </div>
                 <div>
                     <h3 class="text-red-400 font-black uppercase tracking-widest text-xs md:text-sm">Director's Directive</h3>
-                    <p class="text-white text-sm font-medium mt-1">"The Core Week requires 100% mastery. Do not break formation. Execute the study plan. Distinction or nothing."</p>
+                    <p class="text-white text-sm font-medium mt-1">"Execute the study plan. 100% Mastery of Excitable Tissues required. Distinction or nothing."</p>
                 </div>
             </div>
             <div class="text-center md:text-right bg-black/40 px-4 py-2 rounded-lg border border-red-500/20">
@@ -192,7 +221,7 @@
                             <i class="fas fa-server mr-1"></i> Mainframe Online
                         </span>
                         <span class="bg-slate-800 text-slate-300 text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-widest border border-slate-700">
-                            v2.0 Active
+                            CBT Assessment Protocol
                         </span>
                     </div>
                     <h2 class="text-3xl md:text-5xl font-black text-white mb-3 tracking-tighter drop-shadow-sm">The Exam Vault</h2>
@@ -203,9 +232,37 @@
                 
                 <div class="w-full md:w-auto relative z-10 mt-4 md:mt-0">
                     <button class="w-full bg-white text-slate-900 px-8 py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-slate-100 hover:scale-105 transition-all flex items-center justify-center gap-3">
-                        INITIATE CBT SIMULATOR <i class="fas fa-arrow-right"></i>
+                        INITIATE CBT <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- System Tools Grid (Restoring Original Routing) -->
+        <div class="reveal-on-scroll">
+            <h3 class="font-black text-white mb-4 flex items-center gap-2 text-xl tracking-tight">
+                <i class="fas fa-toolbox text-emerald-400"></i> Academy Toolset
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="notes.html" class="glass-card hover-card p-5 rounded-2xl flex flex-col items-center justify-center text-center gap-3 group border-b-4 border-emerald-500">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform"><i class="fas fa-book-open"></i></div>
+                    <span class="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">Lecture Notes</span>
+                </a>
+                
+                <a href="clinical.html" class="glass-card hover-card p-5 rounded-2xl flex flex-col items-center justify-center text-center gap-3 group border-b-4 border-purple-500">
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform"><i class="fas fa-microscope"></i></div>
+                    <span class="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">Clinical Cases</span>
+                </a>
+
+                <a href="calculator.html" class="glass-card hover-card p-5 rounded-2xl flex flex-col items-center justify-center text-center gap-3 group border-b-4 border-amber-500">
+                    <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform"><i class="fas fa-calculator"></i></div>
+                    <span class="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">GP Forecaster</span>
+                </a>
+
+                <a href="flashcards.html" class="glass-card hover-card p-5 rounded-2xl flex flex-col items-center justify-center text-center gap-3 group border-b-4 border-rose-500">
+                    <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform"><i class="fas fa-bolt"></i></div>
+                    <span class="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">Flashcard Blitz</span>
+                </a>
             </div>
         </div>
 
@@ -292,8 +349,15 @@
             if (user) {
                 const name = user.displayName || "Director";
                 document.getElementById('user-name-display').textContent = name;
+                document.getElementById('welcome-msg').textContent = `Welcome back, ${name.split(' ')[0]}!`;
+                loadStats();
             }
         });
+
+        function loadStats() {
+            const target = localStorage.getItem('my_target_cgpa');
+            if(target) document.getElementById('stat-target').textContent = target;
+        }
 
         window.logout = function() { signOut(auth).then(() => { window.location.href = "index.html"; }); }
     </script>
@@ -361,7 +425,7 @@
 
             let badgeHtml = isNext ? `<div class="absolute -top-3 -right-2 bg-red-600 text-white text-[9px] font-black px-3 py-1 rounded-lg uppercase tracking-widest shadow-[0_0_15px_rgba(239,68,68,0.8)] animate-pulse z-20 border border-red-400">NEXT TARGET</div>` : '';
 
-            // ALL BUTTONS ROUTE TO SIMULATOR.HTML NOW
+            // ALL ACTIVE BUTTONS NOW ROUTE FLAWLESSLY TO SIMULATOR.HTML
             let actionHtml = '';
             if (isCompleted) {
                 actionHtml = `<div class="bg-emerald-900/30 text-emerald-400 text-[10px] uppercase tracking-widest font-black px-5 py-2.5 rounded-xl border border-emerald-500/20 flex items-center gap-2"><i class="fas fa-check-double"></i> Cleared</div>`;
