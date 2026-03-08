@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VBNBLV0DSS');
+    </script>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Splendid's Academy | Pro Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                            glow: '#38bdf8',    /* Sky 400 */
+                            text: '#f8fafc',    /* Slate 50 */
+                            muted: '#94a3b8'    /* Slate 400 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Option Cards */
+        .option-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+        .option-card.selected {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: #06b6d4;
+            box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Grid Nav */
+        .nav-grid-item {
+            transition: all 0.2s;
+            cursor: pointer;
+            aspect-ratio: 1;
+        }
+        .nav-grid-item.empty { background: rgba(255,255,255,0.05); color: #94a3b8; }
+        .nav-grid-item.answered { background: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.5); }
+        .nav-grid-item.flagged { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
+        .nav-grid-item.current { ring: 2px solid #fff; transform: scale(1.1); }
+
+        /* Background Effects */
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: pulse-flare 8s infinite alternate;
+        }
+        @keyframes pulse-flare {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[500px] h-[500px] top-[-10%] left-[-10%]"></div>
+    <div class="bg-flare bg-blue-900 w-[400px] h-[400px] bottom-[-10%] right-[-10%]" style="animation-delay: -4s;"></div>
+
+    <!-- Top Navigation -->
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-br from-cyan-400 to-blue-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-bolt text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-extrabold tracking-tight">Splendid's Academy</h1>
+                <p class="text-[10px] text-cyan-400 font-mono tracking-widest uppercase" id="course-header-title">Pro Simulator v2.0</p>
+            </div>
+        </div>
+        <div id="timer-wrapper" class="hidden glass-panel px-4 py-2 rounded-lg border-cyan-500/30 flex items-center gap-2">
+            <i class="fas fa-clock text-cyan-400 animate-pulse text-sm"></i>
+            <span id="timer-display" class="font-mono font-bold text-lg text-white tracking-wider">35:00</span>
+        </div>
+    </header>
+
+    <main class="flex-grow flex p-4 md:p-6 gap-6 max-w-7xl mx-auto w-full relative">
+        
+        <!-- SIDEBAR NAV (Hidden until exam starts) -->
+        <aside id="sidebar" class="hidden w-20 md:w-72 glass-panel rounded-3xl p-4 flex-col h-[calc(100vh-120px)] sticky top-[100px] shrink-0">
+            <div class="hidden md:block mb-4 pb-4 border-b border-white/10">
+                <h3 class="font-bold text-cyan-400 tracking-wide uppercase text-sm"><i class="fas fa-th-large mr-2"></i> Navigator</h3>
+                <div class="flex gap-3 text-[10px] mt-3 font-mono">
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-slate-600"></div> Empty</span>
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-cyan-500"></div> Done</span>
+                    <span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-amber-500"></div> Flag</span>
+                </div>
+            </div>
+            <div id="question-grid" class="grid grid-cols-1 md:grid-cols-5 gap-2 overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Grid injected via JS -->
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col w-full min-w-0">
+            
+            <!-- 1. AUTH SCREEN -->
+            <div id="auth-screen" class="glass-panel rounded-3xl p-10 max-w-md w-full mx-auto mt-10 md:mt-20 fade-in text-center">
+                <div class="w-24 h-24 mx-auto bg-slate-800 rounded-full flex items-center justify-center border border-slate-700 mb-6 shadow-2xl">
+                    <i class="fas fa-fingerprint text-4xl text-cyan-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">Director Authorization</h2>
+                <p class="text-slate-400 text-sm mb-8">Enter access code to initialize portal.</p>
+                <input type="password" id="auth-input" placeholder="ACCESS CODE" class="w-full bg-slate-900 border border-slate-700 text-white px-6 py-4 rounded-xl text-center text-xl tracking-[0.3em] font-mono focus:outline-none focus:border-cyan-400 transition-colors mb-6">
+                <button onclick="authenticate()" class="btn-glow w-full py-4 rounded-xl text-white font-bold uppercase tracking-widest">Authenticate</button>
+                <p id="auth-error" class="text-red-400 text-sm mt-4 font-mono hidden"><i class="fas fa-exclamation-triangle mr-1"></i> Access Denied</p>
+                <p class="text-[10px] text-slate-500 mt-4 font-mono">Use 'AAT' to bypass</p>
+            </div>
+
+            <!-- 2. DASHBOARD / COURSE SELECTION -->
+            <div id="dashboard-screen" class="hidden fade-in w-full max-w-4xl mx-auto mt-6">
+                <div class="mb-10 text-center md:text-left">
+                    <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 inline-block">Secure Connection Established</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter mb-4">Select Target Module</h2>
+                    <p class="text-slate-400">The engine is primed. Select a course below to load the Distinction-level questions.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Course Cards -->
+                    <button onclick="launchCourse('PHS212')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl border border-blue-500/30"><i class="fas fa-bolt"></i></div>
+                            <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">PHS 212</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Excitable Tissues</p>
+                    </button>
+
+                    <button onclick="launchCourse('PHS213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl border border-purple-500/30"><i class="fas fa-microscope"></i></div>
+                            <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">PHS 213</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Cell Physiology</p>
+                    </button>
+
+                    <button onclick="launchCourse('PHS214')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl border border-emerald-500/30"><i class="fas fa-vial"></i></div>
+                            <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">PHS 214</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Laboratory Physiology</p>
+                    </button>
+
+                    <button onclick="launchCourse('GST211')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl border border-amber-500/30"><i class="fas fa-book-open"></i></div>
+                            <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">GST 211</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Philosophy & Logic</p>
+                    </button>
+
+                    <button onclick="launchCourse('ANA213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl border border-rose-500/30"><i class="fas fa-baby"></i></div>
+                            <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1">ANA 213</h3>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Embryology</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. EXAM INTERFACE -->
+            <div id="exam-screen" class="hidden fade-in flex-1 flex flex-col">
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-800 rounded-full h-1.5 mb-6 overflow-hidden">
+                    <div id="progress-bar" class="bg-cyan-400 h-full transition-all duration-300 ease-out" style="width: 0%"></div>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-6 md:p-10 flex-1 flex flex-col">
+                    <div class="flex justify-between items-center mb-8">
+                        <span id="question-counter" class="text-cyan-400 font-mono font-bold bg-cyan-900/30 px-4 py-1.5 rounded-lg border border-cyan-500/20">Q: 1/50</span>
+                        <button onclick="toggleFlag()" id="flag-btn" class="px-4 py-1.5 rounded-lg border border-slate-600 text-slate-400 hover:text-amber-400 hover:border-amber-400 transition-colors text-sm font-bold flex items-center gap-2">
+                            <i class="fas fa-flag"></i> Flag
+                        </button>
+                    </div>
+
+                    <h3 id="question-text" class="text-xl md:text-2xl font-semibold leading-relaxed mb-8">Loading question...</h3>
+
+                    <div id="options-container" class="space-y-3 mb-8 flex-1">
+                        <!-- Options injected here -->
+                    </div>
+
+                    <div class="flex justify-between items-center pt-6 border-t border-white/5 mt-auto">
+                        <button onclick="nav(-1)" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors border border-slate-700"><i class="fas fa-arrow-left mr-2"></i> Prev</button>
+                        <button onclick="submitExam()" id="submit-btn" class="hidden px-8 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-colors shadow-lg shadow-rose-900/20">Finish Exam <i class="fas fa-check-double ml-2"></i></button>
+                        <button onclick="nav(1)" id="next-btn" class="btn-glow px-8 py-3 rounded-xl text-white font-bold transition-colors">Next <i class="fas fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. RESULT SCREEN -->
+            <div id="result-screen" class="hidden fade-in w-full max-w-3xl mx-auto mt-6">
+                <div class="glass-panel rounded-3xl p-10 text-center mb-8 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-[10rem] text-cyan-500/5"><i class="fas fa-chart-pie"></i></div>
+                    <h2 class="text-3xl font-extrabold mb-2 relative z-10">Simulation Complete</h2>
+                    <p class="text-slate-400 text-sm font-mono mb-10 relative z-10" id="result-course-title">PHS 212 DIAGNOSTIC REPORT</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Score</p>
+                            <p class="text-4xl font-black text-cyan-400" id="res-score">0%</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Correct</p>
+                            <p class="text-4xl font-black text-white" id="res-correct">0</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Incorrect</p>
+                            <p class="text-4xl font-black text-rose-400" id="res-wrong">0</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Time</p>
+                            <p class="text-3xl mt-1 font-black text-slate-300 font-mono" id="res-time">00:00</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 flex flex-col md:flex-row gap-4 justify-center relative z-10">
+                        <button onclick="renderDeepReview()" class="btn-glow px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm"><i class="fas fa-search mr-2"></i> Deep Review</button>
+                        <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors"><i class="fas fa-home mr-2"></i> Dashboard</button>
+                    </div>
+                </div>
+
+                <div id="deep-review-area" class="hidden space-y-4 pb-20">
+                    <h3 class="text-xl font-bold mb-4 border-b border-slate-800 pb-2"><i class="fas fa-clipboard-check text-cyan-400 mr-2"></i> Question Analysis</h3>
+                    <div id="review-list" class="space-y-4"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // --- 1. CORE DATA VAULT ---
+        const courseVault = {
+            "PHS212": [
+                { question: "Which of the following is the primary cation found in the intracellular fluid of excitable cells?", options: ["Sodium", "Calcium", "Potassium", "Chloride"], correctAnswer: 2 },
+                { question: "The resting membrane potential of a typical large mammalian nerve fiber is approximately:", options: ["-55 mV", "-70 mV", "-90 mV", "+35 mV"], correctAnswer: 2 },
+                { question: "Which specific equation is used to calculate the equilibrium potential for a single permeant ion?", options: ["Goldman equation", "Nernst equation", "Starling equation", "Michaelis Menten equation"], correctAnswer: 1 },
+                { question: "During the depolarization phase of a nerve action potential, which ion channels open rapidly?", options: ["Voltage gated potassium channels", "Ligand gated calcium channels", "Voltage gated sodium channels", "Mechanically gated chloride channels"], correctAnswer: 2 },
+                { question: "The repolarization phase of an action potential is primarily driven by the efflux of which ion?", options: ["Sodium", "Potassium", "Calcium", "Chloride"], correctAnswer: 1 },
+                { question: "What is the primary function of the sodium-potassium pump in an excitable cell?", options: ["To initiate the action potential", "To release neurotransmitters", "To restore ionic concentration gradients", "To rapidly depolarize the membrane"], correctAnswer: 2 },
+                { question: "The period during an action potential when a second stimulus, no matter how strong, cannot elicit another action potential is called the:", options: ["Relative refractory period", "Latent period", "Absolute refractory period", "Accommodation period"], correctAnswer: 2 },
+                { question: "In myelinated nerve fibers, the action potential 'jumps' from one node of Ranvier to the next. This process is known as:", options: ["Continuous conduction", "Saltatory conduction", "Retrograde conduction", "Synaptic transmission"], correctAnswer: 1 },
+                { question: "Which specific type of glial cell is responsible for producing the myelin sheath in the peripheral nervous system?", options: ["Oligodendrocytes", "Astrocytes", "Microglia", "Schwann cells"], correctAnswer: 3 },
+                { question: "The basic functional unit of a skeletal muscle fiber is the:", options: ["Sarcolemma", "Myofibril", "Sarcomere", "Sarcoplasmic reticulum"], correctAnswer: 2 },
+                { question: "Which of the following proteins physically covers the active binding sites on actin filaments in a resting muscle?", options: ["Myosin", "Troponin", "Tropomyosin", "Titin"], correctAnswer: 2 },
+                { question: "Calcium ions trigger skeletal muscle contraction by binding directly to which specific regulatory protein?", options: ["Actin", "Tropomyosin", "Myosin", "Troponin C"], correctAnswer: 3 },
+                { question: "The specialized endoplasmic reticulum in muscle cells that stores massive amounts of calcium is called the:", options: ["Sarcoplasmic reticulum", "Transverse tubule", "Terminal cisterna", "Sarcolemma"], correctAnswer: 0 },
+                { question: "The physical link between the electrical action potential on the muscle surface and the mechanical contraction inside the cell is known as:", options: ["Synaptic delay", "Excitation contraction coupling", "The sliding filament mechanism", "The power stroke"], correctAnswer: 1 },
+                { question: "During the 'power stroke' of muscle contraction, the myosin head pivots and pulls the actin filament. This specific action is directly triggered by the release of:", options: ["Calcium ions", "ATP molecules", "ADP and inorganic phosphate", "Acetylcholine"], correctAnswer: 2 },
+                { question: "In order for the myosin head to detach from the actin filament after a power stroke, what molecule must bind to the myosin head?", options: ["Calcium", "Acetylcholine", "ATP", "Sodium"], correctAnswer: 2 },
+                { question: "A single motor neuron and all the individual muscle fibers it innervates are collectively known as a:", options: ["Fascicle", "Motor unit", "Neuromuscular junction", "Synaptic cleft"], correctAnswer: 1 },
+                { question: "At the neuromuscular junction, which specific neurotransmitter is released by the motor neuron to stimulate the muscle fiber?", options: ["Dopamine", "Serotonin", "Epinephrine", "Acetylcholine"], correctAnswer: 3 },
+                { question: "When acetylcholine binds to its receptors on the motor end plate, it primarily increases the membrane's permeability to:", options: ["Potassium", "Chloride", "Sodium", "Calcium"], correctAnswer: 2 },
+                { question: "Which specific enzyme is responsible for rapidly degrading acetylcholine in the synaptic cleft to stop the muscle contraction?", options: ["Monoamine oxidase", "Acetylcholinesterase", "Choline acetyltransferase", "ATPase"], correctAnswer: 1 },
+                { question: "Unlike skeletal muscle, smooth muscle completely lacks which specific regulatory protein?", options: ["Actin", "Myosin", "Troponin", "Tropomyosin"], correctAnswer: 2 },
+                { question: "In smooth muscle, calcium initiates contraction by binding to which specific protein?", options: ["Calmodulin", "Troponin C", "Myosin light chain kinase", "Calsequestrin"], correctAnswer: 0 },
+                { question: "Which specific structure in cardiac muscle allows action potentials to spread rapidly from one cell to the next?", options: ["Motor end plates", "Desmosomes", "Gap junctions", "Dense bodies"], correctAnswer: 2 },
+                { question: "The prolonged plateau phase of the cardiac muscle action potential is primarily caused by the slow inward flow of:", options: ["Sodium ions", "Potassium ions", "Chloride ions", "Calcium ions"], correctAnswer: 3 },
+                { question: "The process of increasing the total number of active motor units to generate a stronger muscle contraction is called:", options: ["Treppe", "Spatial summation", "Temporal summation", "Tetanus"], correctAnswer: 1 },
+                { question: "If a skeletal muscle is stimulated repeatedly at a high frequency so that there is no relaxation between twitches, the resulting sustained contraction is called:", options: ["Treppe", "Fatigue", "Tetanus", "Fasciculation"], correctAnswer: 2 },
+                { question: "Which type of skeletal muscle fiber relies primarily on aerobic metabolism, has many mitochondria, and is highly resistant to fatigue?", options: ["Type IIb fast glycolytic fibers", "Type I slow oxidative fibers", "Type IIa fast oxidative fibers", "White muscle fibers"], correctAnswer: 1 },
+                { question: "Which of the following accurately describes an isometric muscle contraction?", options: ["Muscle shortens while tension remains constant", "Muscle lengthens while tension remains constant", "Muscle tension increases but length remains exactly the same", "Muscle tension decreases as the muscle shortens"], correctAnswer: 2 },
+                { question: "An isotonic contraction where the muscle actively lengthens while producing tension is specifically termed:", options: ["Concentric contraction", "Eccentric contraction", "Isometric contraction", "Tetanic contraction"], correctAnswer: 1 },
+                { question: "Which specialized sensory receptor detects the degree of stretch or length in a skeletal muscle?", options: ["Golgi tendon organ", "Pacinian corpuscle", "Muscle spindle", "Ruffini ending"], correctAnswer: 2 },
+                { question: "Which specialized sensory receptor detects the amount of tension applied to a tendon during muscle contraction?", options: ["Muscle spindle", "Free nerve ending", "Meissners corpuscle", "Golgi tendon organ"], correctAnswer: 3 },
+                { question: "The speed of nerve impulse conduction is significantly increased by the presence of a myelin sheath and a:", options: ["Smaller axonal diameter", "Larger axonal diameter", "Lower body temperature", "Higher extracellular potassium level"], correctAnswer: 1 },
+                { question: "According to the all-or-none principle of nerve conduction, an action potential will only be generated if the initial stimulus reaches the:", options: ["Resting membrane potential", "Equilibrium potential", "Threshold potential", "Overshoot potential"], correctAnswer: 2 },
+                { question: "Which clinical condition is characterized by the autoimmune destruction of acetylcholine receptors at the neuromuscular junction?", options: ["Multiple sclerosis", "Myasthenia gravis", "Parkinsons disease", "Muscular dystrophy"], correctAnswer: 1 },
+                { question: "Botulinum toxin causes flaccid paralysis by specifically preventing the:", options: ["Binding of acetylcholine to its receptors", "Release of acetylcholine from the nerve terminal", "Action of acetylcholinesterase in the cleft", "Opening of voltage gated sodium channels"], correctAnswer: 1 },
+                { question: "Curare (the South American arrow poison) paralyzes muscles by:", options: ["Inhibiting acetylcholinesterase", "Blocking acetylcholine release", "Competitively binding to acetylcholine receptors", "Destroying the myelin sheath"], correctAnswer: 2 },
+                { question: "In smooth muscle cells, the thin actin filaments are structurally anchored to the cell membrane and cytoplasm via dense protein masses known as:", options: ["Z discs", "Intercalated discs", "Dense bodies", "M lines"], correctAnswer: 2 },
+                { question: "A nerve fiber classified strictly as a Type A-alpha fiber is primarily characterized by being:", options: ["Unmyelinated and very slow", "Large diameter and heavily myelinated", "Small diameter and lightly myelinated", "Dedicated exclusively to pain transmission"], correctAnswer: 1 },
+                { question: "Pain sensation from a slow, aching, burning source is typically transmitted to the central nervous system via which type of nerve fiber?", options: ["Type A alpha fibers", "Type A beta fibers", "Type B fibers", "Type C fibers"], correctAnswer: 3 },
+                { question: "The brief delay between the arrival of an action potential at the motor nerve terminal and the actual beginning of muscle contraction is called the:", options: ["Refractory period", "Latent period", "Relaxation phase", "Contraction phase"], correctAnswer: 1 },
+                { question: "Which of the following is a key physiological difference between multi-unit and single-unit smooth muscle?", options: ["Multi unit muscle lacks actin and myosin", "Single unit muscle contracts independently without nerve input", "Multi unit cells are connected by many gap junctions", "Single unit muscle requires individual nerve endings for each cell"], correctAnswer: 1 },
+                { question: "The immediate source of energy used to re-synthesize ATP from ADP in skeletal muscle during the first few seconds of intense exercise is:", options: ["Muscle glycogen", "Blood glucose", "Creatine phosphate", "Free fatty acids"], correctAnswer: 2 },
+                { question: "During severe, prolonged exercise when oxygen is scarce, skeletal muscle relies on anaerobic glycolysis, leading to the rapid accumulation of:", options: ["Pyruvic acid", "Lactic acid", "Citric acid", "Uric acid"], correctAnswer: 1 },
+                { question: "The condition of rigor mortis occurs after death because the muscle cells completely deplete their supply of:", options: ["Calcium", "Acetylcholine", "Sodium", "ATP"], correctAnswer: 3 },
+                { question: "Which specific local anesthetic drug works primarily by blocking voltage-gated sodium channels, preventing the initiation of action potentials?", options: ["Lidocaine", "Aspirin", "Ibuprofen", "Morphine"], correctAnswer: 0 },
+                { question: "The specific region of the neuron where the action potential is normally initiated due to a high density of voltage-gated sodium channels is the:", options: ["Dendritic tree", "Soma", "Axon hillock", "Synaptic terminal"], correctAnswer: 2 },
+                { question: "In standard neurophysiology, the term 'EPSP' stands for:", options: ["Extra Peripheral Sensory Potential", "Excitatory Postsynaptic Potential", "Extended Plateau Sodium Potential", "External Primary Synaptic Potential"], correctAnswer: 1 },
+                { question: "Inhibitory Postsynaptic Potentials are typically generated when a neurotransmitter opens channels that allow the influx of:", options: ["Sodium ions", "Calcium ions", "Chloride ions", "Magnesium ions"], correctAnswer: 2 },
+                { question: "The physiological phenomenon where a single presynaptic neuron repeatedly fires rapidly to bring the postsynaptic neuron to threshold is termed:", options: ["Spatial summation", "Temporal summation", "Synaptic fatigue", "Post tetanic potentiation"], correctAnswer: 1 },
+                { question: "The specialized gap junctions that connect cardiac muscle cells are anatomically located within the:", options: ["Z lines", "Sarcoplasmic reticulum", "Intercalated discs", "T tubules"], correctAnswer: 2 }
+            ],
+            "PHS213": [],
+            "PHS214": [],
+            "GST211": [],
+            "ANA213": [] 
+        };
+
+        // --- 2. STATE MANAGEMENT ---
+        let currentCourse = "";
+        let questions = [];
+        let userAnswers = [];
+        let flagged = [];
+        let currentIndex = 0;
+        let timerInterval;
+        let timeLeft = 0;
+        let totalTime = 0;
+
+        // --- 3. CORE LOGIC ---
+        function authenticate() {
+            const input = document.getElementById('auth-input').value;
+            if (input === 'AAT') {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+
+        function launchCourse(courseCode) {
+            const data = courseVault[courseCode];
+            
+            // Safety Protocol: Check if data exists
+            if (!data || data.length === 0) {
+                alert(`[SYSTEM ALERT]: The Vault for ${courseCode} is currently empty. Awaiting Director's data injection.`);
+                return;
+            }
+
+            currentCourse = courseCode;
+            
+            // Shuffle and load
+            questions = [...data].sort(() => 0.5 - Math.random());
+            userAnswers = new Array(questions.length).fill(null);
+            flagged = new Array(questions.length).fill(false);
+            currentIndex = 0;
+            
+            // Set Timer strictly to 35 minutes
+            totalTime = 35 * 60; 
+            timeLeft = totalTime;
+
+            // UI Transitions
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('course-header-title').innerText = `${courseCode} ACTIVE`;
+            document.getElementById('timer-wrapper').classList.remove('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('sidebar').classList.add('flex');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            
+            buildNavGrid();
+            renderQuestion();
+            startTimer();
+        }
+
+        function buildNavGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, i) => {
+                const btn = document.createElement('div');
+                btn.id = `nav-btn-${i}`;
+                btn.className = 'nav-grid-item empty w-full rounded flex items-center justify-center text-[10px] font-bold';
+                btn.innerText = i + 1;
+                btn.onclick = () => jumpTo(i);
+                grid.appendChild(btn);
+            });
+            updateNavUI();
+        }
+
+        function updateNavUI() {
+            questions.forEach((_, i) => {
+                const btn = document.getElementById(`nav-btn-${i}`);
+                if (!btn) return;
+                
+                // Reset classes
+                btn.className = 'nav-grid-item w-full rounded flex items-center justify-center text-[10px] font-bold';
+                
+                if (flagged[i]) {
+                    btn.classList.add('flagged');
+                } else if (userAnswers[i] !== null) {
+                    btn.classList.add('answered');
+                } else {
+                    btn.classList.add('empty');
+                }
+
+                if (i === currentIndex) {
+                    btn.style.boxShadow = "0 0 0 2px #fff";
+                    btn.style.transform = "scale(1.1)";
+                    btn.style.zIndex = "10";
+                } else {
+                    btn.style.boxShadow = "none";
+                    btn.style.transform = "scale(1)";
+                    btn.style.zIndex = "1";
+                }
+            });
+
+            // Update Progress Bar
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const pct = (answeredCount / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const qText = q.question || q.q; // handle both data formats
+            
+            document.getElementById('question-counter').innerText = `Q: ${currentIndex + 1} / ${questions.length}`;
+            document.getElementById('question-text').innerText = qText;
+
+            // Flag Button UI
+            const flagBtn = document.getElementById('flag-btn');
+            if (flagged[currentIndex]) {
+                flagBtn.className = "px-4 py-1.5 rounded-lg border border-amber-500 text-amber-400 bg-amber-500/10 transition-colors text-sm font-bold flex items-center gap-2";
+            } else {
+                flagBtn.className = "px-4 py-1.5 rounded-lg border border-slate-600 text-slate-400 hover:text-amber-400 hover:border-amber-400 transition-colors text-sm font-bold flex items-center gap-2";
+            }
+
+            // Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentIndex] === idx;
+                const div = document.createElement('div');
+                div.className = `option-card p-4 rounded-xl flex items-center gap-4 ${isSelected ? 'selected' : ''}`;
+                div.onclick = () => selectOption(idx);
+                
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${isSelected ? 'border-cyan-400 bg-cyan-400' : 'border-slate-500'}">
+                        ${isSelected ? '<div class="w-2 h-2 bg-slate-900 rounded-full"></div>' : ''}
+                    </div>
+                    <span class="text-sm md:text-base font-medium">${opt}</span>
+                `;
+                container.appendChild(div);
+            });
+
+            // Buttons
+            if (currentIndex === questions.length - 1) {
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('submit-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.remove('hidden');
+                document.getElementById('submit-btn').classList.add('hidden');
+            }
+
+            updateNavUI();
+        }
+
+        function selectOption(idx) {
+            userAnswers[currentIndex] = idx;
+            renderQuestion();
+        }
+
+        function toggleFlag() {
+            flagged[currentIndex] = !flagged[currentIndex];
+            renderQuestion();
+        }
+
+        function nav(dir) {
+            const newIdx = currentIndex + dir;
+            if (newIdx >= 0 && newIdx < questions.length) {
+                currentIndex = newIdx;
+                renderQuestion();
+            }
+        }
+
+        function jumpTo(idx) {
+            currentIndex = idx;
+            renderQuestion();
+        }
+
+        // --- 4. TIMER & SUBMISSION ---
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `${m}:${s}`;
+
+                if (timeLeft < 300) {
+                    document.getElementById('timer-wrapper').classList.add('border-red-500', 'text-red-400');
+                    document.getElementById('timer-display').classList.replace('text-white', 'text-red-400');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            document.getElementById('exam-screen').classList.add('hidden');
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('flex');
+            document.getElementById('timer-wrapper').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let correct = 0;
+            questions.forEach((q, i) => {
+                const actualAnswer = q.correctAnswer !== undefined ? q.correctAnswer : q.a;
+                if (userAnswers[i] === actualAnswer) correct++;
+            });
+
+            const pct = Math.round((correct / questions.length) * 100);
+            const timeUsed = totalTime - timeLeft;
+            const um = Math.floor(timeUsed / 60).toString().padStart(2, '0');
+            const us = (timeUsed % 60).toString().padStart(2, '0');
+
+            document.getElementById('result-course-title').innerText = `${currentCourse} DIAGNOSTIC REPORT`;
+            document.getElementById('res-score').innerText = `${pct}%`;
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-wrong').innerText = questions.length - correct;
+            document.getElementById('res-time').innerText = `${um}:${us}`;
+        }
+
+        function renderDeepReview() {
+            document.getElementById('deep-review-area').classList.remove('hidden');
+            const list = document.getElementById('review-list');
+            list.innerHTML = '';
+
+            questions.forEach((q, i) => {
+                const uAns = userAnswers[i];
+                const actualAnswer = q.correctAnswer !== undefined ? q.correctAnswer : q.a;
+                const isCorrect = uAns === actualAnswer;
+                const qText = q.question || q.q;
+
+                const div = document.createElement('div');
+                div.className = `p-5 rounded-2xl border-l-4 glass-panel ${isCorrect ? 'border-l-emerald-500' : 'border-l-rose-500'}`;
+                
+                let optHTML = '';
+                q.options.forEach((opt, oIdx) => {
+                    let oClass = "text-sm p-2 rounded-lg mb-1 ";
+                    if (oIdx === actualAnswer) oClass += "bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30";
+                    else if (oIdx === uAns && !isCorrect) oClass += "bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                    else oClass += "text-slate-400";
+
+                    optHTML += `<div class="${oClass}">${String.fromCharCode(65+oIdx)}. ${opt}</div>`;
+                });
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="font-bold text-white">Q${i+1}. ${qText}</span>
+                        <span class="text-[10px] font-black uppercase px-2 py-1 rounded bg-slate-800 shrink-0 ${isCorrect ? 'text-emerald-400' : 'text-rose-400'}">${isCorrect ? 'CORRECT' : 'INCORRECT'}</span>
+                    </div>
+                    <div class="mb-2 pl-2 border-l border-slate-700">${optHTML}</div>
+                    ${q.explanation ? `<div class="mt-3 text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-cyan-200"><span class="font-bold text-cyan-400">RATIONALE:</span> ${q.explanation}</div>` : ''}
+                `;
+                list.appendChild(div);
+            });
+        }
+    </script>
+</body>
+                  </html>
