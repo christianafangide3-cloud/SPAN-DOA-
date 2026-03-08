@@ -404,53 +404,75 @@
                 { question: "The physiological phenomenon where a single presynaptic neuron repeatedly fires rapidly to bring the postsynaptic neuron to threshold is termed:", options: ["Spatial summation", "Temporal summation", "Synaptic fatigue", "Post tetanic potentiation"], correctAnswer: 1 },
                 { question: "The specialized gap junctions that connect cardiac muscle cells are anatomically located within the:", options: ["Z lines", "Sarcoplasmic reticulum", "Intercalated discs", "T tubules"], correctAnswer: 2 },
 
-                // Prof. Ita's 50 Distinction Questions
+                // --- PHS 212: PROFESSOR ITA'S EXCITABLE TISSUES (STRAIGHT FORMAT) ---
                 {
-                    question: "According to the principles of ion channel selectivity, an integral membrane-spanning protein channel lined with negatively charged amino acids will fundamentally:",
+                    question: "An ion channel lined with negative charges will selectively permit the passage of:",
                     options: [
-                        "Exclusively permit the passive diffusion of massive uncharged lipid molecules.",
-                        "Selectively permit the passage of cations while explicitly excluding all anions.",
-                        "Selectively permit the passage of anions while explicitly excluding all cations.",
-                        "Completely block the movement of all ions regardless of the electrochemical gradient."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "Ion channel selectivity is based on both pore size and the specific electrical charges lining the channel wall. A channel heavily lined with negative charges will naturally attract and permit the passage of positively charged cations (like Na+ or K+) while electrostatically repelling and excluding negatively charged anions."
-                },
-                {
-                    question: "In the context of channel gating mechanisms, the nicotinic receptor located precisely on the motor end plate is classically categorized as a:",
-                    options: [
-                        "Voltage-gated channel that responds exclusively to membrane depolarization.",
-                        "Second-messenger gated channel activated strictly by intracellular cyclic AMP.",
-                        "Mechanically-gated channel triggered by the physical stretching of the sarcolemma.",
-                        "Ligand-gated channel that explicitly opens upon the binding of acetylcholine."
-                    ],
-                    correctAnswer: 3,
-                    explanation: "The nicotinic receptor is a classic ligand-gated ion channel. The sensor for this gate is located on the extracellular side, and it specifically requires the binding of the neurotransmitter acetylcholine (ACh) to open and permit the influx of small cations."
-                },
-                {
-                    question: "A diffusion potential is the electrical potential difference generated across a membrane when an ion diffuses down its concentration gradient. Which of the following dictates the magnitude of this potential?",
-                    options: [
-                        "The exact electrical charge of the specific diffusing ion.",
-                        "The absolute size of the initial concentration gradient acting as the driving force.",
-                        "The total physical thickness of the biological lipid bilayer.",
-                        "The exact quantity of intracellular ATP available for active transport."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "A diffusion potential is strictly caused by the diffusion of ions. The magnitude (in millivolts) depends entirely on the size of the concentration gradient across the membrane, while the sign (positive or negative) depends on the charge of the diffusing ion."
-                },
-                {
-                    question: "At absolute electrochemical equilibrium for a specific ion, which of the following physiological statements is strictly accurate?",
-                    options: [
-                        "The specific chemical and electrical driving forces acting on the ion are exactly equal and opposite.",
-                        "The ion continues to aggressively diffuse down its gradient until the bulk concentrations are equalized.",
-                        "The membrane abruptly becomes completely impermeable to all surrounding extracellular ions.",
-                        "The internal cellular voltage specifically drops to zero millivolts to halt the active pump."
+                        "Cations",
+                        "Anions",
+                        "Uncharged molecules",
+                        "Proteins"
                     ],
                     correctAnswer: 0,
-                    explanation: "Electrochemical equilibrium occurs when the electrical potential difference (diffusion potential) exactly balances the chemical concentration gradient. At this precise moment, the net diffusion of that specific ion completely stops."
+                    explanation: "Negative charges lining the pore of a channel attract positively charged ions and repel negatively charged ions."
                 },
                 {
-                    question: "Using the Nernst equation at normal physiological conditions (37°C), what is the calculated equilibrium potential for Calcium (Ca2+) across a typical mammalian cell membrane?",
+                    question: "Voltage-gated channels open specifically in response to changes in:",
+                    options: [
+                        "Membrane potential",
+                        "Ligand binding",
+                        "Second messengers",
+                        "Mechanical stretch"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Voltage-gated channels possess sensors that respond to electrical depolarization or hyperpolarization of the membrane."
+                },
+                {
+                    question: "The nicotinic receptor on the motor end plate is a classic example of a:",
+                    options: [
+                        "Voltage-gated channel",
+                        "Ligand-gated channel",
+                        "Second messenger-gated channel",
+                        "Leak channel"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The nicotinic receptor opens only when the neurotransmitter acetylcholine binds to its extracellular sensor."
+                },
+                {
+                    question: "A diffusion potential is physiologically caused by the movement of:",
+                    options: [
+                        "Water",
+                        "Uncharged solutes",
+                        "Ions",
+                        "ATP"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "A diffusion potential is the potential difference generated specifically when a charged solute diffuses down its concentration gradient."
+                },
+                {
+                    question: "When chemical and electrical driving forces on an ion are equal and opposite, the ion is strictly at:",
+                    options: [
+                        "Threshold",
+                        "Resting potential",
+                        "Electrochemical equilibrium",
+                        "Action potential"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "At electrochemical equilibrium, the diffusion potential exactly balances the concentration gradient, stopping net diffusion."
+                },
+                {
+                    question: "Using the Nernst equation, the typical equilibrium potential for Sodium is approximately:",
+                    options: [
+                        "+65 mV",
+                        "+120 mV",
+                        "-85 mV",
+                        "-90 mV"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Sodium is highly concentrated outside the cell, giving it a positive equilibrium potential of +65 mV."
+                },
+                {
+                    question: "Using the Nernst equation, the typical equilibrium potential for Calcium is approximately:",
                     options: [
                         "+65 mV",
                         "+120 mV",
@@ -458,394 +480,481 @@
                         "-90 mV"
                     ],
                     correctAnswer: 1,
-                    explanation: "Based on typical physiological concentration gradients, the standard calculated equilibrium potentials are: Na+ (+65 mV), Ca2+ (+120 mV), K+ (-85 mV), and Cl- (-90 mV)."
+                    explanation: "Calcium has a massive inward concentration gradient, resulting in a highly positive equilibrium potential of +120 mV."
                 },
                 {
-                    question: "When calculating the net driving force on a given ion (Em - Ex), a negative result for a cation indicates that the ion will physiologically:",
+                    question: "Using the Nernst equation, the typical equilibrium potential for Potassium is approximately:",
                     options: [
-                        "Violently exit the cell to make the internal environment more positive.",
-                        "Passively enter the cell because the membrane potential is too negative relative to its equilibrium.",
-                        "Remain perfectly static as it has reached absolute electrochemical equilibrium.",
-                        "Trigger immediate cellular apoptosis due to an unmanageable charge deficit."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "If the driving force is negative (Em is more negative than the ion's equilibrium potential), the cation 'thinks' the inside is too negative and will actively enter the cell to try and bring the membrane potential up toward its own equilibrium potential."
-                },
-                {
-                    question: "The resting membrane potential of an excitable cell is heavily determined by the ions with the highest permeability. Which mathematical model weights the equilibrium potential of each ion by its relative conductance?",
-                    options: [
-                        "The precise Nernst electrical single-ion equation.",
-                        "The physiological Gibbs-Donnan equilibrium model.",
-                        "The explicit biological Chord Conductance equation.",
-                        "The generalized Fick's law of passive diffusion."
+                        "+65 mV",
+                        "+120 mV",
+                        "-85 mV",
+                        "-90 mV"
                     ],
                     correctAnswer: 2,
-                    explanation: "The Chord Conductance equation calculates the actual membrane potential by weighting the equilibrium potential of every permeant ion by its relative conductance. Because resting K+ conductance is massively high, the RMP sits very close to the K+ equilibrium potential."
+                    explanation: "Potassium is highly concentrated inside the cell, giving it a negative equilibrium potential of -85 mV."
                 },
                 {
-                    question: "While the Na+/K+ ATPase pump maintains vital ionic gradients, its direct 'electrogenic' contribution to the resting membrane potential is strictly due to its stoichiometry of:",
+                    question: "The normal resting membrane potential of excitable cells typically falls in the exact range of:",
                     options: [
-                        "Pumping 2 Na+ ions out of the cell for every 3 K+ ions pumped into the cell.",
-                        "Pumping 3 Na+ ions out of the cell for every 2 K+ ions pumped into the cell.",
-                        "Pumping 3 K+ ions out of the cell for every 2 Na+ ions pumped into the cell.",
-                        "Pumping exactly equal amounts of Na+ and K+ while burning massive amounts of ATP."
+                        "-70 to -80 mV",
+                        "-50 to -60 mV",
+                        "0 to +10 mV",
+                        "+30 to +40 mV"
                     ],
-                    correctAnswer: 1,
-                    explanation: "The direct electrogenic contribution of the pump is small but significant. By pumping out 3 positive charges (Na+) and bringing in only 2 positive charges (K+), it continuously creates a net deficit of positive charge inside the cell."
+                    correctAnswer: 0,
+                    explanation: "Resting membrane potential is negative, primarily set by the high resting permeability to Potassium."
                 },
                 {
-                    question: "During the generation of an action potential, the physiological definition of 'Threshold Potential' is:",
+                    question: "At rest, the cell membrane is highly permeable to which of the following ions?",
                     options: [
-                        "The exact peak voltage where the sodium channels permanently close.",
-                        "The specific membrane potential where net inward current becomes larger than net outward current.",
-                        "The maximum hyperpolarized state immediately following the refractory period.",
-                        "The absolute baseline resting voltage maintained entirely by potassium leak channels."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "Threshold potential (approx. -60 mV) is the critical point where the depolarizing inward Na+ current finally exceeds the repolarizing outward K+ current. Once this occurs, the depolarization becomes aggressively self-sustaining (the 'All-or-none' response)."
-                },
-                {
-                    question: "The upstroke (rapid depolarization) of the nerve action potential is directly terminated by which explicit molecular event?",
-                    options: [
-                        "The rapid opening of the external activation gates on the voltage-gated Na+ channels.",
-                        "The complete depletion of extracellular sodium ions in the immediate synaptic cleft.",
-                        "The slow, delayed closure of the internal inactivation gates on the voltage-gated Na+ channels.",
-                        "The sudden binding of massive acetylcholine molecules to the presynaptic terminal."
+                        "Sodium",
+                        "Calcium",
+                        "Potassium",
+                        "Magnesium"
                     ],
                     correctAnswer: 2,
-                    explanation: "The voltage-gated Na+ channel has two gates. The activation gate opens rapidly at threshold to cause the upstroke. However, the inactivation gate, which responds much more slowly to that same depolarization, eventually swings shut, completely terminating the influx of Na+."
+                    explanation: "The high resting conductance of Potassium leak channels dominates the resting membrane potential."
                 },
                 {
-                    question: "The potent biological toxin Tetrodotoxin (from the Japanese puffer fish) induces deadly paralysis by strictly executing which physiological action?",
+                    question: "The Sodium-Potassium ATPase pump maintains gradients by moving ions in what specific ratio?",
                     options: [
-                        "Irreversibly blocking the voltage-gated potassium channels to prevent repolarization.",
-                        "Explicitly binding to and blocking the voltage-sensitive sodium channels.",
-                        "Aggressively destroying the active enzymatic site of acetylcholinesterase.",
-                        "Completely inhibiting the continuous action of the Na+/K+ ATPase pump."
+                        "3 Sodium out and 2 Potassium in",
+                        "2 Sodium out and 3 Potassium in",
+                        "3 Sodium in and 2 Potassium out",
+                        "Equal amounts of Sodium and Potassium"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "The pump is electrogenic because it expels 3 positive charges for every 2 positive charges it brings in."
+                },
+                {
+                    question: "The rapid upstroke of an action potential is directly caused by:",
+                    options: [
+                        "Potassium efflux",
+                        "Sodium influx",
+                        "Calcium efflux",
+                        "Chloride influx"
                     ],
                     correctAnswer: 1,
-                    explanation: "Tetrodotoxin (TTX) and local anesthetics like lidocaine specifically bind to and physically block the external pore of voltage-gated Na+ channels. This completely prevents the upstroke of the action potential, halting all nerve transmission."
+                    explanation: "Depolarization to threshold opens activation gates on Sodium channels, causing a massive inward Sodium current."
                 },
                 {
-                    question: "Which specific pharmacological agent is utilized in experimental neurophysiology to selectively block the voltage-gated Potassium (K+) channels, thereby actively preventing action potential repolarization?",
+                    question: "Repolarization of the action potential is primarily driven by:",
                     options: [
-                        "Tetrodotoxin (TTX)",
+                        "Sodium influx",
+                        "Potassium efflux",
+                        "Calcium influx",
+                        "Chloride efflux"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The upstroke is terminated by Sodium channel inactivation, followed immediately by Potassium leaving the cell."
+                },
+                {
+                    question: "Which toxin specifically blocks voltage-sensitive sodium channels?",
+                    options: [
+                        "Tetrodotoxin",
+                        "Tetraethylammonium",
+                        "Curare",
+                        "Botulinum toxin"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Tetrodotoxin from the pufferfish binds to the external pore of Sodium channels, preventing the action potential upstroke."
+                },
+                {
+                    question: "Which pharmacological agent is utilized to block voltage-gated potassium channels?",
+                    options: [
+                        "Tetrodotoxin",
                         "Lidocaine",
-                        "Tetraethylammonium (TEA)",
+                        "Tetraethylammonium",
                         "Strychnine"
                     ],
                     correctAnswer: 2,
-                    explanation: "Tetraethylammonium (TEA) specifically blocks the voltage-gated K+ channels. Without K+ efflux, the nerve cell cannot repolarize efficiently, severely prolonging the action potential duration."
+                    explanation: "Tetraethylammonium blocks Potassium channels, preventing the outward current needed for repolarization."
                 },
                 {
-                    question: "At the precise molecular level, the mammalian voltage-gated Sodium (Na+) channel consists of a massive central alpha subunit containing exactly:",
+                    question: "The hyperpolarizing afterpotential is caused by the prolonged opening of:",
                     options: [
-                        "Two domains, each completely containing exactly four transmembrane alpha-helices.",
-                        "Four domains, each completely containing exactly six transmembrane alpha-helices.",
-                        "Six domains, each completely containing exactly two transmembrane alpha-helices.",
-                        "Eight domains, each completely containing exactly three transmembrane alpha-helices."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "The primary functional core (alpha subunit) of the voltage-gated Na+ channel is a massive integral protein that consists of four repeating domains (I-IV), with each domain featuring exactly six distinct transmembrane alpha-helices."
-                },
-                {
-                    question: "During the Absolute Refractory Period, an excitable cell is completely incapable of firing a second action potential. This phenomenon is strictly governed by:",
-                    options: [
-                        "The sustained opening of the massive voltage-gated potassium channels.",
-                        "The physical closure of the inactivation gates on the voltage-gated Na+ channels.",
-                        "The complete and temporary depletion of intracellular ATP stores.",
-                        "The absolute structural exhaustion of the neurotransmitter vesicles."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "The Absolute Refractory Period exists because the Na+ channel inactivation gates close at the peak of the action potential and remain tightly locked. They absolutely will not reset to their open position until the membrane potential fully repolarizes back to its resting level."
-                },
-                {
-                    question: "The physiological phenomenon of 'Accommodation'—where a nerve cell is depolarized so slowly that it completely fails to fire an action potential—is most classically observed in patients suffering from:",
-                    options: [
-                        "Severe systemic acute clinical Hypocalcemia.",
-                        "Severe systemic acute clinical Hyperkalemia.",
-                        "Massive widespread clinical acute Hyponatremia.",
-                        "Severe systemic acute clinical Hypoglycemia."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "In Hyperkalemia, the elevated extracellular K+ causes a chronic, slow depolarization of the resting membrane. This slow drift closes the Na+ channel inactivation gates permanently without ever triggering the rapid activation gates. Consequently, the muscle/nerve 'accommodates' and becomes paralyzed."
-                },
-                {
-                    question: "In neurophysiological cable theory, the 'Time Constant' (tau) dictates how rapidly a cell membrane depolarizes. Mathematically, the Time Constant is directly equal to:",
-                    options: [
-                        "Membrane Resistance strictly divided by Internal Resistance.",
-                        "Internal Resistance explicitly multiplied by Membrane Capacitance.",
-                        "Membrane Resistance explicitly multiplied by Membrane Capacitance.",
-                        "Membrane Capacitance strictly divided by Membrane Resistance."
+                        "Sodium channels",
+                        "Calcium channels",
+                        "Potassium channels",
+                        "Chloride channels"
                     ],
                     correctAnswer: 2,
-                    explanation: "The Time Constant (τ) equals Membrane Resistance (Rm) multiplied by Membrane Capacitance (Cm). A high resistance and high capacitance mean it takes a significantly longer time to charge the membrane capacitor and change the voltage."
+                    explanation: "Potassium channels are slow to close, allowing the membrane potential to dip below the resting level temporarily."
                 },
                 {
-                    question: "The 'Length Constant' (lambda) indicates exactly how far a depolarizing current will passively spread down an axon. The length constant will be greatest when:",
+                    question: "The mammalian voltage-gated sodium channel consists of an alpha subunit with how many domains?",
                     options: [
-                        "Membrane resistance is exceptionally high and internal resistance is extremely low.",
-                        "Membrane resistance is exceptionally low and internal resistance is exceptionally high.",
-                        "Membrane capacitance is massive and internal resistance is heavily elevated.",
-                        "Membrane resistance and internal resistance are both exceptionally elevated."
+                        "Two",
+                        "Three",
+                        "Four",
+                        "Six"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The alpha subunit has four domains, each containing six transmembrane alpha-helices."
+                },
+                {
+                    question: "During the absolute refractory period, another action potential cannot be elicited because:",
+                    options: [
+                        "Potassium channels are closed",
+                        "Sodium inactivation gates are closed",
+                        "ATP is completely depleted",
+                        "Calcium levels are too high"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The inactivation gates of Sodium channels close at the peak of the action potential and will not reopen until the cell repolarizes."
+                },
+                {
+                    question: "The relative refractory period coincides primarily with which phase of the action potential?",
+                    options: [
+                        "Depolarization",
+                        "Overshoot",
+                        "Hyperpolarizing afterpotential",
+                        "Resting state"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "During the undershoot, Potassium conductance is very high, requiring a stronger than normal stimulus to reach threshold."
+                },
+                {
+                    question: "The physiological process where a nerve fails to fire an action potential due to slow depolarization is termed:",
+                    options: [
+                        "Summation",
+                        "Accommodation",
+                        "Adaptation",
+                        "Facilitation"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "If depolarized too slowly, the Sodium channel inactivation gates close before the activation gates can open."
+                },
+                {
+                    question: "Accommodation is classically observed in patients suffering from severe clinical:",
+                    options: [
+                        "Hypernatremia",
+                        "Hyperkalemia",
+                        "Hypocalcemia",
+                        "Hypoglycemia"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Elevated extracellular Potassium slowly depolarizes the membrane, closing Sodium inactivation gates and causing muscle paralysis."
+                },
+                {
+                    question: "In nerve cable properties, the time constant indicates how quickly a cell membrane:",
+                    options: [
+                        "Depolarizes",
+                        "Reaches equilibrium",
+                        "Transmits neurotransmitters",
+                        "Depletes ATP"
                     ],
                     correctAnswer: 0,
-                    explanation: "Current flows along the path of least resistance. If the membrane is highly resistant (stops current from leaking out) and the internal cytoplasm is highly conductive (low internal resistance, Ri), the current will travel much further down the axon before decaying."
+                    explanation: "The time constant is the amount of time it takes following the injection of current for the potential to change to 63 percent of its final value."
                 },
                 {
-                    question: "According to cable properties, increasing the physical diameter of a nerve fiber actively increases its conduction velocity because:",
+                    question: "The time constant is mathematically calculated as the product of membrane resistance and:",
                     options: [
-                        "It explicitly dramatically increases the exact specific membrane resistance.",
-                        "It explicitly dramatically decreases the internal cytoplasmic resistance (Ri).",
-                        "It explicitly violently increases the overall specific membrane capacitance.",
-                        "It explicitly massively decreases the absolute count of active sodium channels."
+                        "Internal resistance",
+                        "Membrane capacitance",
+                        "Length constant",
+                        "Action potential amplitude"
                     ],
                     correctAnswer: 1,
-                    explanation: "Internal resistance (Ri) is inversely proportional to the cross-sectional area of the axon. A larger diameter dramatically lowers the internal resistance, allowing the electrical current to rapidly shoot straight down the center of the axon."
+                    explanation: "Time constant equals Membrane resistance multiplied by Membrane capacitance."
                 },
                 {
-                    question: "The absolute primary reason that myelination drastically increases the conduction velocity of a mammalian nerve fiber is because the lipid myelin sheath explicitly:",
+                    question: "The length constant of an axon specifically indicates how far a depolarizing current will:",
                     options: [
-                        "Increases membrane capacitance and aggressively decreases membrane resistance.",
-                        "Decreases membrane resistance and explicitly decreases internal cytoplasmic resistance.",
-                        "Increases membrane resistance and explicitly decreases membrane capacitance.",
-                        "Increases internal cytoplasmic resistance and explicitly increases active ion leakage."
-                    ],
-                    correctAnswer: 2,
-                    explanation: "Myelin is a brilliant biological insulator. It heavily increases membrane resistance (stopping ions from leaking out) and drastically decreases membrane capacitance (meaning less charge is required to change the voltage). This forces the action potential to rapidly jump from node to node."
-                },
-                {
-                    question: "In standard anatomical classification, an 'Electrical Synapse' is structurally differentiated from a chemical synapse by the strict physical presence of:",
-                    options: [
-                        "Massive clustered explicitly targeted presynaptic neurotransmitter vesicles.",
-                        "Wide explicitly heavily separated distinct physiological synaptic clefts.",
-                        "Direct heavily functional explicitly specific continuous structural gap junctions.",
-                        "Complex heavily concentrated highly targeted postsynaptic receptor proteins."
-                    ],
-                    correctAnswer: 2,
-                    explanation: "Electrical synapses (found in cardiac and smooth muscle) feature direct physical continuity between the pre- and post-synaptic cells via Gap Junctions. This allows ions to flow directly, resulting in minimal synaptic delay and bidirectional transmission."
-                },
-                {
-                    question: "The presynaptic terminal bouton (knob) contains two major structural components absolutely vital for chemical transmission. These are the synaptic vesicles and massive numbers of:",
-                    options: [
-                        "Highly targeted fully active dense massive explicit complex Golgi apparatuses.",
-                        "Highly active fully functioning dense specific heavily targeted specialized Mitochondria.",
-                        "Massive structural heavy specific highly rigid explicit cellular Lysosomes.",
-                        "Highly complex massive structural continuous dense explicit internal Ribosomes."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "The presynaptic terminal is packed with mitochondria to provide the immense amount of ATP required to synthesize neurotransmitters and physically drive the exocytosis process."
-                },
-                {
-                    question: "The highly specific biochemical cascade triggering neurotransmitter exocytosis begins immediately when the incoming action potential specifically opens:",
-                    options: [
-                        "Voltage-regulated explicitly specific heavy Sodium (Na+) channels at the bouton.",
-                        "Ligand-regulated entirely specific explicit Potassium (K+) channels at the bouton.",
-                        "Voltage-regulated highly specific explicit Calcium (Ca++) channels at the bouton.",
-                        "Mechanically-regulated highly specific complete Chloride (Cl-) channels at the bouton."
-                    ],
-                    correctAnswer: 2,
-                    explanation: "When the action potential hits the terminal bouton, voltage-gated Calcium channels fly open. The sudden, massive influx of Ca++ from the ECF into the presynaptic ending is the absolute required trigger for vesicular exocytosis."
-                },
-                {
-                    question: "Once Calcium (Ca++) enters the presynaptic terminal, it immediately binds to a regulatory cytoplasmic protein which activates a kinase to phosphorylate vesicular proteins. This initial regulatory protein is officially named:",
-                    options: [
-                        "Explicitly highly targeted active structural specifically functional Calmodulin.",
-                        "Explicitly highly targeted active structural specifically functional Troponin C.",
-                        "Explicitly highly targeted active structural specifically functional Synapsin.",
-                        "Explicitly highly targeted active structural specifically functional Clathrin."
+                        "Spread along a nerve",
+                        "Travel across a synapse",
+                        "Penetrate the myelin sheath",
+                        "Travel in the bloodstream"
                     ],
                     correctAnswer: 0,
-                    explanation: "Ca++ binds to Calmodulin. The Calcium-Calmodulin complex then activates protein kinases that phosphorylate specific vesicular membrane proteins (Synapsins), explicitly permitting the vesicle to detach from the cytoskeleton, dock, and undergo exocytosis."
+                    explanation: "The length constant is the distance at which the potential has fallen by 63 percent of its original value."
                 },
                 {
-                    question: "An Excitatory Postsynaptic Potential (EPSP) is a local, non-propagative depolarization primarily generated by the opening of ligand-gated channels explicitly highly permeable to:",
+                    question: "Nerve conduction velocity is significantly increased by myelination and by:",
                     options: [
-                        "Massive targeted explicitly specific entirely internal exiting Potassium ions.",
-                        "Massive targeted explicitly specific entirely external entering Sodium ions.",
-                        "Massive targeted explicitly specific entirely external entering Chloride ions.",
-                        "Massive targeted explicitly specific entirely internal entering Calcium ions."
+                        "Decreasing temperature",
+                        "Increasing nerve diameter",
+                        "Increasing internal resistance",
+                        "Decreasing threshold"
                     ],
                     correctAnswer: 1,
-                    explanation: "An EPSP occurs when an excitatory neurotransmitter binds to its receptor, opening ligand-gated Na+ channels. The influx of positive Sodium ions causes a slight, local depolarization that brings the membrane closer to the firing threshold."
+                    explanation: "Increasing the diameter of the nerve fiber decreases internal resistance, allowing current to flow faster."
                 },
                 {
-                    question: "Unlike a massive Action Potential, an Excitatory Postsynaptic Potential (EPSP) explicitly and strictly absolutely DOES NOT:",
+                    question: "The myelin sheath actively increases conduction velocity by:",
                     options: [
-                        "Alter the localized baseline explicit specific resting membrane potential.",
-                        "Cause any specific active localized structural influx of extracellular sodium.",
-                        "Obey the heavily fundamental explicit specific physiological 'All-or-None' law.",
-                        "Increase the physiological exact likelihood of an action potential firing."
+                        "Increasing membrane capacitance",
+                        "Decreasing membrane resistance",
+                        "Increasing membrane resistance",
+                        "Increasing internal resistance"
                     ],
                     correctAnswer: 2,
-                    explanation: "EPSPs are graded, non-propagative potentials. Their amplitude explicitly varies based on the amount of neurotransmitter released. Therefore, they absolutely do not obey the 'All-or-None' law characteristic of true action potentials."
+                    explanation: "Myelin is a lipid insulator that increases membrane resistance and decreases membrane capacitance."
                 },
                 {
-                    question: "An Inhibitory Postsynaptic Potential (IPSP) actively suppresses neuronal firing by creating hyperpolarization. This is achieved by explicitly opening ligand-gated channels specifically for:",
+                    question: "Action potentials jump long distances from one node of Ranvier to the next in a process called:",
                     options: [
-                        "Sodium ions entering and Potassium ions explicitly entering.",
-                        "Calcium ions entering and Chloride ions explicitly exiting.",
-                        "Potassium ions exiting and Chloride ions explicitly entering.",
-                        "Sodium ions exiting and Calcium ions explicitly exiting."
-                    ],
-                    correctAnswer: 2,
-                    explanation: "Inhibitory neurotransmitters (like GABA) open K+ channels (allowing positive K+ to leave the cell) and Cl- channels (allowing negative Cl- to enter the cell). Both actions make the inside of the cell more negative (hyperpolarization), dragging it further away from threshold."
-                },
-                {
-                    question: "The highly specific physiological phenomenon officially termed 'Renshaw Cell Inhibition' is a specialized form of negative feedback utilized specifically to execute a:",
-                    options: [
-                        "Massive stimulatory heavily explicit entirely aggressive firing cascade.",
-                        "Specific explicit targeted active completely functional damping function.",
-                        "Highly specific generalized explicit entirely systemic active tetanus state.",
-                        "Completely massive explicitly functional active heavy structural summation."
+                        "Continuous conduction",
+                        "Saltatory conduction",
+                        "Synaptic transmission",
+                        "Retrograde conduction"
                     ],
                     correctAnswer: 1,
-                    explanation: "Renshaw cells are inhibitory interneurons located in the anterior horn of the spinal cord. Alpha motor neurons send collateral branches to them; the Renshaw cells then send inhibitory signals back to the exact same motor neurons to restrict excess firing, executing a critical 'damping function' for fine motor accuracy."
+                    explanation: "Saltatory conduction occurs because membrane resistance is extremely high everywhere except at the bare nodes."
                 },
                 {
-                    question: "The deadly biological poison Strychnine induces horrific, continuous, and highly violent convulsive muscular activity specifically and fundamentally because it explicitly:",
+                    question: "Synapses that utilize gap junctions to pass ions directly between cells are classified as:",
                     options: [
-                        "Massively entirely prevents the strict removal of acetylcholine from the synaptic cleft.",
-                        "Aggressively deeply destroys the critical physiological inhibitory function at the synaptic level.",
-                        "Heavily explicitly violently stimulates the massive continuous explicit release of adrenaline.",
-                        "Explicitly directly blocks the functional explicit voltage-gated heavy sodium channels."
+                        "Chemical synapses",
+                        "Electrical synapses",
+                        "Neuromuscular junctions",
+                        "Cholinergic synapses"
                     ],
                     correctAnswer: 1,
-                    explanation: "Strychnine is a highly potent neurotoxin that specifically binds to and blocks the receptors for the inhibitory neurotransmitter Glycine in the spinal cord. By destroying the body's natural synaptic inhibition, even the slightest stimulus triggers massive, unchecked, convulsive motor responses."
+                    explanation: "Electrical synapses allow bidirectional, rapid flow of current directly from one cell to the next."
                 },
                 {
-                    question: "In neurophysiological testing, the absolute minimal measured time delay (approx. 0.5 ms) perfectly observed from the exact moment an impulse reaches the presynaptic terminal until the postsynaptic cell responds is officially termed the:",
+                    question: "In a chemical synapse, neurotransmitter substances are stored within the presynaptic terminal inside:",
                     options: [
-                        "Absolute Refractory Period.",
-                        "Relative Refractory Period.",
-                        "Synaptic Delay.",
-                        "Latent Accommodation Period."
-                    ],
-                    correctAnswer: 2,
-                    explanation: "Synaptic delay is the critical 0.5 millisecond gap representing the physical time it takes for Ca++ to enter the bouton, vesicles to fuse, neurotransmitters to diffuse across the cleft, and the postsynaptic receptors to respond. It is the primary cause of the latent period in a reflex arc."
-                },
-                {
-                    question: "During heavy and continuous explicit muscular activity, the anatomical synapse frequently becomes the primary biological 'seat of fatigue'. This synaptic fatigue is fundamentally and strictly caused by:",
-                    options: [
-                        "The massive systemic systemic total structural explicit depletion of blood glucose.",
-                        "The total structural complete systemic accumulation of heavy muscular lactic acid.",
-                        "The aggressive physical explicit severe mechanical tearing of the synaptic explicit cleft.",
-                        "The specific localized absolute severe functional depletion of the active neurotransmitter."
-                    ],
-                    correctAnswer: 3,
-                    explanation: "Synaptic fatigue (unlike muscle fatigue) is purely a supply-chain issue. If a presynaptic terminal fires continuously at a very high rate, it eventually exhausts its stored supply of neurotransmitter (e.g., Acetylcholine) faster than it can synthesize new molecules, causing transmission to halt."
-                },
-                {
-                    question: "When numerous, highly specific, individual presynaptic excitatory terminals located at entirely different anatomical points on the same neuron are stimulated completely simultaneously, their combined electrical effect is physiologically defined as:",
-                    options: [
-                        "Explicitly active entirely heavily precise specific Temporal Summation.",
-                        "Explicitly active entirely heavily precise specific Spatial Summation.",
-                        "Explicitly active entirely heavily precise specific Absolute Refraction.",
-                        "Explicitly active entirely heavily precise specific Post-tetanic Potentiation."
+                        "Mitochondria",
+                        "Synaptic vesicles",
+                        "The nucleus",
+                        "The Golgi apparatus"
                     ],
                     correctAnswer: 1,
-                    explanation: "Spatial Summation occurs when multiple different synapses across the cell membrane fire at the exact same time, adding their small EPSPs together in 'space' to reach the threshold necessary to fire a massive action potential."
+                    explanation: "Synaptic vesicles wait at the presynaptic membrane to release their contents via exocytosis."
                 },
                 {
-                    question: "According strictly to the explicitly accepted standard neurological criteria, before a specific chemical compound can ever be officially officially officially scientifically classified as a true Neurotransmitter, it must satisfy four rules. Which of the following is ONE of those absolute rules?",
+                    question: "The arrival of an action potential opens which specific channels at the presynaptic terminal?",
                     options: [
-                        "It must be structurally entirely completely heavily synthesized entirely within the liver.",
-                        "It must completely totally absolutely actively cross the intact physiological blood-brain barrier.",
-                        "When applied exogenously as a drug, it must exactly mimic the endogenous transmitter's action.",
-                        "It must perfectly and structurally completely permanently bind specifically to the target receptor."
+                        "Voltage-gated Sodium channels",
+                        "Voltage-gated Calcium channels",
+                        "Ligand-gated Potassium channels",
+                        "Mechanically-gated Chloride channels"
                     ],
-                    correctAnswer: 2,
-                    explanation: "The four criteria for a neurotransmitter are: 1) Synthesized in the neuron, 2) Present in vesicles and released in sufficient amounts, 3) Exogenous application mimics the exact physiological action, 4) A specific mechanism exists to rapidly remove it from the synaptic cleft."
+                    correctAnswer: 1,
+                    explanation: "The influx of Calcium from the extracellular fluid is the absolute trigger for neurotransmitter release."
                 },
                 {
-                    question: "Within the central and peripheral nervous systems, small-molecule, highly rapidly acting neurotransmitters include all of the following biologically active compounds EXCEPT:",
+                    question: "Once inside the presynaptic terminal, Calcium activates a specific regulatory protein known as:",
                     options: [
-                        "The massive explicitly active specific strictly targeted specific specialized Endocannabinoids.",
-                        "The primary explicitly active specific strictly targeted specific specialized Acetylcholine.",
-                        "The fundamental explicitly active specific strictly targeted specific specialized Gamma Amino Butyric Acid.",
-                        "The specific heavily explicitly active specifically strictly targeted specific specialized Dopamine."
+                        "Calmodulin",
+                        "Troponin",
+                        "Tropomyosin",
+                        "Actin"
                     ],
                     correctAnswer: 0,
-                    explanation: "Acetylcholine, GABA, Dopamine, Serotonin, and Glutamate are all classic 'small-molecule, rapidly acting' transmitters packaged in vesicles. Endocannabinoids (along with Neuropeptides and Nitric Oxide) are classified as larger or 'unconventional' slowly acting neurotransmitters."
+                    explanation: "Calcium activates Calmodulin, which in turn activates protein kinases that phosphorylate synapsins."
                 },
                 {
-                    question: "Unlike highly conventional vesicular neurotransmitters, Nitric Oxide (NO) and Carbon Monoxide (CO) operate via completely different physiological mechanics specifically because these unique molecules:",
+                    question: "An Excitatory Postsynaptic Potential generally involves the localized influx of:",
                     options: [
-                        "Are excessively massive explicit proteins that strictly explicitly require receptor-mediated targeted endocytosis.",
-                        "Are perfectly small explicitly nonpolar functional gases that easily rapidly directly diffuse across cell membranes.",
-                        "Are highly explicitly charged massive aggressive ions explicitly requiring precise specific structural protein channels.",
-                        "Are deeply strictly localized completely exclusively strictly explicitly solely within the explicitly somatic cellular nucleus."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "Nitric Oxide and Carbon Monoxide are unconventional because they are small, uncharged, nonpolar gases. They are not stored in vesicles; they are synthesized on demand and diffuse freely across lipid bilayers directly into neighboring cells to activate second messengers like cGMP."
-                },
-                {
-                    question: "In the explicit physiological architecture of specific post-synaptic transmission, neurotransmitters that bind heavily directly and completely explicitly to precise 'Ionotropic' receptors heavily initiate:",
-                    options: [
-                        "An extremely explicit heavily severely massive deeply explicit explicitly delayed massive metabolic functional systemic response.",
-                        "A completely highly functional heavily precise entirely perfectly directly immediate opening of specific structural ion channels.",
-                        "The extremely explicit heavily severe massive massive active massive structural activation of heavily massive cyclic specific AMP.",
-                        "The highly aggressive completely deep heavy specific entirely functional structural synthesis of new biological heavy proteins."
-                    ],
-                    correctAnswer: 1,
-                    explanation: "Ionotropic receptors are exactly what they sound like: ion channels. When a neurotransmitter (the ligand) binds to an ionotropic receptor, the channel opens immediately to allow ions through, mediating a very rapid, direct physiological effect."
-                },
-                {
-                    question: "Conversely, heavily explicit targeted neurotransmitters that physically actively explicitly bind strictly to 'Metabotropic' receptors operate by specifically and entirely directly initiating:",
-                    options: [
-                        "The highly specific highly rapid immediate massive completely specific targeted total destruction of the cell membrane.",
-                        "The immediate and completely totally rapid direct explicit opening of heavily massive explicit targeted sodium channels.",
-                        "A deeply complex explicit highly targeted completely heavy active specific internal signal transduction specific second messenger cascade.",
-                        "The totally immediate completely heavy highly aggressive entirely rapid functional generation of an absolute action potential."
+                        "Potassium ions",
+                        "Chloride ions",
+                        "Sodium ions",
+                        "Magnesium ions"
                     ],
                     correctAnswer: 2,
-                    explanation: "Metabotropic receptors (like G-protein coupled receptors) do not have a direct ion channel. Binding activates an internal signal transduction pathway (like cAMP or IP3) which then acts via second messengers to modulate cellular activity in a slower, much more prolonged manner."
+                    explanation: "The influx of positively charged Sodium ions causes a slight depolarization, bringing the membrane closer to threshold."
                 },
                 {
-                    question: "Within the deeply sophisticated central nervous system, Gamma Amino Butyric Acid (GABA) functions as the absolute most critical, most widespread explicitly:",
+                    question: "An Inhibitory Postsynaptic Potential actively hyperpolarizes the membrane by causing the influx of:",
                     options: [
-                        "Heavy specific explicitly excitatory explicit functional heavily active biological active specific chemical neurotransmitter.",
-                        "Heavy specific explicitly inhibitory explicit functional heavily active biological active specific chemical neurotransmitter.",
-                        "Heavy specific explicitly metabolic explicit functional heavily active biological active specific chemical neurotransmitter.",
-                        "Heavy specific explicitly structural explicit functional heavily active biological active specific chemical neurotransmitter."
+                        "Sodium ions",
+                        "Calcium ions",
+                        "Chloride ions",
+                        "Protons"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Influx of negatively charged Chloride ions or efflux of Potassium ions makes the inside of the cell more negative."
+                },
+                {
+                    question: "The primary inhibitory neurotransmitter functioning within the central nervous system is:",
+                    options: [
+                        "Glutamate",
+                        "Gamma Amino Butyric Acid",
+                        "Acetylcholine",
+                        "Dopamine"
                     ],
                     correctAnswer: 1,
-                    explanation: "GABA is the chief inhibitory neurotransmitter in the mammalian central nervous system. When released, it explicitly opens Cl- channels or K+ channels on the postsynaptic membrane, generating an IPSP and deeply hyperpolarizing the target neuron to prevent excessive firing."
+                    explanation: "Gamma Amino Butyric Acid is the chief inhibitory neurotransmitter that opens Potassium and Chloride channels."
                 },
                 {
-                    question: "During the exact precise biochemical process of specific synaptic termination, the highly potent enzyme Acetylcholinesterase specifically, explicitly, and aggressively hydrolyzes the Acetylcholine molecule cleanly into:",
+                    question: "Direct postsynaptic inhibition occurs exclusively due to the release of:",
                     options: [
-                        "Highly specific structural explicitly active Acetic explicitly acid and perfectly functional heavy active specifically targeted Acetyl-CoA.",
-                        "Highly specific structural explicitly active Acetate explicitly specific and perfectly functional heavy active specifically targeted Choline.",
-                        "Highly specific structural explicitly active Choline explicitly specific and perfectly functional heavy active specifically targeted Glutamate.",
-                        "Highly specific structural explicitly active Serotonin explicitly specific and perfectly functional heavy active specifically targeted Dopamine."
+                        "An excitatory neurotransmitter",
+                        "An inhibitory neurotransmitter",
+                        "Calcium ions",
+                        "Sodium ions"
                     ],
                     correctAnswer: 1,
-                    explanation: "To instantly terminate the muscle contraction signal, Acetylcholinesterase, anchored to the basal lamina of the synaptic cleft, rapidly hydrolyzes Acetylcholine into Acetate (which diffuses away) and Choline (which is aggressively pumped back into the presynaptic bouton to make more ACh)."
+                    explanation: "Postsynaptic inhibition is caused by the direct action of inhibitory transmitters like Glycine or Gamma Amino Butyric Acid."
                 },
                 {
-                    question: "In neurophysiological research, a single, isolated, fully mature nerve fiber perfectly and strictly perfectly explicitly strictly accurately obeys the fundamental 'Bell-Magendie Law' directly regarding synapse function, which states definitively that:",
+                    question: "Renshaw cell inhibition in the spinal cord is a classic physiological example of a:",
                     options: [
-                        "Action explicitly specific specific specific specific specific specific specific specific specific specific specific specific potentials travel absolutely randomly entirely totally heavily completely in both directions.",
-                        "Conduction explicitly specific specific specific specific specific specific specific specific specific specific specific specific strictly and absolutely occurs entirely solely perfectly strictly in one absolute direction.",
-                        "The exact explicitly specific specific specific specific specific specific specific specific specific specific specific specific amplitude of the total heavy strictly specific absolute massive explicit potential precisely declines.",
-                        "The explicitly specific specific specific specific specific specific specific specific specific specific specific specific electrical specifically absolutely precise fully active completely explicit current is permanently heavily lost."
+                        "Feedforward excitation mechanism",
+                        "Damping function",
+                        "Spatial summation response",
+                        "Synaptic fatigue cascade"
                     ],
                     correctAnswer: 1,
-                    explanation: "The Bell-Magendie Law, in the context of synaptic transmission, enforces the principle of One-Way Conduction. Because neurotransmitter vesicles only exist in the presynaptic terminal and receptors only exist on the postsynaptic membrane, impulses can strictly and solely cross the synapse in one functional direction."
+                    explanation: "Renshaw cells provide negative feedback to motor neurons, restricting excess impulses to ensure motor accuracy."
                 },
                 {
-                    question: "When completely evaluating a patient presenting with an extremely severe, massive, pathological, explicitly chronic, explicitly targeted active extracellular localized clinical presentation of explicit hyperkalemia, you would absolutely perfectly mathematically exactly expect the calculated Nernst equilibrium potential for Potassium to:",
+                    question: "Which potent biological poison destroys the inhibitory function of Renshaw cells leading to severe convulsions?",
                     options: [
-                        "Shift massively entirely significantly exactly precisely precisely precisely entirely deeply explicitly strictly specifically exactly closer strictly specifically correctly strictly strictly perfectly definitively entirely to exactly zero millivolts.",
-                        "Drop entirely entirely completely explicitly specifically totally heavily explicitly completely perfectly completely exactly strictly explicitly deep completely exclusively perfectly precisely below specifically negative one hundred millivolts.",
-                        "Remain absolutely perfectly perfectly absolutely exactly explicitly entirely completely strictly perfectly perfectly purely mathematically flawlessly completely totally absolutely strictly constant and explicitly perfectly unchanged.",
-                        "Shift abruptly explicitly massively explicitly specifically heavily entirely completely perfectly precisely exactly correctly correctly specifically completely totally heavily rapidly precisely exactly to a heavy precisely positive value."
+                        "Curare",
+                        "Strychnine",
+                        "Tetrodotoxin",
+                        "Lidocaine"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Strychnine blocks inhibitory neurotransmitter receptors, removing the damping function and causing continuous, violent spasms."
+                },
+                {
+                    question: "The Bell-Magendie law states that impulses at a chemical synapse are transmitted strictly:",
+                    options: [
+                        "In both directions",
+                        "In one direction only",
+                        "Without any measurable delay",
+                        "Without the use of neurotransmitters"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Because vesicles are only in the presynaptic terminal and receptors only on the postsynaptic membrane, conduction is strictly unidirectional."
+                },
+                {
+                    question: "The absolute minimum time required for transmission across a chemical synapse is termed synaptic delay and is approximately:",
+                    options: [
+                        "0.1 milliseconds",
+                        "0.5 milliseconds",
+                        "2.0 milliseconds",
+                        "5.0 milliseconds"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Synaptic delay is about 0.5 ms, accounting for Calcium entry, vesicle fusion, diffusion, and receptor binding."
+                },
+                {
+                    question: "Fatigue at the synapse during continuous severe muscular activity is primarily caused by:",
+                    options: [
+                        "Lactic acid buildup",
+                        "Depletion of neurotransmitter substance",
+                        "Total loss of cellular ATP",
+                        "Extracellular Calcium toxicity"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "When stimulated continuously at high rates, the terminal runs out of stored Acetylcholine faster than it can be synthesized."
+                },
+                {
+                    question: "Spatial summation occurs specifically when:",
+                    options: [
+                        "One terminal is stimulated repeatedly in rapid succession",
+                        "Many presynaptic terminals are stimulated simultaneously",
+                        "Neurotransmitters leak completely out of the synaptic cleft",
+                        "Action potentials travel directly backward up the axon"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Spatial summation is the additive effect of multiple different synapses firing at the exact same time in different spaces on the cell."
+                },
+                {
+                    question: "Temporal summation occurs specifically when:",
+                    options: [
+                        "One presynaptic terminal is stimulated repeatedly",
+                        "Many terminals are stimulated at the exact same time",
+                        "The postsynaptic cell physically divides",
+                        "Gap junctions are heavily activated"
                     ],
                     correctAnswer: 0,
-                    explanation: "The Nernst equation directly calculates the voltage required to oppose a concentration gradient. If extracellular Potassium increases (Hyperkalemia), the concentration gradient across the membrane decreases. A smaller gradient requires a smaller voltage to oppose it, meaning the Equilibrium potential shifts from -85mV to a less negative value, moving explicitly closer to zero."
+                    explanation: "Temporal summation is the additive effect of a single synapse firing rapidly over time before the previous potential can decay."
+                },
+                {
+                    question: "Which of the following is strictly classified as an unconventional neurotransmitter?",
+                    options: [
+                        "Acetylcholine",
+                        "Dopamine",
+                        "Nitric oxide",
+                        "Glycine"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Nitric oxide is an unconventional neurotransmitter because it is a gas, is not stored in vesicles, and diffuses directly across cell membranes."
+                },
+                {
+                    question: "Nitric oxide can diffuse freely into cells without passing through membrane proteins because it is a:",
+                    options: [
+                        "Large polar molecule",
+                        "Small nonpolar molecule",
+                        "Charged heavy ion",
+                        "Massive glycoprotein"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Because NO is small and nonpolar, it easily passes through the lipid bilayer to act directly on intracellular enzymes."
+                },
+                {
+                    question: "Receptors that directly allow the passage of ions when a neurotransmitter binds are explicitly classified as:",
+                    options: [
+                        "Metabotropic receptors",
+                        "Ionotropic receptors",
+                        "Intracellular receptors",
+                        "Nuclear receptors"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ionotropic receptors are ligand-gated ion channels that open directly upon neurotransmitter binding for a rapid response."
+                },
+                {
+                    question: "Metabotropic receptors cause cellular effects indirectly by promoting the active formation of:",
+                    options: [
+                        "Direct immediate ion influx",
+                        "Second messenger molecules",
+                        "Immediate massive depolarization",
+                        "Rapid DNA replication"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Metabotropic receptors (like G-protein coupled receptors) initiate a signal transduction cascade that produces second messengers."
+                },
+                {
+                    question: "Which specific enzyme is responsible for destroying acetylcholine immediately after it produces its action?",
+                    options: [
+                        "Monoamine oxidase",
+                        "Acetylcholinesterase",
+                        "Choline acetyltransferase",
+                        "Protein kinase"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Acetylcholinesterase breaks Acetylcholine down into acetate and choline to terminate the muscle contraction signal."
+                },
+                {
+                    question: "An Excitatory Postsynaptic Potential differs from an action potential because it is strictly:",
+                    options: [
+                        "Propagative and biphasic",
+                        "Monophasic and non-propagative",
+                        "All-or-none and constant",
+                        "Hyperpolarizing and massive"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "EPSPs are graded, local potentials that do not propagate down the axon; they simply summate at the axon hillock."
+                },
+                {
+                    question: "The specific enzyme that phosphorylates synapsins to permit vesicle exocytosis is:",
+                    options: [
+                        "Protein kinase",
+                        "Acetylcholinesterase",
+                        "Adenylyl cyclase",
+                        "Phospholipase"
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Calcium-Calmodulin activates Protein kinase, which phosphorylates synapsins, allowing the vesicles to detach and fuse."
+                },
+                {
+                    question: "The primary function of the Nernst equation is to convert a concentration difference for a single ion into a:",
+                    options: [
+                        "Resistance",
+                        "Capacitance",
+                        "Voltage",
+                        "Current"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The Nernst equation uses physiological constants to calculate the exact voltage required to oppose a given concentration gradient."
                 }
-            ],
             "PHS213": [],
             "PHS214": [],
             "GST211": [],
@@ -884,9 +993,9 @@
 
             currentCourse = courseCode;
             
-            // Shuffle and load all 100 questions, then slice out exactly 35.
+            // Shuffle and load all 100 questions, then slice out exactly 50.
             let shuffled = [...data].sort(() => 0.5 - Math.random());
-            questions = shuffled.slice(0, Math.min(35, shuffled.length));
+            questions = shuffled.slice(0, Math.min(50, shuffled.length));
             
             userAnswers = new Array(questions.length).fill(null);
             flagged = new Array(questions.length).fill(false);
