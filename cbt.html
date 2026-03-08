@@ -1,121 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VVDT1PMHNX');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level Select | Splendid's Academy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Assessment Engine | Splendid's Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                            glow: '#38bdf8',    /* Sky 400 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f0fdfa; }
-        .locked-card { filter: grayscale(100%); opacity: 0.7; pointer-events: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-nav { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .locked-card { 
+            filter: grayscale(100%); 
+            opacity: 0.5; 
+            pointer-events: none; 
+        }
+
+        /* Ambient Glow */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="min-h-screen relative pb-20">
 
-    <nav class="bg-teal-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <a href="hub.html" class="text-teal-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
-            <h1 class="font-bold text-lg tracking-tight">Assessment Engine</h1>
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[500px] h-[500px] top-[-10%] left-[-10%]"></div>
+    <div class="bg-flare bg-blue-900 w-[600px] h-[600px] bottom-[-20%] right-[-10%]" style="animation-delay: -3s;"></div>
+
+    <!-- Top Navigation -->
+    <nav class="glass-nav sticky top-0 z-50 p-4 shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <!-- Ensure it goes back to dashboard to maintain flow -->
+            <a href="dashboard.html" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 bg-slate-800/50 rounded-xl focus:outline-none">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="font-black text-lg text-white tracking-tight">Assessment Engine</h1>
+                <p class="text-[9px] text-cyan-400 font-bold tracking-[0.2em] uppercase">Progression Matrix</p>
+            </div>
         </div>
-        <div id="course-badge" class="text-xs font-bold text-teal-400 border border-teal-700 bg-teal-800 px-2 py-1 rounded">...</div>
+        <div id="course-badge" class="text-[10px] font-black text-cyan-400 border border-cyan-500/30 bg-cyan-900/30 px-3 py-1.5 rounded-full uppercase tracking-widest shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+            LOADING...
+        </div>
     </nav>
 
-    <div class="bg-slate-800 border border-cyan-500/30 rounded-xl p-5 mb-6 shadow-lg relative overflow-hidden">
-    <div class="absolute top-0 right-0 bg-cyan-500 text-xs font-bold px-3 py-1 rounded-bl-lg text-slate-900 uppercase">
-        Live Intel
-    </div>
-    <h3 class="text-xl font-extrabold text-cyan-400 mb-2 border-b border-slate-700 pb-2">
-        <span class="text-white">Director's Desk:</span> High-Yield Targets
-    </h3>
-    <ul class="text-slate-300 text-sm space-y-2 mt-3 font-medium">
-        <li class="flex items-start gap-2">
-            <span class="text-cyan-400">🔥</span> 
-            <span><strong>PHS 211:</strong> Immunity & Immunodeficiency, RETICULU-ENDOTHELIAL SYSTEM, .</span>
-        </li>
-        <li class="flex items-start gap-2">
-            <span class="text-cyan-400">🔥</span> 
-            <span><strong>PHS 213:</strong> Priortize Cytoskeleton & Intercellular Junction, Action potential, Cell Organelles, Excitation-Contraction Coupling.</span>
-        </li>
-        <li class="flex items-start gap-2">
-            <span class="text-cyan-400">🔥</span> 
-            <span><strong>Anatomy:</strong> Study Clinical Correlations, Review the Popliteal Fossa boundaries and contents.</span>
-        </li>
-    </ul>
-    <p class="text-xs text-slate-500 mt-4 italic">- Signed: Favour, Director of Academics</p>
-    </div>
+    <div class="max-w-2xl mx-auto px-4 pt-8">
 
-    <div class="p-6 text-center">
-        <h2 id="track-title" class="text-2xl font-extrabold text-teal-900">Loading Track...</h2>
-        <p class="text-sm text-teal-600">Complete modules in order to unlock the Final Exam.</p>
-    </div>
 
-    <div class="max-w-md mx-auto px-4 space-y-4">
-
-        <div id="level-beginner" class="bg-white p-6 rounded-2xl shadow-lg border-l-8 border-teal-500 relative overflow-hidden transition transform hover:scale-105">
-            <div class="flex justify-between items-center">
-                <div>
-                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-1 rounded uppercase">Level 1</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Beginner</h3>
-                    <p class="text-xs text-slate-500 mt-1">Foundation Concepts</p>
-                </div>
-                <div class="h-12 w-12 rounded-full bg-teal-600 text-white flex items-center justify-center text-xl shadow-lg shadow-teal-200">
-                    <i class="fas fa-play ml-1"></i>
-                </div>
-            </div>
-            <button onclick="startQuiz('beginner')" class="absolute inset-0 w-full h-full cursor-pointer opacity-0">Start</button>
+        <div class="text-center mb-8 reveal-on-scroll" style="animation-delay: 0.1s;">
+            <h2 id="track-title" class="text-3xl md:text-4xl font-black text-white tracking-tighter mb-2">Loading Track...</h2>
+            <p class="text-sm font-medium text-slate-400">Clear preceding modules to unlock the Distinction level.</p>
         </div>
 
-        <div id="level-intermediate" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
-            <div class="flex justify-between items-center">
-                <div>
-                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Level 2</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Intermediate</h3>
-                    <p class="text-xs text-slate-500 mt-1">Advanced Mechanics</p>
-                </div>
-                <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
-                    <i class="fas fa-lock locked-icon"></i>
-                </div>
-            </div>
-            <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
-                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Level 1 to Unlock</span>
-            </div>
-        </div>
+        <!-- Level Matrix -->
+        <div class="space-y-5 reveal-on-scroll" style="animation-delay: 0.2s;">
 
-        <div id="level-advanced" class="bg-white p-6 rounded-2xl shadow-sm border-l-8 border-gray-300 relative overflow-hidden locked-card">
-            <div class="flex justify-between items-center">
-                <div>
-                    <span class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Final Exam</span>
-                    <h3 class="font-bold text-xl text-slate-800 mt-1">Advanced</h3>
-                    <p class="text-xs text-slate-500 mt-1">Clinical & Application</p>
+            <!-- Level 1: Beginner (Always Unlocked) -->
+            <div id="level-beginner" class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-cyan-400 relative overflow-hidden transition-all hover:-translate-y-1 shadow-[0_10px_30px_-10px_rgba(6,182,212,0.2)] group">
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Level 1</span>
+                        <h3 class="font-black text-2xl text-white mt-2 tracking-tight">Beginner</h3>
+                        <p class="text-xs text-slate-400 mt-1 font-medium">Foundation Concepts & Terminology</p>
+                    </div>
+                    <div class="icon-box h-14 w-14 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                        <i class="fas fa-play ml-1"></i>
+                    </div>
                 </div>
-                <div class="h-12 w-12 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-xl">
-                    <i class="fas fa-lock locked-icon"></i>
-                </div>
+                <button onclick="startQuiz('beginner')" class="absolute inset-0 w-full h-full cursor-pointer opacity-0 z-20">Start</button>
             </div>
-            <div class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px]">
-                <span class="bg-slate-800 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Pass Level 2 to Unlock</span>
-            </div>
-        </div>
 
+            <!-- Level 2: Intermediate (Locked by default) -->
+            <div id="level-intermediate" class="bg-slate-900/40 p-6 rounded-2xl border border-slate-800 border-l-4 border-l-slate-700 relative overflow-hidden locked-card transition-all">
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <span class="bg-slate-800 text-slate-400 border border-slate-700 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Level 2</span>
+                        <h3 class="font-black text-2xl text-slate-300 mt-2 tracking-tight">Intermediate</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Advanced Mechanisms & Pathways</p>
+                    </div>
+                    <div class="icon-box h-14 w-14 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-xl border border-slate-700">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <div class="lock-overlay absolute inset-0 flex items-center justify-center bg-slate-950/60 backdrop-blur-[2px] z-20">
+                    <span class="bg-slate-900 border border-slate-700 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-slate-500"></i> Clear Level 1 to Unlock
+                    </span>
+                </div>
+            </div>
+
+            <!-- Level 3: Advanced (Locked by default) -->
+            <div id="level-advanced" class="bg-slate-900/40 p-6 rounded-2xl border border-slate-800 border-l-4 border-l-slate-700 relative overflow-hidden locked-card transition-all">
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <span class="bg-slate-800 text-slate-400 border border-slate-700 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Final Phase</span>
+                        <h3 class="font-black text-2xl text-slate-300 mt-2 tracking-tight">Advanced</h3>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Clinical Diagnostics & Application</p>
+                    </div>
+                    <div class="icon-box h-14 w-14 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center text-xl border border-slate-700">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <div class="lock-overlay absolute inset-0 flex items-center justify-center bg-slate-950/60 backdrop-blur-[2px] z-20">
+                    <span class="bg-slate-900 border border-slate-700 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-slate-500"></i> Clear Level 2 to Unlock
+                    </span>
+                </div>
+            </div>
+
+        </div>
     </div>
 
+    <!-- Firebase & Core Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
-        // Your Firebase Config
-        const firebaseConfig = { apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew", authDomain: "splendids-academy-v2.firebaseapp.com", projectId: "splendids-academy-v2", storageBucket: "splendids-academy-v2.firebasestorage.app", messagingSenderId: "573697150601", appId: "1:573697150601:web:74c556c85b6be053018058", measurementId: "G-VVDT1PMHNX" };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
+            authDomain: "splendids-academy-v2.firebaseapp.com",
+            projectId: "splendids-academy-v2",
+            storageBucket: "splendids-academy-v2.firebasestorage.app",
+            messagingSenderId: "573697150601",
+            appId: "1:573697150601:web:74c556c85b6be053018058",
+            measurementId: "G-VVDT1PMHNX" 
+        };
+
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app); 
         const auth = getAuth(app);
+
+        // --- 15-MINUTE INACTIVITY LOCKOUT PROTOCOL ---
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 15 * 60 * 1000; 
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (auth.currentUser) {
+                inactivityTimer = setTimeout(() => {
+                    signOut(auth).then(() => {
+                        localStorage.setItem('session_timeout', 'true');
+                        window.location.href = "index.html"; 
+                    });
+                }, INACTIVITY_LIMIT);
+            }
+        }
+
+        ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetInactivityTimer, { passive: true })
+        );
 
         // Global Variables
         let currentCourse = "ANA 211"; // Default fallback
 
         onAuthStateChanged(auth, (user) => {
-            if (!user) window.location.href = "index.html";
-            else initPage();
+            if (user) {
+                resetInactivityTimer();
+                initPage();
+            } else {
+                window.location.href = "index.html";
+            }
         });
 
         function initPage() {
@@ -128,6 +243,8 @@
                 currentCourse = courseCode;
                 document.getElementById('course-badge').textContent = courseCode;
                 document.getElementById('track-title').textContent = courseTitle || (courseCode + " Track");
+            } else {
+                document.getElementById('course-badge').textContent = "SELECT A COURSE";
             }
 
             // 2. Check Progress for THIS SPECIFIC COURSE
@@ -135,7 +252,7 @@
         }
 
         function checkProgress() {
-            // Check keys like "PHS 211_beginner_passed"
+            // Check keys generated by quiz-runner.html
             const passedLevel1 = localStorage.getItem(`${currentCourse}_beginner_passed`);
             const passedLevel2 = localStorage.getItem(`${currentCourse}_intermediate_passed`);
 
@@ -151,27 +268,47 @@
             const card = document.getElementById(id);
             if(!card) return;
 
-            card.classList.remove('locked-card', 'border-gray-300');
-            card.classList.add('border-teal-500', 'hover:scale-105', 'transition-transform');
+            // Remove locked aesthetics
+            card.classList.remove('locked-card', 'border-slate-800', 'bg-slate-900/40', 'border-l-slate-700');
             
-            const iconContainer = card.querySelector('.rounded-full');
-            iconContainer.classList.remove('bg-gray-200', 'text-gray-400');
-            iconContainer.classList.add('bg-teal-600', 'text-white', 'shadow-lg');
-            iconContainer.innerHTML = '<i class="fas fa-play ml-1"></i>';
+            // Add unlocked aesthetics
+            card.classList.add('border-slate-700', 'bg-slate-900/80', 'border-l-cyan-400', 'hover:-translate-y-1', 'shadow-[0_10px_30px_-10px_rgba(6,182,212,0.2)]', 'group');
+            
+            // Update Icon Box
+            const iconContainer = card.querySelector('.icon-box');
+            if(iconContainer) {
+                iconContainer.className = 'icon-box h-14 w-14 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors shadow-[0_0_15px_rgba(6,182,212,0.5)]';
+                iconContainer.innerHTML = '<i class="fas fa-play ml-1"></i>';
+            }
 
-            const overlay = card.querySelector('.absolute.inset-0.flex');
+            // Update Tag
+            const tagSpan = card.querySelector('span.uppercase');
+            if(tagSpan) {
+                tagSpan.className = 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest';
+            }
+            
+            // Update Title
+            const titleH3 = card.querySelector('h3');
+            if(titleH3) {
+                titleH3.classList.remove('text-slate-300');
+                titleH3.classList.add('text-white');
+            }
+
+            // Remove Blur Overlay
+            const overlay = card.querySelector('.lock-overlay');
             if(overlay) overlay.remove();
 
+            // Inject Clickable Button
             const btn = document.createElement('button');
-            btn.className = "absolute inset-0 w-full h-full cursor-pointer opacity-0";
+            btn.className = "absolute inset-0 w-full h-full cursor-pointer opacity-0 z-20";
             btn.onclick = function() { startQuiz(levelName); };
             card.appendChild(btn);
         }
 
-        // Expose startQuiz to global scope so HTML onclick works
+        // Expose startQuiz to global scope
         window.startQuiz = function(levelName) {
             window.location.href = `quiz-runner.html?course=${encodeURIComponent(currentCourse)}&level=${levelName}`;
         }
     </script>
 </body>
-            </html>
+    </html>
