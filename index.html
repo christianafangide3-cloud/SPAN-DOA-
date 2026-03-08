@@ -1,104 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VVDT1PMHNX');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Splendid's Academy | Student Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Splendid's Academy | Secure Gateway</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                            glow: '#38bdf8',    /* Sky 400 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .hidden { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-glow-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-glow-success:hover {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Ambient Background Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.35;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+        
+        /* Custom Input Autofill Override for Dark Mode */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
 
-    <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden glass-panel border border-slate-200 relative">
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[500px] h-[500px] top-[-10%] left-[-10%]"></div>
+    <div class="bg-flare bg-blue-900 w-[600px] h-[600px] bottom-[-20%] right-[-10%]" style="animation-delay: -3s;"></div>
+
+    <div class="max-w-md w-full glass-panel rounded-3xl overflow-hidden relative fade-in z-10">
         
-        <div id="loading" class="hidden absolute inset-0 bg-white/80 z-50 flex flex-col items-center justify-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
-            <p class="mt-4 text-sm font-bold text-emerald-800 animate-pulse">Authenticating...</p>
+        <!-- Loading Overlay -->
+        <div id="loading" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+            <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-cyan-400 mb-4"></div>
+            <p class="text-sm font-bold text-cyan-400 animate-pulse tracking-widest uppercase">Authenticating...</p>
         </div>
 
-        <div class="bg-slate-900 p-8 text-center text-white">
-            <div class="text-4xl mb-2">🩺</div>
-            <h1 class="text-2xl font-extrabold tracking-tight">Splendid's Academy</h1>
-            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Secure Student Portal</p>
+        <!-- Header -->
+        <div class="p-8 text-center border-b border-white/5 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[40px]"></div>
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-[0_0_20px_rgba(6,182,212,0.4)] mb-4 transform rotate-3">
+                <i class="fas fa-fingerprint -rotate-3"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-1">Splendid's Academy</h1>
+            <p class="text-cyan-400 text-[10px] font-mono uppercase tracking-[0.3em]">Secure Academic Portal</p>
         </div>
 
-        <div class="flex border-b border-slate-200">
-            <button onclick="toggleForm('login')" id="tab-login" class="flex-1 py-4 text-sm font-bold text-emerald-600 border-b-2 border-emerald-600 bg-slate-50 transition-colors">Log In</button>
-            <button onclick="toggleForm('signup')" id="tab-signup" class="flex-1 py-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Create Account</button>
+        <!-- Tabs -->
+        <div class="flex border-b border-white/5 bg-slate-900/30">
+            <button onclick="toggleForm('login')" id="tab-login" class="flex-1 py-4 text-sm font-bold text-cyan-400 border-b-2 border-cyan-400 bg-slate-800/50 transition-all">Authenticate</button>
+            <button onclick="toggleForm('signup')" id="tab-signup" class="flex-1 py-4 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-all">Initialize ID</button>
         </div>
 
         <div class="p-8">
             
-            <div id="auth-message" class="hidden mb-4 p-3 rounded-lg text-xs font-bold text-center"></div>
+            <!-- Message Box -->
+            <div id="auth-message" class="hidden"></div>
 
-            <form id="login-form" class="space-y-4">
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
-                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
-                        <i class="fas fa-envelope text-slate-400"></i>
-                        <input type="email" id="login-email" required class="w-full p-3 outline-none text-sm font-medium" placeholder="student@uniuyo.edu.ng">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Clearance Email</label>
+                    <div class="flex items-center border border-slate-700 rounded-xl px-4 bg-slate-900/50 focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-400/50 transition-all">
+                        <i class="fas fa-envelope text-slate-500"></i>
+                        <input type="email" id="login-email" required class="w-full p-4 outline-none text-sm font-medium bg-transparent text-white placeholder-slate-600" placeholder="director@bamssa.edu.ng">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
-                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
-                        <i class="fas fa-lock text-slate-400"></i>
-                        <input type="password" id="login-password" required class="w-full p-3 outline-none text-sm font-medium" placeholder="••••••••">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Access Key</label>
+                    <div class="flex items-center border border-slate-700 rounded-xl px-4 bg-slate-900/50 focus-within:border-cyan-400 focus-within:ring-1 focus-within:ring-cyan-400/50 transition-all">
+                        <i class="fas fa-lock text-slate-500"></i>
+                        <input type="password" id="login-password" required class="w-full p-4 outline-none text-sm font-medium bg-transparent text-white placeholder-slate-600 tracking-widest" placeholder="••••••••">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-transform active:scale-95 shadow-lg">
-                    Access Portal <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-                <p class="text-center text-xs text-slate-400 mt-4">Forgot Password? <a href="#" onclick="resetPassword()" class="text-emerald-600 font-bold hover:underline">Reset here</a></p>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-glow text-white font-bold py-4 rounded-xl uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+                        Grant Access <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <p class="text-center text-xs text-slate-500 mt-6">Protocol error? <a href="#" onclick="resetPassword()" class="text-cyan-400 font-bold hover:text-cyan-300 transition-colors">Reset Access Key</a></p>
             </form>
 
-            <form id="signup-form" class="hidden space-y-4">
+            <!-- Signup Form -->
+            <form id="signup-form" class="hidden space-y-5">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
-                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
-                        <i class="fas fa-user text-slate-400"></i>
-                        <input type="text" id="signup-name" required class="w-full p-3 outline-none text-sm font-medium" placeholder="Christian Solomon">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Official Name</label>
+                    <div class="flex items-center border border-slate-700 rounded-xl px-4 bg-slate-900/50 focus-within:border-emerald-400 focus-within:ring-1 focus-within:ring-emerald-400/50 transition-all">
+                        <i class="fas fa-user-shield text-slate-500"></i>
+                        <input type="text" id="signup-name" required class="w-full p-4 outline-none text-sm font-medium bg-transparent text-white placeholder-slate-600" placeholder="Christian Solomon">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
-                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
-                        <i class="fas fa-envelope text-slate-400"></i>
-                        <input type="email" id="signup-email" required class="w-full p-3 outline-none text-sm font-medium" placeholder="student@uniuyo.edu.ng">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Institutional Email</label>
+                    <div class="flex items-center border border-slate-700 rounded-xl px-4 bg-slate-900/50 focus-within:border-emerald-400 focus-within:ring-1 focus-within:ring-emerald-400/50 transition-all">
+                        <i class="fas fa-envelope text-slate-500"></i>
+                        <input type="email" id="signup-email" required class="w-full p-4 outline-none text-sm font-medium bg-transparent text-white placeholder-slate-600" placeholder="student@uniuyo.edu.ng">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Create Password</label>
-                    <div class="flex items-center border border-slate-300 rounded-lg px-3 bg-white">
-                        <i class="fas fa-lock text-slate-400"></i>
-                        <input type="password" id="signup-password" required class="w-full p-3 outline-none text-sm font-medium" placeholder="•••••••• (Min 6 chars)">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Generate Access Key</label>
+                    <div class="flex items-center border border-slate-700 rounded-xl px-4 bg-slate-900/50 focus-within:border-emerald-400 focus-within:ring-1 focus-within:ring-emerald-400/50 transition-all">
+                        <i class="fas fa-key text-slate-500"></i>
+                        <input type="password" id="signup-password" required class="w-full p-4 outline-none text-sm font-medium bg-transparent text-white placeholder-slate-600 tracking-widest" placeholder="•••••••• (Min 6)">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition-transform active:scale-95 shadow-lg shadow-emerald-200">
-                    Register Student <i class="fas fa-user-plus ml-2"></i>
-                </button>
+                <div class="pt-2">
+                    <button type="submit" class="w-full btn-glow-success text-white font-bold py-4 rounded-xl uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+                        Initialize ID <i class="fas fa-satellite-dish"></i>
+                    </button>
+                </div>
             </form>
 
         </div>
         
-        <div class="bg-slate-50 p-4 text-center border-t border-slate-200">
-            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Secure • Encrypted • Fast</p>
+        <div class="bg-slate-900/80 p-4 text-center border-t border-white/5">
+            <p class="text-[9px] text-slate-500 font-mono uppercase tracking-[0.2em]">AES-256 Encrypted • BMS Terminal</p>
         </div>
     </div>
 
     <script type="module">
-        // Import Firebase
+        // 1. Core Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged } 
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged, signOut } 
         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
-        // Configuration
+        // 2. Exact Firebase Config with correct Measurement ID
         const firebaseConfig = {
             apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
             authDomain: "splendids-academy-v2.firebaseapp.com",
@@ -106,11 +215,12 @@
             storageBucket: "splendids-academy-v2.firebasestorage.app",
             messagingSenderId: "573697150601",
             appId: "1:573697150601:web:74c556c85b6be053018058",
-            measurementId: "G-VBNBLV0DSS"
+            measurementId: "G-VVDT1PMHNX" 
         };
 
-        // Initialize
+        // 3. System Engine Initialization
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app); 
         const auth = getAuth(app);
 
         // --- DOM ELEMENTS ---
@@ -119,11 +229,36 @@
         const msgBox = document.getElementById('auth-message');
         const loader = document.getElementById('loading');
 
-        // --- AUTH STATE LISTENER (Redirect if logged in) ---
+        // --- 15-MINUTE INACTIVITY LOCKOUT PROTOCOL ---
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 Minutes
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (auth.currentUser) {
+                inactivityTimer = setTimeout(() => {
+                    signOut(auth).then(() => {
+                        localStorage.setItem('session_timeout', 'true');
+                        window.location.reload(); 
+                    });
+                }, INACTIVITY_LIMIT);
+            }
+        }
+
+        ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetInactivityTimer, { passive: true })
+        );
+
+        // --- AUTH STATE LISTENER ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // If user is already logged in, send them to dashboard
+                resetInactivityTimer();
                 window.location.href = "dashboard.html";
+            } else {
+                if (localStorage.getItem('session_timeout') === 'true') {
+                    showMessage("Security Protocol: Session terminated due to 15 minutes of inactivity. Please re-authenticate.", "error");
+                    localStorage.removeItem('session_timeout');
+                }
             }
         });
 
@@ -137,7 +272,7 @@
 
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    showMessage("Login Successful! Redirecting...", "success");
+                    showMessage("Clearance Accepted. Connecting to Mainframe...", "success");
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
                 })
                 .catch((error) => {
@@ -157,10 +292,9 @@
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Update profile with name
                     updateProfile(auth.currentUser, { displayName: name })
                     .then(() => {
-                        showMessage("Account Created! Welcome, " + name, "success");
+                        showMessage("Identity Initialized. Welcome, " + name, "success");
                         setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
                     });
                 })
@@ -172,10 +306,10 @@
 
         // --- RESET PASSWORD ---
         window.resetPassword = function() {
-            const email = prompt("Enter your email to reset password:");
+            const email = prompt("Enter clearance email for key reset:");
             if(email) {
                 sendPasswordResetEmail(auth, email)
-                    .then(() => alert("Reset link sent! Check your inbox."))
+                    .then(() => alert("Override link dispatched to communications array (Check your inbox)."))
                     .catch((error) => alert(cleanError(error.code)));
             }
         }
@@ -183,14 +317,17 @@
         // --- UI UTILITIES ---
         function showMessage(text, type) {
             msgBox.textContent = text;
-            msgBox.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
-            if(type === 'error') msgBox.classList.add('bg-red-100', 'text-red-700');
-            else msgBox.classList.add('bg-green-100', 'text-green-700');
+            msgBox.className = 'mb-6 p-4 rounded-xl text-xs font-bold text-center border transition-all duration-300';
+            
+            if(type === 'error') {
+                msgBox.classList.add('bg-rose-500/10', 'text-rose-400', 'border-rose-500/30');
+            } else {
+                msgBox.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+            }
             msgBox.classList.remove('hidden');
         }
 
         function cleanError(code) {
-            // Converts 'auth/user-not-found' to 'User not found'
             return code.replace('auth/', '').replace(/-/g, ' ').toUpperCase();
         }
 
@@ -206,26 +343,29 @@
             
             msgBox.classList.add('hidden'); // Clear errors
 
+            const activeClasses = ['text-cyan-400', 'border-b-2', 'border-cyan-400', 'bg-slate-800/50'];
+            const inactiveClasses = ['text-slate-500', 'border-transparent', 'hover:text-slate-300'];
+
             if(tab === 'login') {
                 loginForm.classList.remove('hidden');
                 signupForm.classList.add('hidden');
                 
-                loginBtn.classList.add('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
-                loginBtn.classList.remove('text-slate-400');
+                loginBtn.classList.remove(...inactiveClasses);
+                loginBtn.classList.add(...activeClasses);
                 
-                signupBtn.classList.remove('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
-                signupBtn.classList.add('text-slate-400');
+                signupBtn.classList.remove(...activeClasses);
+                signupBtn.classList.add(...inactiveClasses);
             } else {
                 signupForm.classList.remove('hidden');
                 loginForm.classList.add('hidden');
                 
-                signupBtn.classList.add('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
-                signupBtn.classList.remove('text-slate-400');
+                signupBtn.classList.remove(...inactiveClasses);
+                signupBtn.classList.add(...activeClasses);
                 
-                loginBtn.classList.remove('text-emerald-600', 'border-b-2', 'border-emerald-600', 'bg-slate-50');
-                loginBtn.classList.add('text-slate-400');
+                loginBtn.classList.remove(...activeClasses);
+                loginBtn.classList.add(...inactiveClasses);
             }
         }
     </script>
 </body>
-  </html>
+    </html>
