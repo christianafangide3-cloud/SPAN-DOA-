@@ -2,154 +2,325 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VBNBLV0DSS');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VVDT1PMHNX');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Splendid's Library | Searchable Repository</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Splendid's Library | The Bento Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                            glow: '#38bdf8',    /* Sky 400 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .course-card { transition: all 0.2s; }
-        .course-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-nav { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        /* The Bento Card Styles */
+        .bento-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d; /* Required for 3D tilt */
+            will-change: transform;
+        }
+
+        /* 3D Inner Content pop-out effect */
+        .bento-inner {
+            transform: translateZ(30px);
+        }
+
+        /* Ambient Glow */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar for Grid if needed */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50">
+<body class="min-h-screen relative">
 
-    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <a href="dashboard.html" class="text-slate-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
-            <h1 class="font-bold text-lg tracking-tight">The Digital Vault</h1>
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[500px] h-[500px] top-[-10%] left-[-10%]"></div>
+    <div class="bg-flare bg-blue-900 w-[600px] h-[600px] bottom-[-20%] right-[-10%]" style="animation-delay: -3s;"></div>
+
+    <!-- Top Navigation -->
+    <nav class="glass-nav sticky top-0 z-50 p-4 shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <a href="dashboard.html" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 bg-slate-800/50 rounded-xl focus:outline-none">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="font-black text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">The Digital Vault</h1>
+                <p class="text-[9px] text-cyan-200/70 font-bold tracking-[0.2em] uppercase">Bento Repository</p>
+            </div>
         </div>
-        <div class="text-xs font-bold text-emerald-400 border border-emerald-900 bg-emerald-900/30 px-2 py-1 rounded">V2.0 LIVE</div>
+        <div class="text-[10px] font-black text-cyan-400 border border-cyan-500/30 bg-cyan-900/30 px-3 py-1.5 rounded-full uppercase tracking-widest shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+            V3.0 ACTIVE
+        </div>
     </nav>
 
-    <div class="bg-slate-900 pb-12 px-4 pt-4 rounded-b-[3rem]">
-        <div class="max-w-2xl mx-auto text-center">
-            <h2 class="text-white font-bold text-2xl mb-2">What are we studying today?</h2>
-            <p class="text-slate-400 text-sm mb-6">Search by Course Code (e.g., ANA 211) or Topic.</p>
+    <!-- Search Section -->
+    <div class="px-4 pt-8 pb-6 relative z-10">
+        <div class="max-w-2xl mx-auto text-center reveal-on-scroll">
+            <h2 class="text-white font-black text-3xl md:text-5xl mb-3 tracking-tighter">What Are You Studying Today.</h2>
+            <p class="text-slate-400 text-sm font-medium mb-8">Locate your materials instantly.</p>
             
-            <div class="relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative flex items-center bg-white rounded-xl shadow-2xl">
-                    <i class="fas fa-search text-slate-400 ml-4 text-lg"></i>
+            <div class="relative group max-w-xl mx-auto">
+                <div class="absolute -inset-1 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-2xl blur opacity-20 group-hover:opacity-60 transition duration-500"></div>
+                <div class="relative flex items-center bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 focus-within:border-cyan-400 transition-colors">
+                    <i class="fas fa-search text-cyan-400 ml-5 text-xl"></i>
                     <input type="text" id="searchInput" onkeyup="filterCourses()" placeholder="Type 'ANA', 'PHS', or 'Blood'..." 
-                           class="w-full p-4 rounded-xl outline-none text-slate-700 font-bold placeholder-slate-300">
+                           class="w-full p-5 rounded-2xl outline-none text-white font-bold bg-transparent placeholder-slate-500 tracking-wide">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="max-w-4xl mx-auto px-4 -mt-8 pb-20">
-        <div id="courseGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Bento Grid Repository -->
+    <div class="max-w-6xl mx-auto px-4 pb-24 relative z-10">
+        <!-- 
+            BENTO GRID LAYOUT: 
+            Mobile: 2 columns of squares.
+            Desktop: 4 columns. Some items span 2 columns/rows for the "blended" look.
+        -->
+        <div id="courseGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal-on-scroll" style="animation-delay: 0.1s;">
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500 flex items-center justify-between group" data-tags="phs 211 physiology blood intro">
-                <div>
-                    <div class="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1">Physiology</div>
-                    <h3 class="font-bold text-slate-800 text-lg">PHS 211</h3>
-                    <p class="text-xs text-slate-400">Intro, Blood, Body Fluids</p>
+            <!-- PHS 211 (Spans 2 columns on desktop) -->
+            <a href="https://drive.google.com/drive/folders/1RHUXhqZLlK8kL2X-I39a4iuzdOIXl4TI" target="_blank" class="course-card bento-card tilt-card md:col-span-2 aspect-[2/1] md:aspect-auto md:h-48 rounded-[2rem] p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="phs 211 physiology blood intro">
+                <div class="absolute inset-0 bg-gradient-to-br from-rose-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="absolute -right-6 -bottom-6 text-7xl text-rose-500/10 group-hover:scale-110 transition-transform duration-700 bento-inner"><i class="fas fa-heartbeat"></i></div>
+                
+                <div class="flex justify-between items-start w-full relative z-10 bento-inner">
+                    <div class="h-10 w-10 md:h-12 md:w-12 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center text-lg md:text-xl border border-rose-500/30">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                        <i class="fas fa-arrow-right text-rose-400 text-xl"></i>
+                    </div>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1RHUXhqZLlK8kL2X-I39a4iuzdOIXl4TI" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <div class="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">Physiology</div>
+                    <h3 class="font-black text-white text-2xl md:text-3xl tracking-tight leading-none mb-1">PHS 211</h3>
+                    <p class="text-xs md:text-sm text-slate-400 font-medium">Intro, Blood, Body Fluids</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500 flex items-center justify-between group" data-tags="phs 212 physiology muscle nerve excitable">
-                <div>
-                    <div class="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1">Physiology</div>
-                    <h3 class="font-bold text-slate-800 text-lg">PHS 212</h3>
-                    <p class="text-xs text-slate-400">Excitable Tissues (Nerves/Muscles)</p>
+            <!-- PHS 212 (Square) -->
+            <a href="https://drive.google.com/drive/folders/1sKUBVliF8bEbAhOwciiQymwQQF0mMhwA" target="_blank" class="course-card bento-card tilt-card aspect-square rounded-[2rem] p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="phs 212 physiology muscle nerve excitable">
+                <div class="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="h-10 w-10 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center text-lg border border-amber-500/30 relative z-10 bento-inner">
+                    <i class="fas fa-bolt"></i>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1sKUBVliF8bEbAhOwciiQymwQQF0mMhwA" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <h3 class="font-black text-white text-xl md:text-2xl tracking-tight leading-none mb-1">PHS 212</h3>
+                    <p class="text-[10px] md:text-xs text-slate-400 font-medium leading-tight">Excitable Tissues</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500 flex items-center justify-between group" data-tags="phs 213 physiology cell membrane transport">
-                <div>
-                    <div class="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1">Physiology</div>
-                    <h3 class="font-bold text-slate-800 text-lg">PHS 213</h3>
-                    <p class="text-xs text-slate-400">Cell Physiology & Biophysics</p>
+            <!-- PHS 213 (Square) -->
+            <a href="https://drive.google.com/drive/folders/1tklw2-iH5Mts1LsQsn_-qLCO-k5Hqgit" target="_blank" class="course-card bento-card tilt-card aspect-square rounded-[2rem] p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="phs 213 physiology cell membrane transport">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="h-10 w-10 bg-purple-500/20 text-purple-400 rounded-xl flex items-center justify-center text-lg border border-purple-500/30 relative z-10 bento-inner">
+                    <i class="fas fa-microscope"></i>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1tklw2-iH5Mts1LsQsn_-qLCO-k5Hqgit" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <h3 class="font-black text-white text-xl md:text-2xl tracking-tight leading-none mb-1">PHS 213</h3>
+                    <p class="text-[10px] md:text-xs text-slate-400 font-medium leading-tight">Cell Transport</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500 flex items-center justify-between group" data-tags="phs 213 physiology cell membrane transport">
-                <div>
-                    <div class="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1">Physiology</div>
-                    <h3 class="font-bold text-slate-800 text-lg">PHS 214</h3>
-                    <p class="text-xs text-slate-400">Practical PHYSIOLOGY </p>
+            <!-- ANA 211 (Square) -->
+            <a href="https://drive.google.com/drive/folders/1i31Bvxwbc2OO0oYrm0JhexyBUMIocglH" target="_blank" class="course-card bento-card tilt-card aspect-square rounded-[2rem] p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="ana 211 anatomy gross limb bone">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="h-10 w-10 bg-cyan-500/20 text-cyan-400 rounded-xl flex items-center justify-center text-lg border border-cyan-500/30 relative z-10 bento-inner">
+                    <i class="fas fa-bone"></i>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1sYwwZnWFDD0exglM5IfeCswI-mIkYDzZ" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <h3 class="font-black text-white text-xl md:text-2xl tracking-tight leading-none mb-1">ANA 211</h3>
+                    <p class="text-[10px] md:text-xs text-slate-400 font-medium leading-tight">Gross Anatomy</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 flex items-center justify-between group" data-tags="ana 211 anatomy gross limb bone">
-                <div>
-                    <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Anatomy</div>
-                    <h3 class="font-bold text-slate-800 text-lg">ANA 211</h3>
-                    <p class="text-xs text-slate-400">Gross Anatomy (Upper/Lower Limbs)</p>
+            <!-- ANA 213 (Square) -->
+            <a href="https://drive.google.com/drive/folders/19p87qawZeLfyHWwQYPY-y_ClY_BbkA7o" target="_blank" class="course-card bento-card tilt-card aspect-square rounded-[2rem] p-5 md:p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="ana 213 anatomy embryology development">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="h-10 w-10 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center text-lg border border-blue-500/30 relative z-10 bento-inner">
+                    <i class="fas fa-baby"></i>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1i31Bvxwbc2OO0oYrm0JhexyBUMIocglH" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <h3 class="font-black text-white text-xl md:text-2xl tracking-tight leading-none mb-1">ANA 213</h3>
+                    <p class="text-[10px] md:text-xs text-slate-400 font-medium leading-tight">Embryology</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 flex items-center justify-between group" data-tags="ana 213 anatomy embryology development">
-                <div>
-                    <div class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Anatomy</div>
-                    <h3 class="font-bold text-slate-800 text-lg">ANA 213</h3>
-                    <p class="text-xs text-slate-400">General Embryology</p>
+            <!-- MBC 211 (Spans 2 columns on desktop) -->
+            <a href="https://drive.google.com/drive/folders/14KZmC2Tz5pVjNEdqoiFEhUTtcV8KkWwe" target="_blank" class="course-card bento-card tilt-card md:col-span-2 aspect-[2/1] md:aspect-auto md:h-48 rounded-[2rem] p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="mbc 211 biochemistry chemistry biomolecules">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="absolute -right-6 -bottom-6 text-7xl text-emerald-500/10 group-hover:scale-110 transition-transform duration-700 bento-inner"><i class="fas fa-dna"></i></div>
+                
+                <div class="flex justify-between items-start w-full relative z-10 bento-inner">
+                    <div class="h-10 w-10 md:h-12 md:w-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-lg md:text-xl border border-emerald-500/30">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <div class="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                        <i class="fas fa-arrow-right text-emerald-400 text-xl"></i>
+                    </div>
                 </div>
-                <a href="https://drive.google.com/drive/folders/19p87qawZeLfyHWwQYPY-y_ClY_BbkA7o" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <div class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Biochemistry</div>
+                    <h3 class="font-black text-white text-2xl md:text-3xl tracking-tight leading-none mb-1">MBC 211</h3>
+                    <p class="text-xs md:text-sm text-slate-400 font-medium">General Biochemistry I</p>
+                </div>
+            </a>
 
-            <div class="course-card bg-white p-5 rounded-xl shadow-sm border-l-4 border-green-500 flex items-center justify-between group" data-tags="mbc 211 biochemistry chemistry biomolecules">
-                <div>
-                    <div class="text-[10px] font-bold text-green-500 uppercase tracking-widest mb-1">Biochemistry</div>
-                    <h3 class="font-bold text-slate-800 text-lg">MBC 211</h3>
-                    <p class="text-xs text-slate-400">General Biochemistry I</p>
+            <!-- PHS 214 (Square/Rectangle depending on screen) -->
+            <a href="https://drive.google.com/drive/folders/1sYwwZnWFDD0exglM5IfeCswI-mIkYDzZ" target="_blank" class="course-card bento-card tilt-card col-span-2 md:col-span-4 lg:col-span-2 aspect-[3/1] lg:aspect-auto lg:h-48 rounded-[2rem] p-6 flex flex-col justify-between group relative overflow-hidden" data-tags="phs 214 physiology practical lab">
+                <div class="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div class="flex justify-between items-start w-full relative z-10 bento-inner">
+                    <div class="h-10 w-10 md:h-12 md:w-12 bg-pink-500/20 text-pink-400 rounded-xl flex items-center justify-center text-lg md:text-xl border border-pink-500/30">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <div class="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                        <i class="fas fa-arrow-right text-pink-400 text-xl"></i>
+                    </div>
                 </div>
-                <a href="https://drive.google.com/drive/folders/14KZmC2Tz5pVjNEdqoiFEhUTtcV8KkWwe" target="_blank" class="bg-slate-100 text-slate-600 h-10 w-10 rounded-full flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors">
-                    <i class="fas fa-folder-open"></i>
-                </a>
-            </div>
+                <div class="relative z-10 bento-inner">
+                    <h3 class="font-black text-white text-xl md:text-2xl tracking-tight leading-none mb-1">PHS 214</h3>
+                    <p class="text-[10px] md:text-xs text-slate-400 font-medium leading-tight">Practical Lab Physiology</p>
+                </div>
+            </a>
 
         </div>
         
-        <div id="noResults" class="hidden text-center mt-10 text-slate-400">
-            <i class="fas fa-ghost text-4xl mb-3"></i>
-            <p>No courses found. Try a different code.</p>
+        <!-- Empty State -->
+        <div id="noResults" class="hidden text-center mt-16 p-8 glass-panel rounded-3xl max-w-md mx-auto border border-slate-700">
+            <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-600">
+                <i class="fas fa-ghost text-4xl text-cyan-500/50"></i>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-1">No Archives Found</h3>
+            <p class="text-slate-400 text-sm">Adjust your search parameters and try again.</p>
         </div>
     </div>
 
+    <!-- Firebase & Core Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        const firebaseConfig = { apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew", authDomain: "splendids-academy-v2.firebaseapp.com", projectId: "splendids-academy-v2", storageBucket: "splendids-academy-v2.firebasestorage.app", messagingSenderId: "573697150601", appId: "1:573697150601:web:74c556c85b6be053018058", measurementId: "G-VBNBLV0DSS" };
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
+            authDomain: "splendids-academy-v2.firebaseapp.com",
+            projectId: "splendids-academy-v2",
+            storageBucket: "splendids-academy-v2.firebasestorage.app",
+            messagingSenderId: "573697150601",
+            appId: "1:573697150601:web:74c556c85b6be053018058",
+            measurementId: "G-VVDT1PMHNX" 
+        };
+
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app); 
         const auth = getAuth(app);
-        
-        // Protect the route
+
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 15 * 60 * 1000; 
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (auth.currentUser) {
+                inactivityTimer = setTimeout(() => {
+                    signOut(auth).then(() => {
+                        localStorage.setItem('session_timeout', 'true');
+                        window.location.href = "index.html"; 
+                    });
+                }, INACTIVITY_LIMIT);
+            }
+        }
+
+        ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetInactivityTimer, { passive: true })
+        );
+
         onAuthStateChanged(auth, (user) => {
-            if (!user) window.location.href = "index.html";
+            if (user) {
+                resetInactivityTimer();
+            } else {
+                window.location.href = "index.html";
+            }
         });
     </script>
 
+    <!-- Search & 3D Tilt Engine -->
     <script>
+        // Search Filter Logic
         function filterCourses() {
             const input = document.getElementById('searchInput');
             const filter = input.value.toLowerCase();
@@ -167,7 +338,6 @@
                 }
             }
 
-            // Show "No Results" if empty
             const noResults = document.getElementById('noResults');
             if (visibleCount === 0) {
                 noResults.classList.remove('hidden');
@@ -175,6 +345,36 @@
                 noResults.classList.add('hidden');
             }
         }
+
+        // Vanilla JS 3D Tilt Engine (Splendid's Custom Implementation)
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll('.tilt-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // X position within the element.
+                    const y = e.clientY - rect.top;  // Y position within the element.
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Calculate rotation degrees (max 10 degrees to keep it elegant)
+                    const rotateX = ((y - centerY) / centerY) * -10; 
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    // Apply the 3D transform. The inner elements pop out because of `transform: translateZ(30px)` in CSS
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    card.style.borderColor = 'rgba(6, 182, 212, 0.4)'; // Cyan glow on hover
+                });
+                
+                // Reset card when mouse leaves
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    card.style.borderColor = 'rgba(255, 255, 255, 0.08)'; // Reset border
+                });
+            });
+        });
     </script>
 </body>
-</html>
+    </html>
