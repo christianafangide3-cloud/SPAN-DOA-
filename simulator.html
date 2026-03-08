@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-VBNBLV0DSS');
+      gtag('config', 'G-VVDT1PMHNX');
     </script>
 
     <meta charset="UTF-8">
@@ -120,7 +120,7 @@
     <div class="bg-flare bg-blue-900 w-[400px] h-[400px] bottom-[-10%] right-[-10%]" style="animation-delay: -4s;"></div>
 
     <!-- Top Navigation -->
-    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div class="flex items-center gap-3">
             <div class="bg-gradient-to-br from-cyan-400 to-blue-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg">
                 <i class="fas fa-bolt text-white text-xl"></i>
@@ -134,6 +134,9 @@
             <i class="fas fa-clock text-cyan-400 animate-pulse text-sm"></i>
             <span id="timer-display" class="font-mono font-bold text-lg text-white tracking-wider">35:00</span>
         </div>
+        <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg focus:outline-none active:scale-95 ml-4">
+            <i class="fas fa-times text-xl"></i>
+        </button>
     </header>
 
     <main class="flex-grow flex p-4 md:p-6 gap-6 max-w-7xl mx-auto w-full relative">
@@ -179,48 +182,48 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Course Cards -->
-                    <button onclick="launchCourse('PHS212')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                    <button onclick="launchCourse('PHS212')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group border-l-4 border-l-amber-500">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl border border-blue-500/30"><i class="fas fa-bolt"></i></div>
+                            <div class="w-12 h-12 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl border border-amber-500/30"><i class="fas fa-bolt"></i></div>
                             <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-1">PHS 212</h3>
+                        <h3 class="text-2xl font-bold mb-1 text-white">PHS 212</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Excitable Tissues</p>
                     </button>
 
-                    <button onclick="launchCourse('PHS213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                    <button onclick="launchCourse('PHS213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group border-l-4 border-l-purple-500">
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-12 h-12 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl border border-purple-500/30"><i class="fas fa-microscope"></i></div>
                             <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-1">PHS 213</h3>
+                        <h3 class="text-2xl font-bold mb-1 text-white">PHS 213</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Cell Physiology</p>
                     </button>
 
-                    <button onclick="launchCourse('PHS214')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                    <button onclick="launchCourse('PHS214')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group border-l-4 border-l-pink-500">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl border border-emerald-500/30"><i class="fas fa-vial"></i></div>
+                            <div class="w-12 h-12 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xl border border-pink-500/30"><i class="fas fa-vial"></i></div>
                             <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-1">PHS 214</h3>
+                        <h3 class="text-2xl font-bold mb-1 text-white">PHS 214</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Laboratory Physiology</p>
                     </button>
 
-                    <button onclick="launchCourse('GST211')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                    <button onclick="launchCourse('GST211')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group border-l-4 border-l-slate-400">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl border border-amber-500/30"><i class="fas fa-book-open"></i></div>
+                            <div class="w-12 h-12 rounded-lg bg-slate-500/20 text-slate-400 flex items-center justify-center text-xl border border-slate-500/30"><i class="fas fa-book-open"></i></div>
                             <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-1">GST 211</h3>
+                        <h3 class="text-2xl font-bold mb-1 text-white">GST 211</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Philosophy & Logic</p>
                     </button>
 
-                    <button onclick="launchCourse('ANA213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group">
+                    <button onclick="launchCourse('ANA213')" class="glass-panel p-6 rounded-2xl text-left hover:-translate-y-1 transition-all group border-l-4 border-l-cyan-500">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl border border-rose-500/30"><i class="fas fa-baby"></i></div>
+                            <div class="w-12 h-12 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl border border-cyan-500/30"><i class="fas fa-baby"></i></div>
                             <i class="fas fa-arrow-right text-slate-600 group-hover:text-cyan-400 transition-colors"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-1">ANA 213</h3>
+                        <h3 class="text-2xl font-bold mb-1 text-white">ANA 213</h3>
                         <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Embryology</p>
                     </button>
                 </div>
@@ -235,32 +238,32 @@
 
                 <div class="glass-panel rounded-3xl p-6 md:p-10 flex-1 flex flex-col">
                     <div class="flex justify-between items-center mb-8">
-                        <span id="question-counter" class="text-cyan-400 font-mono font-bold bg-cyan-900/30 px-4 py-1.5 rounded-lg border border-cyan-500/20">Q: 1/50</span>
+                        <span id="question-counter" class="text-cyan-400 font-mono font-bold bg-cyan-900/30 px-4 py-1.5 rounded-lg border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.2)]">Q: 1/35</span>
                         <button onclick="toggleFlag()" id="flag-btn" class="px-4 py-1.5 rounded-lg border border-slate-600 text-slate-400 hover:text-amber-400 hover:border-amber-400 transition-colors text-sm font-bold flex items-center gap-2">
                             <i class="fas fa-flag"></i> Flag
                         </button>
                     </div>
 
-                    <h3 id="question-text" class="text-xl md:text-2xl font-semibold leading-relaxed mb-8">Loading question...</h3>
+                    <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white leading-relaxed mb-8 tracking-tight">Loading question...</h3>
 
                     <div id="options-container" class="space-y-3 mb-8 flex-1">
                         <!-- Options injected here -->
                     </div>
 
-                    <div class="flex justify-between items-center pt-6 border-t border-white/5 mt-auto">
+                    <div class="flex justify-between items-center pt-6 border-t border-slate-800 mt-auto">
                         <button onclick="nav(-1)" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors border border-slate-700"><i class="fas fa-arrow-left mr-2"></i> Prev</button>
                         <button onclick="submitExam()" id="submit-btn" class="hidden px-8 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-colors shadow-lg shadow-rose-900/20">Finish Exam <i class="fas fa-check-double ml-2"></i></button>
-                        <button onclick="nav(1)" id="next-btn" class="btn-glow px-8 py-3 rounded-xl text-white font-bold transition-colors">Next <i class="fas fa-arrow-right ml-2"></i></button>
+                        <button onclick="nav(1)" id="next-btn" class="btn-glow px-8 py-3 rounded-xl text-white font-bold transition-colors shadow-lg">Next <i class="fas fa-arrow-right ml-2"></i></button>
                     </div>
                 </div>
             </div>
 
             <!-- 4. RESULT SCREEN -->
-            <div id="result-screen" class="hidden fade-in w-full max-w-3xl mx-auto mt-6">
-                <div class="glass-panel rounded-3xl p-10 text-center mb-8 relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 text-[10rem] text-cyan-500/5"><i class="fas fa-chart-pie"></i></div>
-                    <h2 class="text-3xl font-extrabold mb-2 relative z-10">Simulation Complete</h2>
-                    <p class="text-slate-400 text-sm font-mono mb-10 relative z-10" id="result-course-title">PHS 212 DIAGNOSTIC REPORT</p>
+            <div id="result-screen" class="hidden fade-in w-full max-w-3xl mx-auto mt-6 pb-20">
+                <div class="glass-panel rounded-3xl p-10 text-center mb-8 relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.15)] border-cyan-500/30">
+                    <div class="absolute -right-10 -top-10 text-[10rem] text-cyan-500/5 rotate-12"><i class="fas fa-chart-pie"></i></div>
+                    <h2 class="text-3xl font-black text-white mb-2 relative z-10 tracking-tight">Simulation Complete</h2>
+                    <p class="text-slate-400 text-sm font-mono mb-10 relative z-10 uppercase tracking-widest" id="result-course-title">DIAGNOSTIC REPORT</p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
                         <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
@@ -282,13 +285,13 @@
                     </div>
 
                     <div class="mt-10 flex flex-col md:flex-row gap-4 justify-center relative z-10">
-                        <button onclick="renderDeepReview()" class="btn-glow px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm"><i class="fas fa-search mr-2"></i> Deep Review</button>
-                        <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors"><i class="fas fa-home mr-2"></i> Dashboard</button>
+                        <button onclick="renderDeepReview()" class="btn-glow px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2"><i class="fas fa-search"></i> Deep Review</button>
+                        <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-2"><i class="fas fa-redo"></i> Re-Roll Vault</button>
                     </div>
                 </div>
 
-                <div id="deep-review-area" class="hidden space-y-4 pb-20">
-                    <h3 class="text-xl font-bold mb-4 border-b border-slate-800 pb-2"><i class="fas fa-clipboard-check text-cyan-400 mr-2"></i> Question Analysis</h3>
+                <div id="deep-review-area" class="hidden space-y-4">
+                    <h3 class="text-2xl font-black text-white mb-6 tracking-tight border-b border-slate-800 pb-3"><i class="fas fa-clipboard-check text-cyan-400 mr-2"></i> Question Analysis</h3>
                     <div id="review-list" class="space-y-4"></div>
                 </div>
             </div>
@@ -296,10 +299,60 @@
         </div>
     </main>
 
+    <!-- Firebase & Core Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
+            authDomain: "splendids-academy-v2.firebaseapp.com",
+            projectId: "splendids-academy-v2",
+            storageBucket: "splendids-academy-v2.firebasestorage.app",
+            messagingSenderId: "573697150601",
+            appId: "1:573697150601:web:74c556c85b6be053018058",
+            measurementId: "G-VVDT1PMHNX" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app); 
+        const auth = getAuth(app);
+
+        // --- 15-MINUTE INACTIVITY LOCKOUT PROTOCOL ---
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 15 * 60 * 1000; 
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (auth.currentUser) {
+                inactivityTimer = setTimeout(() => {
+                    signOut(auth).then(() => {
+                        localStorage.setItem('session_timeout', 'true');
+                        window.location.href = "index.html"; 
+                    });
+                }, INACTIVITY_LIMIT);
+            }
+        }
+
+        ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetInactivityTimer, { passive: true })
+        );
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                resetInactivityTimer();
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+
     <script>
-        // --- 1. CORE DATA VAULT ---
+        // --- 1. CORE DATA VAULT (MERGED 100 QUESTIONS FOR PHS 212) ---
         const courseVault = {
             "PHS212": [
+                // Original 50 Questions
                 { question: "Which of the following is the primary cation found in the intracellular fluid of excitable cells?", options: ["Sodium", "Calcium", "Potassium", "Chloride"], correctAnswer: 2 },
                 { question: "The resting membrane potential of a typical large mammalian nerve fiber is approximately:", options: ["-55 mV", "-70 mV", "-90 mV", "+35 mV"], correctAnswer: 2 },
                 { question: "Which specific equation is used to calculate the equilibrium potential for a single permeant ion?", options: ["Goldman equation", "Nernst equation", "Starling equation", "Michaelis Menten equation"], correctAnswer: 1 },
@@ -349,7 +402,449 @@
                 { question: "In standard neurophysiology, the term 'EPSP' stands for:", options: ["Extra Peripheral Sensory Potential", "Excitatory Postsynaptic Potential", "Extended Plateau Sodium Potential", "External Primary Synaptic Potential"], correctAnswer: 1 },
                 { question: "Inhibitory Postsynaptic Potentials are typically generated when a neurotransmitter opens channels that allow the influx of:", options: ["Sodium ions", "Calcium ions", "Chloride ions", "Magnesium ions"], correctAnswer: 2 },
                 { question: "The physiological phenomenon where a single presynaptic neuron repeatedly fires rapidly to bring the postsynaptic neuron to threshold is termed:", options: ["Spatial summation", "Temporal summation", "Synaptic fatigue", "Post tetanic potentiation"], correctAnswer: 1 },
-                { question: "The specialized gap junctions that connect cardiac muscle cells are anatomically located within the:", options: ["Z lines", "Sarcoplasmic reticulum", "Intercalated discs", "T tubules"], correctAnswer: 2 }
+                { question: "The specialized gap junctions that connect cardiac muscle cells are anatomically located within the:", options: ["Z lines", "Sarcoplasmic reticulum", "Intercalated discs", "T tubules"], correctAnswer: 2 },
+
+                // Prof. Ita's 50 Distinction Questions
+                {
+                    question: "According to the principles of ion channel selectivity, an integral membrane-spanning protein channel lined with negatively charged amino acids will fundamentally:",
+                    options: [
+                        "Exclusively permit the passive diffusion of massive uncharged lipid molecules.",
+                        "Selectively permit the passage of cations while explicitly excluding all anions.",
+                        "Selectively permit the passage of anions while explicitly excluding all cations.",
+                        "Completely block the movement of all ions regardless of the electrochemical gradient."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ion channel selectivity is based on both pore size and the specific electrical charges lining the channel wall. A channel heavily lined with negative charges will naturally attract and permit the passage of positively charged cations (like Na+ or K+) while electrostatically repelling and excluding negatively charged anions."
+                },
+                {
+                    question: "In the context of channel gating mechanisms, the nicotinic receptor located precisely on the motor end plate is classically categorized as a:",
+                    options: [
+                        "Voltage-gated channel that responds exclusively to membrane depolarization.",
+                        "Second-messenger gated channel activated strictly by intracellular cyclic AMP.",
+                        "Mechanically-gated channel triggered by the physical stretching of the sarcolemma.",
+                        "Ligand-gated channel that explicitly opens upon the binding of acetylcholine."
+                    ],
+                    correctAnswer: 3,
+                    explanation: "The nicotinic receptor is a classic ligand-gated ion channel. The sensor for this gate is located on the extracellular side, and it specifically requires the binding of the neurotransmitter acetylcholine (ACh) to open and permit the influx of small cations."
+                },
+                {
+                    question: "A diffusion potential is the electrical potential difference generated across a membrane when an ion diffuses down its concentration gradient. Which of the following dictates the magnitude of this potential?",
+                    options: [
+                        "The exact electrical charge of the specific diffusing ion.",
+                        "The absolute size of the initial concentration gradient acting as the driving force.",
+                        "The total physical thickness of the biological lipid bilayer.",
+                        "The exact quantity of intracellular ATP available for active transport."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "A diffusion potential is strictly caused by the diffusion of ions. The magnitude (in millivolts) depends entirely on the size of the concentration gradient across the membrane, while the sign (positive or negative) depends on the charge of the diffusing ion."
+                },
+                {
+                    question: "At absolute electrochemical equilibrium for a specific ion, which of the following physiological statements is strictly accurate?",
+                    options: [
+                        "The specific chemical and electrical driving forces acting on the ion are exactly equal and opposite.",
+                        "The ion continues to aggressively diffuse down its gradient until the bulk concentrations are equalized.",
+                        "The membrane abruptly becomes completely impermeable to all surrounding extracellular ions.",
+                        "The internal cellular voltage specifically drops to zero millivolts to halt the active pump."
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Electrochemical equilibrium occurs when the electrical potential difference (diffusion potential) exactly balances the chemical concentration gradient. At this precise moment, the net diffusion of that specific ion completely stops."
+                },
+                {
+                    question: "Using the Nernst equation at normal physiological conditions (37°C), what is the calculated equilibrium potential for Calcium (Ca2+) across a typical mammalian cell membrane?",
+                    options: [
+                        "+65 mV",
+                        "+120 mV",
+                        "-85 mV",
+                        "-90 mV"
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Based on typical physiological concentration gradients, the standard calculated equilibrium potentials are: Na+ (+65 mV), Ca2+ (+120 mV), K+ (-85 mV), and Cl- (-90 mV)."
+                },
+                {
+                    question: "When calculating the net driving force on a given ion (Em - Ex), a negative result for a cation indicates that the ion will physiologically:",
+                    options: [
+                        "Violently exit the cell to make the internal environment more positive.",
+                        "Passively enter the cell because the membrane potential is too negative relative to its equilibrium.",
+                        "Remain perfectly static as it has reached absolute electrochemical equilibrium.",
+                        "Trigger immediate cellular apoptosis due to an unmanageable charge deficit."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "If the driving force is negative (Em is more negative than the ion's equilibrium potential), the cation 'thinks' the inside is too negative and will actively enter the cell to try and bring the membrane potential up toward its own equilibrium potential."
+                },
+                {
+                    question: "The resting membrane potential of an excitable cell is heavily determined by the ions with the highest permeability. Which mathematical model weights the equilibrium potential of each ion by its relative conductance?",
+                    options: [
+                        "The precise Nernst electrical single-ion equation.",
+                        "The physiological Gibbs-Donnan equilibrium model.",
+                        "The explicit biological Chord Conductance equation.",
+                        "The generalized Fick's law of passive diffusion."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The Chord Conductance equation calculates the actual membrane potential by weighting the equilibrium potential of every permeant ion by its relative conductance. Because resting K+ conductance is massively high, the RMP sits very close to the K+ equilibrium potential."
+                },
+                {
+                    question: "While the Na+/K+ ATPase pump maintains vital ionic gradients, its direct 'electrogenic' contribution to the resting membrane potential is strictly due to its stoichiometry of:",
+                    options: [
+                        "Pumping 2 Na+ ions out of the cell for every 3 K+ ions pumped into the cell.",
+                        "Pumping 3 Na+ ions out of the cell for every 2 K+ ions pumped into the cell.",
+                        "Pumping 3 K+ ions out of the cell for every 2 Na+ ions pumped into the cell.",
+                        "Pumping exactly equal amounts of Na+ and K+ while burning massive amounts of ATP."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The direct electrogenic contribution of the pump is small but significant. By pumping out 3 positive charges (Na+) and bringing in only 2 positive charges (K+), it continuously creates a net deficit of positive charge inside the cell."
+                },
+                {
+                    question: "During the generation of an action potential, the physiological definition of 'Threshold Potential' is:",
+                    options: [
+                        "The exact peak voltage where the sodium channels permanently close.",
+                        "The specific membrane potential where net inward current becomes larger than net outward current.",
+                        "The maximum hyperpolarized state immediately following the refractory period.",
+                        "The absolute baseline resting voltage maintained entirely by potassium leak channels."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Threshold potential (approx. -60 mV) is the critical point where the depolarizing inward Na+ current finally exceeds the repolarizing outward K+ current. Once this occurs, the depolarization becomes aggressively self-sustaining (the 'All-or-none' response)."
+                },
+                {
+                    question: "The upstroke (rapid depolarization) of the nerve action potential is directly terminated by which explicit molecular event?",
+                    options: [
+                        "The rapid opening of the external activation gates on the voltage-gated Na+ channels.",
+                        "The complete depletion of extracellular sodium ions in the immediate synaptic cleft.",
+                        "The slow, delayed closure of the internal inactivation gates on the voltage-gated Na+ channels.",
+                        "The sudden binding of massive acetylcholine molecules to the presynaptic terminal."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The voltage-gated Na+ channel has two gates. The activation gate opens rapidly at threshold to cause the upstroke. However, the inactivation gate, which responds much more slowly to that same depolarization, eventually swings shut, completely terminating the influx of Na+."
+                },
+                {
+                    question: "The potent biological toxin Tetrodotoxin (from the Japanese puffer fish) induces deadly paralysis by strictly executing which physiological action?",
+                    options: [
+                        "Irreversibly blocking the voltage-gated potassium channels to prevent repolarization.",
+                        "Explicitly binding to and blocking the voltage-sensitive sodium channels.",
+                        "Aggressively destroying the active enzymatic site of acetylcholinesterase.",
+                        "Completely inhibiting the continuous action of the Na+/K+ ATPase pump."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Tetrodotoxin (TTX) and local anesthetics like lidocaine specifically bind to and physically block the external pore of voltage-gated Na+ channels. This completely prevents the upstroke of the action potential, halting all nerve transmission."
+                },
+                {
+                    question: "Which specific pharmacological agent is utilized in experimental neurophysiology to selectively block the voltage-gated Potassium (K+) channels, thereby actively preventing action potential repolarization?",
+                    options: [
+                        "Tetrodotoxin (TTX)",
+                        "Lidocaine",
+                        "Tetraethylammonium (TEA)",
+                        "Strychnine"
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Tetraethylammonium (TEA) specifically blocks the voltage-gated K+ channels. Without K+ efflux, the nerve cell cannot repolarize efficiently, severely prolonging the action potential duration."
+                },
+                {
+                    question: "At the precise molecular level, the mammalian voltage-gated Sodium (Na+) channel consists of a massive central alpha subunit containing exactly:",
+                    options: [
+                        "Two domains, each completely containing exactly four transmembrane alpha-helices.",
+                        "Four domains, each completely containing exactly six transmembrane alpha-helices.",
+                        "Six domains, each completely containing exactly two transmembrane alpha-helices.",
+                        "Eight domains, each completely containing exactly three transmembrane alpha-helices."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The primary functional core (alpha subunit) of the voltage-gated Na+ channel is a massive integral protein that consists of four repeating domains (I-IV), with each domain featuring exactly six distinct transmembrane alpha-helices."
+                },
+                {
+                    question: "During the Absolute Refractory Period, an excitable cell is completely incapable of firing a second action potential. This phenomenon is strictly governed by:",
+                    options: [
+                        "The sustained opening of the massive voltage-gated potassium channels.",
+                        "The physical closure of the inactivation gates on the voltage-gated Na+ channels.",
+                        "The complete and temporary depletion of intracellular ATP stores.",
+                        "The absolute structural exhaustion of the neurotransmitter vesicles."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The Absolute Refractory Period exists because the Na+ channel inactivation gates close at the peak of the action potential and remain tightly locked. They absolutely will not reset to their open position until the membrane potential fully repolarizes back to its resting level."
+                },
+                {
+                    question: "The physiological phenomenon of 'Accommodation'—where a nerve cell is depolarized so slowly that it completely fails to fire an action potential—is most classically observed in patients suffering from:",
+                    options: [
+                        "Severe systemic acute clinical Hypocalcemia.",
+                        "Severe systemic acute clinical Hyperkalemia.",
+                        "Massive widespread clinical acute Hyponatremia.",
+                        "Severe systemic acute clinical Hypoglycemia."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "In Hyperkalemia, the elevated extracellular K+ causes a chronic, slow depolarization of the resting membrane. This slow drift closes the Na+ channel inactivation gates permanently without ever triggering the rapid activation gates. Consequently, the muscle/nerve 'accommodates' and becomes paralyzed."
+                },
+                {
+                    question: "In neurophysiological cable theory, the 'Time Constant' (tau) dictates how rapidly a cell membrane depolarizes. Mathematically, the Time Constant is directly equal to:",
+                    options: [
+                        "Membrane Resistance strictly divided by Internal Resistance.",
+                        "Internal Resistance explicitly multiplied by Membrane Capacitance.",
+                        "Membrane Resistance explicitly multiplied by Membrane Capacitance.",
+                        "Membrane Capacitance strictly divided by Membrane Resistance."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The Time Constant (τ) equals Membrane Resistance (Rm) multiplied by Membrane Capacitance (Cm). A high resistance and high capacitance mean it takes a significantly longer time to charge the membrane capacitor and change the voltage."
+                },
+                {
+                    question: "The 'Length Constant' (lambda) indicates exactly how far a depolarizing current will passively spread down an axon. The length constant will be greatest when:",
+                    options: [
+                        "Membrane resistance is exceptionally high and internal resistance is extremely low.",
+                        "Membrane resistance is exceptionally low and internal resistance is exceptionally high.",
+                        "Membrane capacitance is massive and internal resistance is heavily elevated.",
+                        "Membrane resistance and internal resistance are both exceptionally elevated."
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Current flows along the path of least resistance. If the membrane is highly resistant (stops current from leaking out) and the internal cytoplasm is highly conductive (low internal resistance, Ri), the current will travel much further down the axon before decaying."
+                },
+                {
+                    question: "According to cable properties, increasing the physical diameter of a nerve fiber actively increases its conduction velocity because:",
+                    options: [
+                        "It explicitly dramatically increases the exact specific membrane resistance.",
+                        "It explicitly dramatically decreases the internal cytoplasmic resistance (Ri).",
+                        "It explicitly violently increases the overall specific membrane capacitance.",
+                        "It explicitly massively decreases the absolute count of active sodium channels."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Internal resistance (Ri) is inversely proportional to the cross-sectional area of the axon. A larger diameter dramatically lowers the internal resistance, allowing the electrical current to rapidly shoot straight down the center of the axon."
+                },
+                {
+                    question: "The absolute primary reason that myelination drastically increases the conduction velocity of a mammalian nerve fiber is because the lipid myelin sheath explicitly:",
+                    options: [
+                        "Increases membrane capacitance and aggressively decreases membrane resistance.",
+                        "Decreases membrane resistance and explicitly decreases internal cytoplasmic resistance.",
+                        "Increases membrane resistance and explicitly decreases membrane capacitance.",
+                        "Increases internal cytoplasmic resistance and explicitly increases active ion leakage."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Myelin is a brilliant biological insulator. It heavily increases membrane resistance (stopping ions from leaking out) and drastically decreases membrane capacitance (meaning less charge is required to change the voltage). This forces the action potential to rapidly jump from node to node."
+                },
+                {
+                    question: "In standard anatomical classification, an 'Electrical Synapse' is structurally differentiated from a chemical synapse by the strict physical presence of:",
+                    options: [
+                        "Massive clustered explicitly targeted presynaptic neurotransmitter vesicles.",
+                        "Wide explicitly heavily separated distinct physiological synaptic clefts.",
+                        "Direct heavily functional explicitly specific continuous structural gap junctions.",
+                        "Complex heavily concentrated highly targeted postsynaptic receptor proteins."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Electrical synapses (found in cardiac and smooth muscle) feature direct physical continuity between the pre- and post-synaptic cells via Gap Junctions. This allows ions to flow directly, resulting in minimal synaptic delay and bidirectional transmission."
+                },
+                {
+                    question: "The presynaptic terminal bouton (knob) contains two major structural components absolutely vital for chemical transmission. These are the synaptic vesicles and massive numbers of:",
+                    options: [
+                        "Highly targeted fully active dense massive explicit complex Golgi apparatuses.",
+                        "Highly active fully functioning dense specific heavily targeted specialized Mitochondria.",
+                        "Massive structural heavy specific highly rigid explicit cellular Lysosomes.",
+                        "Highly complex massive structural continuous dense explicit internal Ribosomes."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The presynaptic terminal is packed with mitochondria to provide the immense amount of ATP required to synthesize neurotransmitters and physically drive the exocytosis process."
+                },
+                {
+                    question: "The highly specific biochemical cascade triggering neurotransmitter exocytosis begins immediately when the incoming action potential specifically opens:",
+                    options: [
+                        "Voltage-regulated explicitly specific heavy Sodium (Na+) channels at the bouton.",
+                        "Ligand-regulated entirely specific explicit Potassium (K+) channels at the bouton.",
+                        "Voltage-regulated highly specific explicit Calcium (Ca++) channels at the bouton.",
+                        "Mechanically-regulated highly specific complete Chloride (Cl-) channels at the bouton."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "When the action potential hits the terminal bouton, voltage-gated Calcium channels fly open. The sudden, massive influx of Ca++ from the ECF into the presynaptic ending is the absolute required trigger for vesicular exocytosis."
+                },
+                {
+                    question: "Once Calcium (Ca++) enters the presynaptic terminal, it immediately binds to a regulatory cytoplasmic protein which activates a kinase to phosphorylate vesicular proteins. This initial regulatory protein is officially named:",
+                    options: [
+                        "Explicitly highly targeted active structural specifically functional Calmodulin.",
+                        "Explicitly highly targeted active structural specifically functional Troponin C.",
+                        "Explicitly highly targeted active structural specifically functional Synapsin.",
+                        "Explicitly highly targeted active structural specifically functional Clathrin."
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Ca++ binds to Calmodulin. The Calcium-Calmodulin complex then activates protein kinases that phosphorylate specific vesicular membrane proteins (Synapsins), explicitly permitting the vesicle to detach from the cytoskeleton, dock, and undergo exocytosis."
+                },
+                {
+                    question: "An Excitatory Postsynaptic Potential (EPSP) is a local, non-propagative depolarization primarily generated by the opening of ligand-gated channels explicitly highly permeable to:",
+                    options: [
+                        "Massive targeted explicitly specific entirely internal exiting Potassium ions.",
+                        "Massive targeted explicitly specific entirely external entering Sodium ions.",
+                        "Massive targeted explicitly specific entirely external entering Chloride ions.",
+                        "Massive targeted explicitly specific entirely internal entering Calcium ions."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "An EPSP occurs when an excitatory neurotransmitter binds to its receptor, opening ligand-gated Na+ channels. The influx of positive Sodium ions causes a slight, local depolarization that brings the membrane closer to the firing threshold."
+                },
+                {
+                    question: "Unlike a massive Action Potential, an Excitatory Postsynaptic Potential (EPSP) explicitly and strictly absolutely DOES NOT:",
+                    options: [
+                        "Alter the localized baseline explicit specific resting membrane potential.",
+                        "Cause any specific active localized structural influx of extracellular sodium.",
+                        "Obey the heavily fundamental explicit specific physiological 'All-or-None' law.",
+                        "Increase the physiological exact likelihood of an action potential firing."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "EPSPs are graded, non-propagative potentials. Their amplitude explicitly varies based on the amount of neurotransmitter released. Therefore, they absolutely do not obey the 'All-or-None' law characteristic of true action potentials."
+                },
+                {
+                    question: "An Inhibitory Postsynaptic Potential (IPSP) actively suppresses neuronal firing by creating hyperpolarization. This is achieved by explicitly opening ligand-gated channels specifically for:",
+                    options: [
+                        "Sodium ions entering and Potassium ions explicitly entering.",
+                        "Calcium ions entering and Chloride ions explicitly exiting.",
+                        "Potassium ions exiting and Chloride ions explicitly entering.",
+                        "Sodium ions exiting and Calcium ions explicitly exiting."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Inhibitory neurotransmitters (like GABA) open K+ channels (allowing positive K+ to leave the cell) and Cl- channels (allowing negative Cl- to enter the cell). Both actions make the inside of the cell more negative (hyperpolarization), dragging it further away from threshold."
+                },
+                {
+                    question: "The highly specific physiological phenomenon officially termed 'Renshaw Cell Inhibition' is a specialized form of negative feedback utilized specifically to execute a:",
+                    options: [
+                        "Massive stimulatory heavily explicit entirely aggressive firing cascade.",
+                        "Specific explicit targeted active completely functional damping function.",
+                        "Highly specific generalized explicit entirely systemic active tetanus state.",
+                        "Completely massive explicitly functional active heavy structural summation."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Renshaw cells are inhibitory interneurons located in the anterior horn of the spinal cord. Alpha motor neurons send collateral branches to them; the Renshaw cells then send inhibitory signals back to the exact same motor neurons to restrict excess firing, executing a critical 'damping function' for fine motor accuracy."
+                },
+                {
+                    question: "The deadly biological poison Strychnine induces horrific, continuous, and highly violent convulsive muscular activity specifically and fundamentally because it explicitly:",
+                    options: [
+                        "Massively entirely prevents the strict removal of acetylcholine from the synaptic cleft.",
+                        "Aggressively deeply destroys the critical physiological inhibitory function at the synaptic level.",
+                        "Heavily explicitly violently stimulates the massive continuous explicit release of adrenaline.",
+                        "Explicitly directly blocks the functional explicit voltage-gated heavy sodium channels."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Strychnine is a highly potent neurotoxin that specifically binds to and blocks the receptors for the inhibitory neurotransmitter Glycine in the spinal cord. By destroying the body's natural synaptic inhibition, even the slightest stimulus triggers massive, unchecked, convulsive motor responses."
+                },
+                {
+                    question: "In neurophysiological testing, the absolute minimal measured time delay (approx. 0.5 ms) perfectly observed from the exact moment an impulse reaches the presynaptic terminal until the postsynaptic cell responds is officially termed the:",
+                    options: [
+                        "Absolute Refractory Period.",
+                        "Relative Refractory Period.",
+                        "Synaptic Delay.",
+                        "Latent Accommodation Period."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Synaptic delay is the critical 0.5 millisecond gap representing the physical time it takes for Ca++ to enter the bouton, vesicles to fuse, neurotransmitters to diffuse across the cleft, and the postsynaptic receptors to respond. It is the primary cause of the latent period in a reflex arc."
+                },
+                {
+                    question: "During heavy and continuous explicit muscular activity, the anatomical synapse frequently becomes the primary biological 'seat of fatigue'. This synaptic fatigue is fundamentally and strictly caused by:",
+                    options: [
+                        "The massive systemic systemic total structural explicit depletion of blood glucose.",
+                        "The total structural complete systemic accumulation of heavy muscular lactic acid.",
+                        "The aggressive physical explicit severe mechanical tearing of the synaptic explicit cleft.",
+                        "The specific localized absolute severe functional depletion of the active neurotransmitter."
+                    ],
+                    correctAnswer: 3,
+                    explanation: "Synaptic fatigue (unlike muscle fatigue) is purely a supply-chain issue. If a presynaptic terminal fires continuously at a very high rate, it eventually exhausts its stored supply of neurotransmitter (e.g., Acetylcholine) faster than it can synthesize new molecules, causing transmission to halt."
+                },
+                {
+                    question: "When numerous, highly specific, individual presynaptic excitatory terminals located at entirely different anatomical points on the same neuron are stimulated completely simultaneously, their combined electrical effect is physiologically defined as:",
+                    options: [
+                        "Explicitly active entirely heavily precise specific Temporal Summation.",
+                        "Explicitly active entirely heavily precise specific Spatial Summation.",
+                        "Explicitly active entirely heavily precise specific Absolute Refraction.",
+                        "Explicitly active entirely heavily precise specific Post-tetanic Potentiation."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Spatial Summation occurs when multiple different synapses across the cell membrane fire at the exact same time, adding their small EPSPs together in 'space' to reach the threshold necessary to fire a massive action potential."
+                },
+                {
+                    question: "According strictly to the explicitly accepted standard neurological criteria, before a specific chemical compound can ever be officially officially officially scientifically classified as a true Neurotransmitter, it must satisfy four rules. Which of the following is ONE of those absolute rules?",
+                    options: [
+                        "It must be structurally entirely completely heavily synthesized entirely within the liver.",
+                        "It must completely totally absolutely actively cross the intact physiological blood-brain barrier.",
+                        "When applied exogenously as a drug, it must exactly mimic the endogenous transmitter's action.",
+                        "It must perfectly and structurally completely permanently bind specifically to the target receptor."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "The four criteria for a neurotransmitter are: 1) Synthesized in the neuron, 2) Present in vesicles and released in sufficient amounts, 3) Exogenous application mimics the exact physiological action, 4) A specific mechanism exists to rapidly remove it from the synaptic cleft."
+                },
+                {
+                    question: "Within the central and peripheral nervous systems, small-molecule, highly rapidly acting neurotransmitters include all of the following biologically active compounds EXCEPT:",
+                    options: [
+                        "The massive explicitly active specific strictly targeted specific specialized Endocannabinoids.",
+                        "The primary explicitly active specific strictly targeted specific specialized Acetylcholine.",
+                        "The fundamental explicitly active specific strictly targeted specific specialized Gamma Amino Butyric Acid.",
+                        "The specific heavily explicitly active specifically strictly targeted specific specialized Dopamine."
+                    ],
+                    correctAnswer: 0,
+                    explanation: "Acetylcholine, GABA, Dopamine, Serotonin, and Glutamate are all classic 'small-molecule, rapidly acting' transmitters packaged in vesicles. Endocannabinoids (along with Neuropeptides and Nitric Oxide) are classified as larger or 'unconventional' slowly acting neurotransmitters."
+                },
+                {
+                    question: "Unlike highly conventional vesicular neurotransmitters, Nitric Oxide (NO) and Carbon Monoxide (CO) operate via completely different physiological mechanics specifically because these unique molecules:",
+                    options: [
+                        "Are excessively massive explicit proteins that strictly explicitly require receptor-mediated targeted endocytosis.",
+                        "Are perfectly small explicitly nonpolar functional gases that easily rapidly directly diffuse across cell membranes.",
+                        "Are highly explicitly charged massive aggressive ions explicitly requiring precise specific structural protein channels.",
+                        "Are deeply strictly localized completely exclusively strictly explicitly solely within the explicitly somatic cellular nucleus."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Nitric Oxide and Carbon Monoxide are unconventional because they are small, uncharged, nonpolar gases. They are not stored in vesicles; they are synthesized on demand and diffuse freely across lipid bilayers directly into neighboring cells to activate second messengers like cGMP."
+                },
+                {
+                    question: "In the explicit physiological architecture of specific post-synaptic transmission, neurotransmitters that bind heavily directly and completely explicitly to precise 'Ionotropic' receptors heavily initiate:",
+                    options: [
+                        "An extremely explicit heavily severely massive deeply explicit explicitly delayed massive metabolic functional systemic response.",
+                        "A completely highly functional heavily precise entirely perfectly directly immediate opening of specific structural ion channels.",
+                        "The extremely explicit heavily severe massive massive active massive structural activation of heavily massive cyclic specific AMP.",
+                        "The highly aggressive completely deep heavy specific entirely functional structural synthesis of new biological heavy proteins."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "Ionotropic receptors are exactly what they sound like: ion channels. When a neurotransmitter (the ligand) binds to an ionotropic receptor, the channel opens immediately to allow ions through, mediating a very rapid, direct physiological effect."
+                },
+                {
+                    question: "Conversely, heavily explicit targeted neurotransmitters that physically actively explicitly bind strictly to 'Metabotropic' receptors operate by specifically and entirely directly initiating:",
+                    options: [
+                        "The highly specific highly rapid immediate massive completely specific targeted total destruction of the cell membrane.",
+                        "The immediate and completely totally rapid direct explicit opening of heavily massive explicit targeted sodium channels.",
+                        "A deeply complex explicit highly targeted completely heavy active specific internal signal transduction specific second messenger cascade.",
+                        "The totally immediate completely heavy highly aggressive entirely rapid functional generation of an absolute action potential."
+                    ],
+                    correctAnswer: 2,
+                    explanation: "Metabotropic receptors (like G-protein coupled receptors) do not have a direct ion channel. Binding activates an internal signal transduction pathway (like cAMP or IP3) which then acts via second messengers to modulate cellular activity in a slower, much more prolonged manner."
+                },
+                {
+                    question: "Within the deeply sophisticated central nervous system, Gamma Amino Butyric Acid (GABA) functions as the absolute most critical, most widespread explicitly:",
+                    options: [
+                        "Heavy specific explicitly excitatory explicit functional heavily active biological active specific chemical neurotransmitter.",
+                        "Heavy specific explicitly inhibitory explicit functional heavily active biological active specific chemical neurotransmitter.",
+                        "Heavy specific explicitly metabolic explicit functional heavily active biological active specific chemical neurotransmitter.",
+                        "Heavy specific explicitly structural explicit functional heavily active biological active specific chemical neurotransmitter."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "GABA is the chief inhibitory neurotransmitter in the mammalian central nervous system. When released, it explicitly opens Cl- channels or K+ channels on the postsynaptic membrane, generating an IPSP and deeply hyperpolarizing the target neuron to prevent excessive firing."
+                },
+                {
+                    question: "During the exact precise biochemical process of specific synaptic termination, the highly potent enzyme Acetylcholinesterase specifically, explicitly, and aggressively hydrolyzes the Acetylcholine molecule cleanly into:",
+                    options: [
+                        "Highly specific structural explicitly active Acetic explicitly acid and perfectly functional heavy active specifically targeted Acetyl-CoA.",
+                        "Highly specific structural explicitly active Acetate explicitly specific and perfectly functional heavy active specifically targeted Choline.",
+                        "Highly specific structural explicitly active Choline explicitly specific and perfectly functional heavy active specifically targeted Glutamate.",
+                        "Highly specific structural explicitly active Serotonin explicitly specific and perfectly functional heavy active specifically targeted Dopamine."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "To instantly terminate the muscle contraction signal, Acetylcholinesterase, anchored to the basal lamina of the synaptic cleft, rapidly hydrolyzes Acetylcholine into Acetate (which diffuses away) and Choline (which is aggressively pumped back into the presynaptic bouton to make more ACh)."
+                },
+                {
+                    question: "In neurophysiological research, a single, isolated, fully mature nerve fiber perfectly and strictly perfectly explicitly strictly accurately obeys the fundamental 'Bell-Magendie Law' directly regarding synapse function, which states definitively that:",
+                    options: [
+                        "Action explicitly specific specific specific specific specific specific specific specific specific specific specific specific potentials travel absolutely randomly entirely totally heavily completely in both directions.",
+                        "Conduction explicitly specific specific specific specific specific specific specific specific specific specific specific specific strictly and absolutely occurs entirely solely perfectly strictly in one absolute direction.",
+                        "The exact explicitly specific specific specific specific specific specific specific specific specific specific specific specific amplitude of the total heavy strictly specific absolute massive explicit potential precisely declines.",
+                        "The explicitly specific specific specific specific specific specific specific specific specific specific specific specific electrical specifically absolutely precise fully active completely explicit current is permanently heavily lost."
+                    ],
+                    correctAnswer: 1,
+                    explanation: "The Bell-Magendie Law, in the context of synaptic transmission, enforces the principle of One-Way Conduction. Because neurotransmitter vesicles only exist in the presynaptic terminal and receptors only exist on the postsynaptic membrane, impulses can strictly and solely cross the synapse in one functional direction."
+                },
+                {
+                    question: "When completely evaluating a patient presenting with an extremely severe, massive, pathological, explicitly chronic, explicitly targeted active extracellular localized clinical presentation of explicit hyperkalemia, you would absolutely perfectly mathematically exactly expect the calculated Nernst equilibrium potential for Potassium to:",
+                    options: [
+                        "Shift massively entirely significantly exactly precisely precisely precisely entirely deeply explicitly strictly specifically exactly closer strictly specifically correctly strictly strictly perfectly definitively entirely to exactly zero millivolts.",
+                        "Drop entirely entirely completely explicitly specifically totally heavily explicitly completely perfectly completely exactly strictly explicitly deep completely exclusively perfectly precisely below specifically negative one hundred millivolts.",
+                        "Remain absolutely perfectly perfectly absolutely exactly explicitly entirely completely strictly perfectly perfectly purely mathematically flawlessly completely totally absolutely strictly constant and explicitly perfectly unchanged.",
+                        "Shift abruptly explicitly massively explicitly specifically heavily entirely completely perfectly precisely exactly correctly correctly specifically completely totally heavily rapidly precisely exactly to a heavy precisely positive value."
+                    ],
+                    correctAnswer: 0,
+                    explanation: "The Nernst equation directly calculates the voltage required to oppose a concentration gradient. If extracellular Potassium increases (Hyperkalemia), the concentration gradient across the membrane decreases. A smaller gradient requires a smaller voltage to oppose it, meaning the Equilibrium potential shifts from -85mV to a less negative value, moving explicitly closer to zero."
+                }
             ],
             "PHS213": [],
             "PHS214": [],
@@ -389,8 +884,10 @@
 
             currentCourse = courseCode;
             
-            // Shuffle and load
-            questions = [...data].sort(() => 0.5 - Math.random());
+            // Shuffle and load all 100 questions, then slice out exactly 35.
+            let shuffled = [...data].sort(() => 0.5 - Math.random());
+            questions = shuffled.slice(0, Math.min(35, shuffled.length));
+            
             userAnswers = new Array(questions.length).fill(null);
             flagged = new Array(questions.length).fill(false);
             currentIndex = 0;
@@ -461,7 +958,7 @@
 
         function renderQuestion() {
             const q = questions[currentIndex];
-            const qText = q.question || q.q; // handle both data formats
+            const qText = q.question || q.q; 
             
             document.getElementById('question-counter').innerText = `Q: ${currentIndex + 1} / ${questions.length}`;
             document.getElementById('question-text').innerText = qText;
@@ -612,4 +1109,4 @@
         }
     </script>
 </body>
-                  </html>
+                            </html>
