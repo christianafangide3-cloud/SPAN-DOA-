@@ -1,51 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VVDT1PMHNX');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Course Outlines | Splendid's Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#020617',    /* Slate 950 */
+                            card: '#0f172a',    /* Slate 900 */
+                            accent: '#06b6d4',  /* Cyan 500 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
         
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Premium Glassmorphism */
+        .glass-nav { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
         /* Accordion Animation */
-        .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
-        .accordion-content.open { max-height: 1000px; opacity: 1; }
+        .accordion-content { 
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; 
+            max-height: 0; 
+            opacity: 0; 
+            overflow: hidden; 
+        }
+        .accordion-content.open { 
+            max-height: 1500px; 
+            opacity: 1; 
+        }
         .accordion-icon { transition: transform 0.3s ease; }
         .open-icon { transform: rotate(180deg); }
         
-        /* Custom Checkbox */
-        .topic-checkbox:checked + label { text-decoration: line-through; color: #94a3b8; }
+        /* Custom Checkbox Styling for Dark Mode */
+        .topic-checkbox {
+            appearance: none;
+            background-color: rgba(15, 23, 42, 0.5);
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .topic-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: white;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+
+        .topic-checkbox:checked {
+            background-color: #06b6d4;
+            border-color: #06b6d4;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .topic-checkbox:checked::before {
+            transform: scale(1);
+        }
+
+        .topic-checkbox:checked + label { 
+            text-decoration: line-through; 
+            color: #475569; /* Slate 600 */
+        }
+
+        /* Ambient Glow */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .bg-flare {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.25;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="min-h-screen relative">
 
-    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <a href="dashboard.html" class="text-slate-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
-            <h1 class="font-bold text-lg tracking-tight">Official Syllabi 🗺️</h1>
+    <!-- Ambient Background -->
+    <div class="bg-flare bg-cyan-900 w-[500px] h-[500px] top-[-10%] left-[-10%]"></div>
+    <div class="bg-flare bg-indigo-900 w-[600px] h-[600px] bottom-[-20%] right-[-10%]" style="animation-delay: -3s;"></div>
+
+    <!-- Top Navigation -->
+    <nav class="glass-nav sticky top-0 z-50 p-4 shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <a href="dashboard.html" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 bg-slate-800/50 rounded-xl focus:outline-none">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="font-black text-lg text-white tracking-tight">Official Syllabi <span class="text-cyan-400">🗺️</span></h1>
+                <p class="text-[9px] text-slate-400 font-bold tracking-[0.2em] uppercase">Tracking Protocol</p>
+            </div>
         </div>
     </nav>
 
-    <div class="max-w-3xl mx-auto p-4 md:p-6 mt-4">
+    <div class="max-w-4xl mx-auto p-4 md:p-6 mt-6 relative z-10">
         
-        <div class="mb-8 text-center">
-            <h2 class="text-2xl font-extrabold text-slate-800">Master Course Outlines</h2>
-            <p class="text-sm text-slate-500 mt-2">Track your reading progress. Check off topics as you conquer them.</p>
+        <div class="mb-10 text-center reveal-on-scroll">
+            <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-slate-800/80 border border-slate-700">
+                <span class="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-[10px] font-bold tracking-widest uppercase text-slate-300">Auto-Save Enabled</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-white tracking-tighter">Master Course Outlines</h2>
+            <p class="text-sm text-slate-400 mt-3 max-w-lg mx-auto font-medium">Track your intellectual conquest. Check off specific topics as you master them to monitor your Core Week readiness.</p>
         </div>
 
-        <div class="space-y-4" id="outlines-container">
-            </div>
+        <div class="space-y-4 reveal-on-scroll" style="animation-delay: 0.1s;" id="outlines-container">
+            <!-- Outlines injected here by JS -->
+        </div>
 
     </div>
 
+    <!-- Firebase & Core Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew",
+            authDomain: "splendids-academy-v2.firebaseapp.com",
+            projectId: "splendids-academy-v2",
+            storageBucket: "splendids-academy-v2.firebasestorage.app",
+            messagingSenderId: "573697150601",
+            appId: "1:573697150601:web:74c556c85b6be053018058",
+            measurementId: "G-VVDT1PMHNX" 
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app); 
+        const auth = getAuth(app);
+
+        // --- 15-MINUTE INACTIVITY LOCKOUT PROTOCOL ---
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 15 * 60 * 1000; 
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (auth.currentUser) {
+                inactivityTimer = setTimeout(() => {
+                    signOut(auth).then(() => {
+                        localStorage.setItem('session_timeout', 'true');
+                        window.location.href = "index.html"; 
+                    });
+                }, INACTIVITY_LIMIT);
+            }
+        }
+
+        ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetInactivityTimer, { passive: true })
+        );
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                resetInactivityTimer();
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+
+    <!-- Syllabus Rendering Logic -->
     <script>
         // The Master Syllabus Data
         const syllabusData = [
             {
-                code: "ANA 211", title: "Gross Anatomy (Limbs)", color: "emerald", icon: "fa-bone",
+                code: "ANA 211", title: "Gross Anatomy (Limbs)", hex: "#10b981", icon: "fa-bone",
                 topics: [
                     "Introduction to Upper Limb Bones", "Pectoral Region & Axilla", "Arm & Cubital Fossa", "Forearm & Hand",
                     "Nerves & Vessels of Upper Limb", "Introduction to Lower Limb Bones", "Gluteal Region & Thigh", 
@@ -53,7 +246,7 @@
                 ]
             },
             {
-                code: "ANA 213", title: "General Embryology", color: "cyan", icon: "fa-baby",
+                code: "ANA 213", title: "General Embryology", hex: "#0ea5e9", icon: "fa-baby",
                 topics: [
                     "Gametogenesis (Spermatogenesis & Oogenesis)", "Fertilization & Implantation", "Bilaminar Germ Disc (Week 2)",
                     "Gastrulation & Trilaminar Disc (Week 3)", "Embryonic Period (Weeks 4-8)", "Fetal Period & Placenta",
@@ -61,7 +254,7 @@
                 ]
             },
             {
-                code: "PHS 211", title: "Intro & Blood Physiology", color: "red", icon: "fa-tint",
+                code: "PHS 211", title: "Intro & Blood Physiology", hex: "#f43f5e", icon: "fa-tint",
                 topics: [
                     "Composition & Functions of Blood", "Plasma Proteins & Properties", "Erythropoiesis & RBC Function",
                     "Hemoglobin & Iron Metabolism", "Leukocytes & Immunity", "Platelets & Hemostasis (Coagulation)",
@@ -69,7 +262,7 @@
                 ]
             },
             {
-                code: "PHS 212", title: "Excitable Tissues", color: "amber", icon: "fa-bolt",
+                code: "PHS 212", title: "Excitable Tissues", hex: "#f59e0b", icon: "fa-bolt",
                 topics: [
                     "Structure of Neuron & Neuroglia", "Resting Membrane Potential", "Action Potential & Propagation",
                     "Synaptic Transmission & Neurotransmitters", "Neuromuscular Junction", "Skeletal Muscle Mechanics",
@@ -77,7 +270,7 @@
                 ]
             },
             {
-                code: "PHS 213", title: "Cell Physiology & Biophysics", color: "purple", icon: "fa-microchip",
+                code: "PHS 213", title: "Cell Physiology & Biophysics", hex: "#a855f7", icon: "fa-microchip",
                 topics: [
                     "Cell Membrane Structure & Fluid Mosaic Model", "Organelles & Cytoskeleton", "Transport Across Membranes",
                     "Osmosis, Diffusion & Active Transport", "Donnan Equilibrium & Nernst Equation", "Intercellular Connections",
@@ -85,14 +278,14 @@
                 ]
             },
             {
-                code: "MBC 211", title: "General Biochemistry", color: "blue", icon: "fa-dna",
+                code: "MBC 211", title: "General Biochemistry", hex: "#3b82f6", icon: "fa-dna",
                 topics: [
                     "Water, pH, and Buffers", "Chemistry of Carbohydrates", "Chemistry of Amino Acids & Proteins",
                     "Protein Structure & Folding", "Chemistry of Lipids", "Enzymology & Kinetics", "Nucleic Acids (DNA/RNA)"
                 ]
             },
             {
-                code: "GST 212", title: "Philosophy & Logic", color: "slate", icon: "fa-brain",
+                code: "GST 212", title: "Philosophy & Logic", hex: "#94a3b8", icon: "fa-brain",
                 topics: [
                     "Introduction to Philosophy", "Branches of Philosophy", "Laws of Thought & Logic",
                     "Types of Arguments (Deductive/Inductive)", "Informal Fallacies", "Categorical Propositions & Syllogisms",
@@ -106,7 +299,8 @@
         // Render the UI
         syllabusData.forEach((course, index) => {
             const card = document.createElement('div');
-            card.className = `bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden`;
+            card.className = `glass-card rounded-2xl overflow-hidden`;
+            card.style.borderLeft = `4px solid ${course.hex}`;
             
             // Generate Topics HTML
             let topicsHTML = '';
@@ -115,30 +309,40 @@
                 const isChecked = localStorage.getItem(storageKey) === 'true' ? 'checked' : '';
                 
                 topicsHTML += `
-                    <div class="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-lg transition border-b border-slate-100 last:border-0">
-                        <input type="checkbox" id="${storageKey}" class="topic-checkbox mt-1 h-4 w-4 text-${course.color}-600 rounded border-slate-300 focus:ring-${course.color}-500" ${isChecked} onchange="saveProgress('${storageKey}', this.checked)">
-                        <label for="${storageKey}" class="text-sm text-slate-700 font-medium cursor-pointer leading-snug select-none">${topic}</label>
+                    <div class="flex items-start gap-4 p-4 hover:bg-slate-800/50 rounded-xl transition-colors border-b border-white/5 last:border-0 group">
+                        <input type="checkbox" id="${storageKey}" class="topic-checkbox mt-0.5 flex-shrink-0" ${isChecked} onchange="saveProgress('${storageKey}', this.checked)">
+                        <label for="${storageKey}" class="text-sm text-slate-300 font-medium cursor-pointer leading-relaxed select-none transition-colors group-hover:text-white">${topic}</label>
                     </div>
                 `;
             });
 
+            // Calculate Progress
+            let checkedCount = 0;
+            course.topics.forEach((_, tIndex) => {
+                if(localStorage.getItem(`read_${course.code}_${tIndex}`) === 'true') checkedCount++;
+            });
+            const progressText = `${checkedCount}/${course.topics.length}`;
+
             // Card HTML
             card.innerHTML = `
-                <button onclick="toggleAccordion('content-${index}', 'icon-${index}')" class="w-full p-5 flex justify-between items-center bg-white hover:bg-slate-50 transition focus:outline-none border-l-4 border-${course.color}-500">
-                    <div class="flex items-center gap-4">
-                        <div class="h-10 w-10 rounded-full bg-${course.color}-100 text-${course.color}-600 flex items-center justify-center text-lg">
+                <button onclick="toggleAccordion('content-${index}', 'icon-${index}')" class="w-full p-6 flex justify-between items-center bg-transparent hover:bg-white/5 transition focus:outline-none">
+                    <div class="flex items-center gap-5">
+                        <div class="h-12 w-12 rounded-full flex items-center justify-center text-xl shadow-inner border border-white/10" style="background-color: ${course.hex}20; color: ${course.hex};">
                             <i class="fas ${course.icon}"></i>
                         </div>
                         <div class="text-left">
-                            <h3 class="font-bold text-slate-800 text-lg leading-tight">${course.code}</h3>
-                            <p class="text-xs text-slate-500 font-medium">${course.title}</p>
+                            <h3 class="font-black text-white text-xl tracking-tight leading-none mb-1">${course.code}</h3>
+                            <p class="text-xs text-slate-400 font-medium">${course.title}</p>
                         </div>
                     </div>
-                    <div class="text-slate-400 p-2"><i id="icon-${index}" class="fas fa-chevron-down accordion-icon"></i></div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-bold text-slate-500 bg-slate-900 px-3 py-1 rounded-full border border-slate-700 hidden sm:block" id="prog-${index}">${progressText} Mastered</span>
+                        <div class="text-slate-500 h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700"><i id="icon-${index}" class="fas fa-chevron-down accordion-icon"></i></div>
+                    </div>
                 </button>
-                <div id="content-${index}" class="accordion-content bg-slate-50/50">
-                    <div class="p-4 pt-0">
-                        <div class="bg-white rounded-xl border border-slate-200 p-2 shadow-inner">
+                <div id="content-${index}" class="accordion-content bg-black/20">
+                    <div class="p-6 pt-2">
+                        <div class="bg-slate-900/50 rounded-2xl border border-slate-800/80 p-2 shadow-inner">
                             ${topicsHTML}
                         </div>
                     </div>
@@ -152,7 +356,7 @@
             const content = document.getElementById(contentId);
             const icon = document.getElementById(iconId);
             
-            // Close others (Optional: Remove this block if you want multiple open at once)
+            // Close others (Keeps UI clean)
             document.querySelectorAll('.accordion-content').forEach(el => {
                 if(el.id !== contentId) el.classList.remove('open');
             });
@@ -165,9 +369,12 @@
             icon.classList.toggle('open-icon');
         }
 
-        // Save progress to memory
+        // Save progress to memory and update UI label
         window.saveProgress = function(key, isChecked) {
             localStorage.setItem(key, isChecked);
+            
+            // Optional: You could write a quick script here to update the "X/Y Mastered" label dynamically
+            // without needing a page refresh, but for now the visual strikethrough handles the immediate feedback perfectly.
         }
     </script>
 </body>
