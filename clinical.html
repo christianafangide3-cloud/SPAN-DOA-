@@ -1,106 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VBNBLV0DSS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VBNBLV0DSS');
+    </script>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinical Rounds | Splendid's Academy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Unified Vault | Splendid's Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@300;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f0fdfa; }
-        h1, h2, h3 { font-family: 'Merriweather', serif; }
-        .pulse-btn { animation: pulse-green 2s infinite; }
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .glass-header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); }
+        
+        /* Custom Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-20px) scale(1.05); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 8s ease-in-out infinite 2s; }
+        .reveal-anim { animation: slideDown 0.4s ease-out forwards; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CBT Radio Styling */
+        input[type="radio"] { display: none; }
+        .option-label { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        input[type="radio"]:checked + .option-box { background-color: rgba(6, 182, 212, 0.1); border-color: #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
+        input[type="radio"]:checked + .option-box .radio-indicator { background-color: #06b6d4; border-color: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
+        
+        /* Tab active state */
+        .tab-active { background-color: #0f172a; border-color: #06b6d4; color: #22d3ee; }
+        .tab-inactive { background-color: transparent; border-color: transparent; color: #94a3b8; }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="bg-slate-900 text-slate-200 min-h-screen pb-24 relative overflow-x-hidden">
 
-    <nav class="bg-teal-900 text-white p-4 sticky top-0 z-50 shadow-lg flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <a href="dashboard.html" class="text-teal-400 hover:text-white transition"><i class="fas fa-arrow-left"></i></a>
-            <h1 class="font-bold text-lg tracking-tight font-sans">Clinical Rounds 🩺</h1>
-        </div>
-        <div class="text-xs font-bold text-teal-400 border border-teal-700 bg-teal-800 px-2 py-1 rounded font-sans">Week 1</div>
-    </nav>
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-cyan-900/20 blur-[100px] animate-float"></div>
+        <div class="absolute bottom-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-purple-900/20 blur-[120px] animate-float-delayed"></div>
+    </div>
 
-    <div class="max-w-2xl mx-auto p-4 mt-4">
-        
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-teal-100">
-            <div class="bg-teal-900 text-white p-6 relative overflow-hidden">
-                <div class="absolute top-0 right-0 opacity-10 text-9xl transform translate-x-10 -translate-y-4 font-sans">?</div>
-                <div class="relative z-10">
-                    <span class="bg-teal-700 text-teal-100 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block font-sans">Case #001 • PHS 211</span>
-                    <h2 class="text-2xl font-bold leading-tight">The Student with Yellow Eyes</h2>
-                </div>
+    <header class="glass-header border-b border-cyan-500/20 sticky top-0 z-50 px-4 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tighter">
+                    THE UNIFIED VAULT
+                </h1>
+                <p class="text-[10px] text-cyan-200/70 font-bold tracking-widest uppercase">Multi-Engine Simulator</p>
             </div>
-
-            <div class="p-6 md:p-8">
-                <h3 class="text-lg font-bold text-slate-900 mb-2 font-sans"><i class="fas fa-user-injured text-teal-600 mr-2"></i>Patient Presentation</h3>
-                <p class="text-slate-600 leading-relaxed mb-6 font-sans">
-                    A 22-year-old male medical student presents to the clinic with <strong>extreme fatigue</strong> and <strong>dark urine</strong> (coca-cola colored). 
-                    <br><br>
-                    <strong>History:</strong> He was treated for Malaria 3 days ago using an older antimalarial drug (Primaquine).
-                    <br>
-                    <strong>Observation:</strong> Examination reveals <strong>scleral icterus</strong> (yellowing of the eyes).
-                </p>
-
-                <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-teal-500 mb-8">
-                    <h4 class="font-bold text-sm text-slate-900 uppercase mb-1 font-sans">The Challenge</h4>
-                    <p class="text-sm text-slate-600 font-sans">Based on your knowledge of <strong>Blood Physiology (PHS 211)</strong>, what is the most likely diagnosis?</p>
+            
+            <div class="flex items-center gap-3">
+                <div id="cbt-timer" class="hidden flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner">
+                    <i class="fas fa-clock text-cyan-400 animate-pulse text-sm"></i>
+                    <span class="font-mono font-black text-white" id="time-display">15:00</span>
                 </div>
-
-                <div id="answer-section" class="hidden bg-teal-50 rounded-xl p-6 border border-teal-200 animate-fade-in">
-                    <div class="flex items-start gap-3 mb-4">
-                        <div class="bg-teal-100 p-2 rounded-full text-teal-700"><i class="fas fa-check"></i></div>
-                        <div>
-                            <h3 class="font-bold text-xl text-teal-900">G6PD Deficiency</h3>
-                            <p class="text-sm text-teal-700 font-medium font-sans">Glucose-6-Phosphate Dehydrogenase Deficiency</p>
-                        </div>
-                    </div>
-                    
-                    <h4 class="font-bold text-sm text-slate-900 uppercase mb-2 font-sans">Physiological Mechanism:</h4>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-3 font-sans">
-                        <strong>1. The Defect:</strong> Lack of G6PD enzyme reduces <strong>NADPH</strong> production in RBCs.
-                    </p>
-                    <p class="text-sm text-slate-600 leading-relaxed mb-3 font-sans">
-                        <strong>2. The Trigger:</strong> Antimalarials (oxidative drugs) cause oxidative stress. Without NADPH, <strong>Glutathione</strong> cannot neutralize H2O2.
-                    </p>
-                    <p class="text-sm text-slate-600 leading-relaxed font-sans">
-                        <strong>3. The Result:</strong> Hemoglobin precipitates (Heinz bodies), causing macrophages to bite them out ("Bite Cells"), leading to <strong>Acute Hemolytic Anemia</strong>.
-                    </p>
-                </div>
-
-                <button id="reveal-btn" onclick="revealAnswer()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-teal-200 transition-all transform hover:-translate-y-1 pulse-btn font-sans">
-                    👁️ Reveal Diagnosis
+                <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg active:scale-95">
+                    <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
         </div>
-    </div>
+        <div id="cbt-progress-container" class="hidden absolute bottom-0 left-0 w-full h-1 bg-slate-800">
+            <div id="cbt-progress-bar" class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 w-0 transition-all duration-300"></div>
+        </div>
+    </header>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <main class="max-w-4xl mx-auto p-4 mt-4 relative z-10">
+        
+        <div id="engine-selector" class="flex p-1 bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-700 mb-6 shadow-lg">
+            <button onclick="switchMode('CBT')" id="tab-cbt" class="flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-active shadow-md">
+                <i class="fas fa-check-circle mr-2"></i> Objective (CBT)
+            </button>
+            <button onclick="switchMode('OSCE')" id="tab-osce" class="flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-inactive hover:text-white">
+                <i class="fas fa-microscope mr-2"></i> Subjective (OSCE)
+            </button>
+        </div>
 
-        // Firebase Config
-        const firebaseConfig = { apiKey: "AIzaSyCrF_INEtL9bZKAoDPYCuTaVMRWGAdbcew", authDomain: "splendids-academy-v2.firebaseapp.com", projectId: "splendids-academy-v2", storageBucket: "splendids-academy-v2.firebasestorage.app", messagingSenderId: "573697150601", appId: "1:573697150601:web:74c556c85b6be053018058", measurementId: "G-VVDT1PMHNX" };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        <div id="cbt-core" class="block">
+            <div id="cbt-intro" class="bg-slate-800/80 border border-slate-700/80 rounded-[2rem] p-6 shadow-2xl text-center">
+                <h2 class="text-3xl font-black text-white mb-2">Select Target Module</h2>
+                <p class="text-slate-400 text-sm mb-6">Engine will extract exactly 35 randomized questions.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="igniteCBT('PHS211')" class="bg-slate-900 border border-red-500/30 hover:border-red-500 rounded-2xl p-6 transition-all text-center">
+                        <div class="text-red-500 text-3xl mb-2"><i class="fas fa-heartbeat"></i></div>
+                        <h3 class="text-white font-black text-xl">PHS 211</h3>
+                    </button>
+                    <button onclick="igniteCBT('MBC211')" class="bg-slate-900 border border-blue-500/30 hover:border-blue-500 rounded-2xl p-6 transition-all text-center">
+                        <div class="text-blue-500 text-3xl mb-2"><i class="fas fa-dna"></i></div>
+                        <h3 class="text-white font-black text-xl">MBC 211</h3>
+                    </button>
+                    <button onclick="igniteCBT('ANA211')" class="bg-slate-900 border border-emerald-500/30 hover:border-emerald-500 rounded-2xl p-6 transition-all text-center">
+                        <div class="text-emerald-500 text-3xl mb-2"><i class="fas fa-bone"></i></div>
+                        <h3 class="text-white font-black text-xl">ANA 211</h3>
+                    </button>
+                </div>
+            </div>
 
-        // Security Check
-        onAuthStateChanged(auth, (user) => {
-            if (!user) window.location.href = "index.html"; // Kick them out if not logged in
-        });
+            <div id="cbt-stats" class="hidden mb-4 flex justify-between items-center bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="cbt-course-title">Course</span>
+                <span class="text-sm font-black text-cyan-400 bg-cyan-900/50 px-3 py-1 rounded-md" id="cbt-questions-attempted">0 / 35</span>
+            </div>
+            
+            <div id="cbt-exam-container" class="hidden w-full"></div>
+            
+            <div id="cbt-score-display" class="hidden bg-slate-800 border border-cyan-500 rounded-[2rem] p-8 text-center mt-6 shadow-2xl">
+                <h3 class="text-2xl text-white font-black mb-2">Final Diagnostic</h3>
+                <div id="cbt-final-score" class="text-7xl font-black text-white mb-6">--/35</div>
+                <button onclick="location.reload()" class="px-8 py-3 bg-slate-700 text-white font-bold rounded-xl shadow-lg">RE-ROLL VAULT</button>
+            </div>
+        </div>
 
-        // Expose function to window
-        window.revealAnswer = function() {
-            document.getElementById('answer-section').classList.remove('hidden');
-            document.getElementById('reveal-btn').classList.add('hidden');
+        <div id="osce-core" class="hidden">
+            <div id="osce-intro" class="bg-slate-800/80 border border-slate-700/80 rounded-[2rem] p-6 shadow-2xl text-center">
+                <h2 class="text-3xl font-black text-white mb-2">Practical Laboratory Simulator</h2>
+                <p class="text-slate-400 text-sm mb-6">Subjective analysis extracted from Prof. Jimmy's protocols.</p>
+                <button onclick="igniteOSCE()" class="w-full md:w-auto px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black rounded-2xl transition-all shadow-lg tracking-widest text-lg">
+                    LAUNCH PHS 214 PRACTICAL <i class="fas fa-microscope ml-2"></i>
+                </button>
+            </div>
+
+            <div id="osce-exam-container" class="hidden w-full mt-4">
+                <div class="mb-4 flex justify-between items-center bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">PHS 214: LAB PHYSIOLOGY</span>
+                    <span class="text-sm font-black text-pink-400 bg-pink-900/50 px-3 py-1 rounded-md border border-pink-800" id="osce-progress-text">Setup 1 / 10</span>
+                </div>
+                <div id="osce-practical-render"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // ==========================================
+        // UI TAB CONTROLLER
+        // ==========================================
+        function switchMode(mode) {
+            const tabCbt = document.getElementById('tab-cbt');
+            const tabOsce = document.getElementById('tab-osce');
+            const coreCbt = document.getElementById('cbt-core');
+            const coreOsce = document.getElementById('osce-core');
+            const selector = document.getElementById('engine-selector');
+
+            if (mode === 'CBT') {
+                tabCbt.className = "flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-active shadow-md";
+                tabOsce.className = "flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-inactive hover:text-white";
+                coreCbt.classList.remove('hidden');
+                coreOsce.classList.add('hidden');
+            } else {
+                tabOsce.className = "flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-active shadow-md !border-pink-500 !text-pink-400";
+                tabCbt.className = "flex-1 py-3 text-sm font-black uppercase tracking-widest rounded-xl transition-all tab-inactive hover:text-white";
+                coreOsce.classList.remove('hidden');
+                coreCbt.classList.add('hidden');
+                selector.classList.add('hidden'); // Hide tabs once OSCE starts to prevent cross-contamination
+            }
+        }
+
+        // ==========================================
+        // DATA ARRAYS
+        // ==========================================
+        const courseVault = {
+            "PHS211": [{ question: "Placeholder PHS211", options: ["A", "B", "C", "D"], correctAnswer: 0 }],
+            "MBC211": [{ question: "Placeholder MBC211", options: ["A", "B", "C", "D"], correctAnswer: 0 }],
+            "ANA211": [{ question: "Placeholder ANA211", options: ["A", "B", "C", "D"], correctAnswer: 0 }]
+        };
+
+        const subjectiveVault = [
+            {
+                title: "Station 1: Animal Ethics & Biostatistics",
+                scenario: "You are defending your experimental design to the ethical committee regarding the use of Wistar rats[cite: 191].",
+                question: "State the primary ethical rule for animal handling. Explain the relationship between the number of animals used and statistical analysis.",
+                markingScheme: [
+                    "Golden Rule: Animals must not be tortured[cite: 189].",
+                    "Organ Harvesting: Harvested organs must be kept safe in a chemical preservative (e.g., chloroform) within a strict timeframe[cite: 192, 193, 194, 196].",
+                    "Statistical Power: Statistical analysis is a function of the number of animals[cite: 197].",
+                    "Key Phrase: 'The lesser the number of animals, the lower the precision of the prediction'[cite: 199]."
+                ],
+                trapAlert: "Prof. Jimmy specifically looks for the 'precision of the prediction' keyword regarding statistics."
+            },
+            {
+                title: "Station 2: Tyrode's Solution & Mixing",
+                scenario: "You are required to formulate Tyrode's solution for a mammalian intestine experiment[cite: 40, 116].",
+                question: "Outline the N-K-C dissolution rule. Why must CaCl2 be handled carefully when NaHCO3 is present?",
+                markingScheme: [
+                    "Dissolve NaCl, KCl, and NaHCO3 in about 80% of the distilled water first because they are highly soluble[cite: 66, 67].",
+                    "The Calcium Trap: ALWAYS dissolve CaCl2 separately or add it LAST and slowly[cite: 68, 69].",
+                    "Reaction: If Calcium meets Bicarbonate in high concentration, they precipitate as Calcium Carbonate (Chalk)[cite: 70].",
+                    "Result: This turns the solution cloudy and renders it useless[cite: 70]."
+                ],
+                trapAlert: "Remember Tyrode's contains Glucose for energy and MUST be aerated at $37^{\circ}C$[cite: 49, 116]."
+            },
+            {
+                title: "Station 3: Measurement of Gastric Acid",
+                scenario: "Gastric contents from a 24-hour fasted rat are harvested and titrated against 0.02N NaOH using Silverton & Baker (1983) method[cite: 120, 122, 126, 132, 138].",
+                question: "State the formula for calculating HCl concentration. What is the clinical significance of hyperchlorhydria?",
+                markingScheme: [
+                    "Formula: $Concentration = \\frac{Average~Titer \\times Normality(0.02) \\times 40}{Volume(5ml)}$[cite: 158].",
+                    "Endpoint: Titrate until a persistent light pink color is observed (phenolphthalein indicator)[cite: 139, 150].",
+                    "Clinical Correlate: Hyperchlorhydria is seen in Zollinger-Ellison Syndrome (gastrinoma) and Peptic Ulcers[cite: 163]."
+                ],
+                trapAlert: "Achlorhydria (low acid) is seen in Pernicious Anaemia due to parietal cell atrophy[cite: 165]."
+            },
+            {
+                title: "Station 4: Clinical Instrumentation (Analysis)",
+                scenario: "Specimen A is a weighted glass float. Specimen B is a corrugated rubber tube[cite: 409, 435, 440].",
+                question: "Identify both instruments. What is the normal physiological range for the fluid measured by Specimen A?",
+                markingScheme: [
+                    "Specimen A: Urinometer[cite: 253, 404].",
+                    "Function A: Measures the Specific Gravity of urine[cite: 253, 406].",
+                    "Normal Range A: 1.005 to 1.030[cite: 408].",
+                    "Specimen B: Stethograph (Pneumograph)[cite: 264, 409].",
+                    "Function B: Records respiratory movements of the chest[cite: 411]."
+                ],
+                trapAlert: "Do not approximate the specific gravity. Write exactly 1.005 - 1.030."
+            },
+            {
+                title: "Station 5: Basal Salivary Secretion",
+                scenario: "A subject spits pooled saliva into a cylinder for a set time without chewing[cite: 493].",
+                question: "Define the basal rate and state its normal value. Name a clinical condition associated with decreased secretion.",
+                markingScheme: [
+                    "Basal Rate: The continuous, unstimulated secretion of saliva to keep the oral mucosa moist[cite: 492].",
+                    "Calculation: $Flow~Rate = \\frac{Total~Volume}{Time}$[cite: 495].",
+                    "Normal Value: $\\sim0.3-0.5~ml/min$[cite: 496].",
+                    "Clinical Correlate: Hyposalivation (Xerostomia / Dry Mouth) caused by anticholinergic drugs or dehydration[cite: 498, 499]."
+                ],
+                trapAlert: "Hypersalivation is called Sialorrhea (caused by parasympathetic overstimulation)[cite: 500]."
+            },
+            {
+                title: "Station 6: Haemocytometry",
+                scenario: "You are required to perform a blood cell count and assess haemoglobin levels[cite: 233, 244, 256].",
+                question: "Identify the instrument used to count red blood cells and the instrument used to measure haemoglobin via reflectance photometry. State the normal RBC ranges.",
+                markingScheme: [
+                    "Cell Counter: Haemocytometer (Neubauer counter), a grid etched slide[cite: 248, 249, 356].",
+                    "Hb Measurement: Haemoglobinometer (uses reflectance photometry)[cite: 244, 245].",
+                    "Normal RBC (Male): 5 - 6 million[cite: 362].",
+                    "Normal RBC (Female): 4.5 - 4.9 million[cite: 363]."
+                ],
+                trapAlert: "WBC counting uses larger grid spaces, RBC uses smaller grid spaces[cite: 361]."
+            },
+            {
+                title: "Station 7: Physiological Salt Solutions (Species Trap)",
+                scenario: "You accidentally apply Frog Ringer's Solution (0.65% NaCl) to an isolated rabbit intestine[cite: 113].",
+                question: "What will happen to the mammalian cells? Explain the correct temperature constraints for both amphibian and mammalian experiments.",
+                markingScheme: [
+                    "Pathology: The mammalian cells will swell and lyse (Hemolysis/Edema)[cite: 113].",
+                    "Reason: 0.65% NaCl is Hypotonic to mammalian tissue (which requires 0.9%)[cite: 113].",
+                    "Amphibian Temp: Works at Room Temperature $(25^{\circ}C)$[cite: 107].",
+                    "Mammalian Temp: Works at Body Temperature $(37^{\circ}C)$[cite: 108]."
+                ],
+                trapAlert: "Applying $37^{\circ}C$ Tyrode's to a frog heart will denature its enzymes (cook it)[cite: 109]."
+            },
+            {
+                title: "Station 8: Neurological Hammers",
+                scenario: "You are presented with three different diagnostic hammers: Patella, Babinski, and Buck[cite: 254, 371, 373, 374].",
+                question: "Differentiate their specific clinical applications in neurological assessment.",
+                markingScheme: [
+                    "Patella Hammer: Specialized tool used to test deep tendon reflexes (e.g., knee jerk)[cite: 254, 255, 373].",
+                    "Babinski Hammer: Has a blunt end used to gently strike the sole of the foot to test the plantar (Babinski) reflex[cite: 374, 375].",
+                    "Buck Hammer: Used to test reflexes such as knee and jaw reflexes[cite: 371, 372]."
+                ],
+                trapAlert: "The pointed end of the patella hammer can also be used to elicit the Babinski sign[cite: 256]."
+            },
+            {
+                title: "Station 9: Cardiovascular Diagnostics",
+                scenario: "You are assessing cardiovascular fitness using an Electrocardiograph (ECG) and a Sphygmomanometer[cite: 275, 312].",
+                question: "State the function of the Sphygmomanometer. In the ECG trace, what physiological events do the P-wave and T-wave represent?",
+                markingScheme: [
+                    "Sphygmomanometer: Used to measure systolic and diastolic blood pressure[cite: 276, 307].",
+                    "P-wave: Represents the electrical depolarization of the atria[cite: 317].",
+                    "T-wave: Represents ventricular repolarization[cite: 321]."
+                ],
+                trapAlert: "Normal blood pressure for a healthy adult is $120~mmHg$ (Systolic) / $80~mmHg$ (Diastolic)[cite: 412, 413]."
+            },
+            {
+                title: "Station 10: Centrifugation & PCV",
+                scenario: "You are conducting a blood bank test to determine Packed Cell Volume (PCV)[cite: 334, 335, 339].",
+                question: "Differentiate between the Wintrobe apparatus and the Haematocrit Centrifuge. What is the normal PCV range?",
+                markingScheme: [
+                    "Wintrobe Apparatus: Consists of pipettes, used to measure PCV for blood bank testing and anaemia diagnosis[cite: 334, 335].",
+                    "Haematocrit Centrifuge: Uses capillary tubes and time laminates to measure PCV and separate blood components[cite: 338, 340, 343].",
+                    "Normal PCV Range: 36 - 45% (lower in females)[cite: 346]."
+                ],
+                trapAlert: "A Benchtop Centrifuge is specifically used to separate plasma from blood for urine/cell culture analysis[cite: 336, 337]."
+            }
+        ];
+
+        // ==========================================
+        // CBT ENGINE LOGIC (Abridged for brevity in merge)
+        // ==========================================
+        let cbtSelected = [], cbtAnswers = [], cbtIndex = 0, cbtTimer;
+
+        function igniteCBT(courseCode) {
+            document.getElementById('engine-selector').classList.add('hidden');
+            document.getElementById('cbt-intro').classList.add('hidden');
+            document.getElementById('cbt-stats').classList.remove('hidden');
+            document.getElementById('cbt-exam-container').classList.remove('hidden');
+            document.getElementById('cbt-timer').classList.remove('hidden');
+            
+            cbtSelected = [...courseVault[courseCode]];
+            cbtAnswers = new Array(cbtSelected.length).fill(null);
+            cbtIndex = 0;
+            renderCBTQuestion();
+        }
+
+        function renderCBTQuestion() {
+            const container = document.getElementById('cbt-exam-container');
+            const q = cbtSelected[cbtIndex];
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, i) => {
+                const isChecked = cbtAnswers[cbtIndex] === i ? 'checked' : '';
+                optionsHTML += `
+                    <label class="block relative mb-3 cursor-pointer option-label group">
+                        <input type="radio" name="cbtQ" value="${i}" onchange="cbtAnswers[${cbtIndex}]=${i}" ${isChecked}>
+                        <div class="option-box p-4 border border-slate-700 bg-slate-800/50 rounded-xl flex items-center">
+                            <div class="radio-indicator w-5 h-5 rounded-full border-2 border-slate-500 mr-4 flex-shrink-0"></div>
+                            <span class="text-slate-300 font-medium">${opt}</span>
+                        </div>
+                    </label>`;
+            });
+
+            container.innerHTML = `
+                <div class="bg-slate-800/80 p-8 rounded-3xl border border-slate-700 shadow-xl mb-6">
+                    <h3 class="text-white font-bold text-xl mb-6">${q.question}</h3>
+                    ${optionsHTML}
+                    <div class="flex justify-between mt-6">
+                        <button onclick="cbtIndex > 0 ? (cbtIndex--, renderCBTQuestion()) : null" class="px-5 py-3 bg-slate-700 text-white font-bold rounded-xl">PREV</button>
+                        <button onclick="cbtIndex < cbtSelected.length - 1 ? (cbtIndex++, renderCBTQuestion()) : alert('End of mock')" class="px-8 py-3 bg-cyan-600 text-white font-black rounded-xl">NEXT</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // OSCE ENGINE LOGIC 
+        // ==========================================
+        let osceIndex = 0;
+
+        function igniteOSCE() {
+            document.getElementById('engine-selector').classList.add('hidden');
+            document.getElementById('osce-intro').classList.add('hidden');
+            document.getElementById('osce-exam-container').classList.remove('hidden');
+            osceIndex = 0;
+            renderOSCE();
+        }
+
+        function renderOSCE() {
+            const container = document.getElementById('osce-practical-render');
+            const data = subjectiveVault[osceIndex];
+            document.getElementById('osce-progress-text').innerText = `Setup ${osceIndex + 1} / ${subjectiveVault.length}`;
+
+            let markingHTML = '';
+            data.markingScheme.forEach(point => {
+                markingHTML += `<li class="mb-2 pl-2 border-l-2 border-pink-500 text-sm text-slate-300">${point}</li>`;
+            });
+
+            container.innerHTML = `
+                <div class="bg-slate-800/80 p-6 md:p-8 rounded-3xl border border-slate-700 shadow-xl mb-6 reveal-anim">
+                    <h2 class="text-xl font-black text-white mb-4"><i class="fas fa-microscope text-pink-500 mr-2"></i> ${data.title}</h2>
+                    <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50 mb-6 text-slate-300 text-sm">
+                        <strong class="text-pink-400">SCENARIO:</strong><br>${data.scenario}
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-4">${data.question}</h3>
+                    <textarea class="w-full bg-slate-900 border border-slate-600 rounded-xl p-4 text-slate-200 focus:border-pink-500 mb-6 h-32 resize-none" placeholder="Draft your answer..."></textarea>
+                    
+                    <button id="osce-reveal-btn" onclick="document.getElementById('osce-marking-guide').classList.remove('hidden'); this.classList.add('hidden')" class="w-full py-4 bg-slate-700 text-white font-black rounded-xl uppercase text-sm">
+                        <i class="fas fa-eye"></i> Reveal Director's Guide
+                    </button>
+
+                    <div id="osce-marking-guide" class="hidden mt-6 bg-pink-900/20 border border-pink-500/30 rounded-xl p-6 reveal-anim">
+                        <ul class="list-none mb-4">${markingHTML}</ul>
+                        <div class="bg-red-900/30 border border-red-500/50 p-3 rounded-lg text-xs text-red-200">
+                            <strong class="text-red-400">EXAM TRAP:</strong> ${data.trapAlert}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button onclick="osceIndex > 0 ? (osceIndex--, renderOSCE()) : null" class="px-6 py-3 bg-slate-800 text-white font-bold rounded-xl border border-slate-700">PREV</button>
+                    <button onclick="osceIndex < subjectiveVault.length - 1 ? (osceIndex++, renderOSCE()) : alert('Practical Complete!')" class="px-8 py-3 bg-pink-600 text-white font-black rounded-xl">NEXT</button>
+                </div>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
-</html>
+    </html>
