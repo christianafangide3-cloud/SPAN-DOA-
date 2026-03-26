@@ -89,12 +89,12 @@
         <div class="flex items-center gap-4">
             <div class="hidden md:flex flex-col items-end">
                 <p id="user-name-display" class="text-xs font-bold text-white">Christian Afangide</p>
-                <p class="text-[10px] text-cyan-400 font-black uppercase tracking-widest flex items-center gap-1">
+                <p class="text-[10px] text-amber-400 font-black uppercase tracking-widest flex items-center gap-1">
                     <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                     </span>
-                    System Active
+                    Standby Mode
                 </p>
             </div>
             <div onclick="window.location.href='profile.html'" class="h-10 w-10 rounded-xl bg-cyan-600 flex items-center justify-center text-white font-bold cursor-pointer hover:bg-cyan-500 transition-colors">
@@ -143,6 +143,19 @@
 
     <main class="pt-24 px-4 pb-12 max-w-5xl mx-auto space-y-6 relative z-10">
         
+        <div class="reveal-on-scroll bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute right-0 top-0 h-full w-2/3 bg-white/5 skew-x-12 transform origin-top-right transition-transform duration-1000 hover:skew-x-0"></div>
+            <div class="absolute -bottom-8 -right-8 text-[12rem] opacity-[0.03] transform rotate-12"><i class="fas fa-battery-half"></i></div>
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-amber-500/20 border border-amber-400/30 backdrop-blur-md">
+                    <span class="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span class="text-[10px] font-black tracking-widest uppercase text-amber-200">Phase 1 Complete • Strategic Recovery</span>
+                </div>
+                <h2 id="welcome-msg" class="text-4xl md:text-5xl font-black mb-3 tracking-tight">Welcome Back!</h2>
+                <p class="text-slate-300 text-sm md:text-base font-medium max-w-lg leading-relaxed">The battlefield is quiet until April. Do not fall into the psychological trap of total relaxation. Maintain your study streak. Map the Embryology timelines now.</p>
+            </div>
+        </div>
+
         <div class="reveal-on-scroll bg-red-950/40 border border-red-500/30 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg">
             <div class="flex items-center gap-4 w-full md:w-auto">
                 <div class="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 text-xl border border-red-500/50 flex-shrink-0 animate-pulse">
@@ -153,7 +166,7 @@
                     <p id="directive-text" class="text-white text-sm font-medium mt-1 italic">"Loading target objective..."</p>
                 </div>
             </div>
-            <div class="text-center md:text-right bg-black/40 px-5 py-3 rounded-xl border border-red-500/20 flex-shrink-0 min-w-[180px]">
+            <div class="text-center md:text-right bg-black/40 px-5 py-3 rounded-xl border border-red-500/20 flex-shrink-0 min-w-[200px]">
                 <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">T-Minus to <span id="countdown-target-name" class="text-cyan-400">...</span></p>
                 <p id="countdown-timer" class="text-2xl font-mono font-black text-red-400 tracking-wider">--:--:--</p>
             </div>
@@ -167,7 +180,7 @@
                         <span class="bg-slate-800 text-slate-400 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest border border-slate-700">CBT Assessment Protocol</span>
                     </div>
                     <h2 class="text-3xl font-black text-white mb-2 tracking-tight">The Exam Vault</h2>
-                    <p class="text-slate-400 text-sm font-medium">Pure Extraction from Lecturer Core Materials. The engine pulls <span class="text-cyan-400 font-bold">50 questions</span> per session. Prepare for Your Exams.</p>
+                    <p class="text-slate-400 text-sm font-medium">Pure Extraction from Lecturer Core Materials. The engine pulls <span class="text-cyan-400 font-bold">35 questions</span> per session. Prepare for Your Exams.</p>
                 </div>
                 
                 <div class="w-full md:w-auto relative z-10">
@@ -233,7 +246,7 @@
                 <h3 class="font-bold text-white flex items-center gap-2 text-lg tracking-tight">
                     <i class="fas fa-calendar-alt text-cyan-500"></i> Active Timetable
                 </h3>
-                <span class="text-[10px] bg-slate-800 text-slate-400 font-bold px-2 py-1 rounded uppercase tracking-widest border border-slate-700">MARCH 2026</span>
+                <span class="text-[10px] bg-slate-800 text-slate-400 font-bold px-2 py-1 rounded uppercase tracking-widest border border-slate-700">MAR / APR 2026</span>
             </div>
             
             <div class="mb-4 bg-slate-800/50 rounded-lg p-3 border border-slate-700">
@@ -277,35 +290,33 @@
         }
 
         // ==========================================
-        // THE TIME-AWARE AUTO-MARKING ENGINE
+        // THE TIME-AWARE AUTO-MARKING ENGINE V2.5
         // ==========================================
         
-        // Master Schedule: UNIX Timestamps
+        // Master Schedule: Added specific display properties for "TBD" functionality
         const examSchedule = [
-            { code: "PHS 211", title: "Blood Physiology", v: "Annex", date: new Date('March 3, 2026 11:00:00 GMT+0100').getTime(), directive: "\"Mastery of Blood Physiology required.\"" },
-            { code: "MBC 211", title: "General Biochemistry", v: "Annex", date: new Date('March 4, 2026 11:00:00 GMT+0100').getTime(), directive: "\"Metabolic pathways must be mapped.\"" },
-            { code: "ANA 211", title: "Gross Anatomy", v: "Annex", date: new Date('March 5, 2026 08:00:00 GMT+0100').getTime(), directive: "\"Upper & Lower Limb topography.\"" },
-            { code: "PHS 212", title: "Excitable Tissues", v: "Annex", date: new Date('March 9, 2026 08:00:00 GMT+0100').getTime(), directive: "\"Mastery of Excitable Tissues required.\"" },
-            { code: "PHS 213", title: "Cell Physiology", v: "Annex", date: new Date('March 12, 2026 08:00:00 GMT+0100').getTime(), directive: "\"Cellular transport and biophysics.\"" },
-            { code: "PHS 214", title: "Lab Physiology", v: "Physio Lab", date: new Date('March 13, 2026 08:00:00 GMT+0100').getTime(), directive: "\"Laboratory practicals. Clinical methodology.\"" },
-            { code: "ANA 213", title: "Embryology", v: "Annex", date: new Date('March 20, 2026 08:00:00 GMT+0100').getTime(), directive: "\"Embryological development timelines. Visualize the organogenesis.\"" },
-            { code: "GST 211", title: "Philosophy & Logic", v: "Main Campus", date: new Date('March 26, 2026 11:00:00 GMT+0100').getTime(), directive: "\"Philosophy and Logic. Apply critical thinking protocols.\"" }
+            { code: "PHS 211", title: "Blood Physiology", v: "Annex", date: new Date('March 3, 2026 11:00:00 GMT+0100').getTime() },
+            { code: "MBC 211", title: "General Biochemistry", v: "Annex", date: new Date('March 4, 2026 11:00:00 GMT+0100').getTime() },
+            { code: "ANA 211", title: "Gross Anatomy", v: "Annex", date: new Date('March 5, 2026 08:00:00 GMT+0100').getTime() },
+            { code: "PHS 212", title: "Excitable Tissues", v: "Annex", date: new Date('March 9, 2026 08:00:00 GMT+0100').getTime() },
+            { code: "PHS 213", title: "Cell Physiology", v: "Annex", date: new Date('March 12, 2026 08:00:00 GMT+0100').getTime() },
+            { code: "PHS 214", title: "Lab Physiology", v: "Physio Lab", date: new Date('March 13, 2026 08:00:00 GMT+0100').getTime() },
+            // NEW DATES: ANA 213 is April 2nd. GST 211 is April TBD.
+            { code: "ANA 213", title: "Embryology", v: "Annex", date: new Date('April 2, 2026 08:00:00 GMT+0100').getTime(), displayDate: "APR 02", displayTime: "TBD", directive: "\"Embryological development timelines. The ceasefire ends in April.\"" },
+            { code: "GST 211", title: "Philosophy & Logic", v: "Main Campus", date: new Date('April 30, 2026 23:59:59 GMT+0100').getTime(), displayDate: "APR --", displayTime: "TBD", directive: "\"Philosophy and Logic. Exact date pending. Maintain readiness.\"" }
         ];
 
-        // 4 Hours buffer ensures the exam is marked "Completed" well after the paper ends.
         const DURATION_BUFFER = 4 * 60 * 60 * 1000; 
         
         function renderTimetableAndCountdown() {
-            // Force the system to recognize today is at least March 16 for auto-marking (Fallback safety for dev)
-            const trueNow = new Date().getTime();
-            const simulatedNow = Math.max(trueNow, new Date('March 16, 2026 00:00:00 GMT+0100').getTime()); 
-            const now = simulatedNow;
+            const now = new Date().getTime();
 
             const timetableContainer = document.getElementById('vertical-timetable');
             timetableContainer.innerHTML = ''; 
             
             let nextExam = null;
             let clearedCount = 0;
+            const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
             // 1. Process Timetable
             examSchedule.forEach((ex, index) => {
@@ -316,8 +327,10 @@
                 if (isNext) nextExam = ex;
 
                 const dateObj = new Date(ex.date);
-                const dateStr = `MAR ${dateObj.getDate().toString().padStart(2, '0')}`;
-                const timeStr = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                
+                // Dynamic Date/Time Parsing (Falls back to generated string if 'displayDate' isn't explicitly set)
+                const dateStr = ex.displayDate || `${monthNames[dateObj.getMonth()]} ${dateObj.getDate().toString().padStart(2, '0')}`;
+                const timeStr = ex.displayTime || dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
                 const item = document.createElement('div');
                 item.className = `reveal-on-scroll flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center relative rounded-xl p-3 md:p-4 border ${isNext ? 'bg-slate-800/90 border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]' : (isCompleted ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-800/40 border-slate-700')}`;
@@ -378,14 +391,14 @@
             }
 
             nameEl.textContent = nextExam.code;
-            directiveEl.textContent = nextExam.directive;
+            directiveEl.textContent = nextExam.directive || "\"Prepare for the upcoming objective.\"";
 
             const updateTimer = () => {
                 const currentRealTime = new Date().getTime();
                 const distance = nextExam.date - currentRealTime;
                 
                 if (distance < 0 && distance > -DURATION_BUFFER) {
-                    timerEl.textContent = "EXAM IN PROGRESS";
+                    timerEl.textContent = "EXAM TODAY";
                     timerEl.classList.add('animate-pulse');
                     return;
                 }
