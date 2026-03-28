@@ -1,129 +1,558 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANA 213 Poster | Splendid's Academy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        body { 
-            font-family: 'DM Sans', sans-serif; 
-            background: #f8fafc; /* Slate 50 */
-            color: #0f172a; 
-            padding-bottom: 2rem;
-        }
-        .title-font { font-family: 'Rajdhani', sans-serif; }
-        
-        /* Stage Colors */
-        .border-s1 { border-left-color: #d97706; } .text-s1 { color: #d97706; } .bg-s1 { background: rgba(217,119,6,0.1); }
-        .border-s2 { border-left-color: #059669; } .text-s2 { color: #059669; } .bg-s2 { background: rgba(5,150,105,0.1); }
-        .border-s3 { border-left-color: #0284c7; } .text-s3 { color: #0284c7; } .bg-s3 { background: rgba(2,132,199,0.1); }
-        .border-s4 { border-left-color: #7c3aed; } .text-s4 { color: #7c3aed; } .bg-s4 { background: rgba(124,58,237,0.1); }
-        .border-s5 { border-left-color: #e11d48; } .text-s5 { color: #e11d48; } .bg-s5 { background: rgba(225,29,72,0.1); }
-        .border-s6 { border-left-color: #ea580c; } .text-s6 { color: #ea580c; } .bg-s6 { background: rgba(234,88,12,0.1); }
-        
-        .gene-hl { color: #d97706; font-weight: 700; }
-        .trap-hl { color: #dc2626; font-weight: 700; }
-    </style>
-</head>
-<body class="max-w-md mx-auto relative overflow-x-hidden bg-white shadow-2xl min-h-screen">
 
-    <div class="bg-slate-900 text-white p-6 rounded-b-3xl shadow-lg relative overflow-hidden">
-        <div class="absolute -right-4 -top-4 text-cyan-500/20 text-7xl"><i class="fas fa-dna"></i></div>
-        <div class="relative z-10">
-            <span class="bg-cyan-500/20 text-cyan-400 text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest border border-cyan-500/30">BAMSSA Core Guide</span>
-            <h1 class="title-font text-4xl font-bold mt-2 leading-tight tracking-tight">ANA 213: EMBRYOLOGY</h1>
-            <p class="text-slate-300 text-sm mt-1 font-medium">The Chronological Biological Cascade</p>
-        </div>
-    </div>
+    
+    {
+        question: "During female gametogenesis, primary oocytes are arrested in which specific phase until puberty?",
+        options: ["A. Metaphase II", "B. Diplotene stage of Prophase I", "C. Anaphase I", "D. Telophase II", "E. Prophase II"],
+        answer: "B",
+        explanation: "Primary oocytes are held in the diplotene (dictyotene) resting stage of Prophase I by Oocyte Maturation Inhibitor (OMI) until puberty."
+    },
+    {
+        question: "Which enzyme is specifically responsible for digesting the zona pellucida during fertilization?",
+        options: ["A. Hyaluronidase", "B. Corona-penetrating enzyme", "C. Acrosin", "D. ZP3 Ligase", "E. Integrin"],
+        answer: "C",
+        explanation: "Acrosin, released during the acrosome reaction, allows the sperm to physically digest and penetrate the zona pellucida."
+    },
+    {
+        question: "A newborn presents with severe hypotonia, hyperphagia, and hypogonadism. Genetic testing reveals a microdeletion on Chromosome 15. Which chromosome was deleted?",
+        options: ["A. The Maternal Chromosome", "B. The Paternal Chromosome", "C. Chromosome X", "D. Chromosome Y", "E. Both Maternal and Paternal"],
+        answer: "B",
+        explanation: "Prader-Willi syndrome is caused by a paternal microdeletion on chromosome 15 (15q11-15q13). Maternal deletion causes Angelman Syndrome."
+    },
+    {
+        question: "Spermatogenesis is a continuous process that begins at puberty. Exactly how many days does it take for a spermatogonium to become a mature spermatozoon?",
+        options: ["A. 14 days", "B. 28 days", "C. 48 days", "D. 74 days", "E. 120 days"],
+        answer: "D",
+        explanation: "The entire physiological cycle of spermatogenesis takes exactly 74 days."
+    },
+    {
+        question: "Which hormone is directly responsible for triggering ovulation and driving the oocyte into Metaphase II?",
+        options: ["A. Estrogen", "B. Progesterone", "C. Luteinizing Hormone (LH)", "D. Follicle-Stimulating Hormone (FSH)", "E. Human Chorionic Gonadotropin (hCG)"],
+        answer: "C",
+        explanation: "The massive mid-cycle LH surge triggers ovulation, increases collagenase activity, and pushes the oocyte into Metaphase II."
+    },
+    {
+        question: "The secondary oocyte is arrested in Metaphase II just prior to ovulation. What biological event is required for it to complete Meiosis II?",
+        options: ["A. Implantation", "B. Fertilization by a sperm", "C. The LH surge", "D. Degradation of the Corpus Luteum", "E. Expulsion of the first polar body"],
+        answer: "B",
+        explanation: "Meiosis II is only completed if the oocyte is physically penetrated by a sperm. Otherwise, it degenerates within 24 hours."
+    },
+    {
+        question: "A patient with a 45, X0 karyotype presents with a webbed neck, short stature, and gonadal dysgenesis. What is the diagnosis?",
+        options: ["A. Klinefelter Syndrome", "B. Trisomy 18", "C. Down Syndrome", "D. Turner Syndrome", "E. Cri-du-Chat Syndrome"],
+        answer: "D",
+        explanation: "Turner Syndrome (45, X0) is the only monosomy compatible with life, presenting with female phenotype and gonadal dysgenesis."
+    },
+    {
+        question: "The cortical reaction in the oocyte immediately follows sperm penetration. What is its primary physiological purpose?",
+        options: ["A. To initiate cleavage", "B. To release the second polar body", "C. To prevent polyspermy", "D. To stimulate capacitation", "E. To form the pronucleus"],
+        answer: "C",
+        explanation: "The cortical reaction alters the Zona Pellucida (inactivating ZP3 receptors) to prevent any other sperm from entering (polyspermy block)."
+    },
+    {
+        question: "Which layer of the endometrium undergoes ischemic necrosis and sloughs off during the menstrual phase?",
+        options: ["A. Stratum Basalis", "B. Stratum Functionalis", "C. Myometrium", "D. Perimetrium", "E. Decidua Basalis"],
+        answer: "B",
+        explanation: "The stratum functionalis (compact and spongy layers) sheds due to crashing progesterone levels causing spiral artery vasospasm."
+    },
+    {
+        question: "A male patient presents with gynecomastia, testicular atrophy, and a 47, XXY karyotype. What is the diagnosis?",
+        options: ["A. Turner Syndrome", "B. Klinefelter Syndrome", "C. Edwards Syndrome", "D. Patau Syndrome", "E. Marfan Syndrome"],
+        answer: "B",
+        explanation: "Klinefelter Syndrome is a sex chromosome aneuploidy (47, XXY) found in males, causing hypogonadism and gynecomastia."
+    },
 
-    <div class="p-5 space-y-4 relative">
-        <div class="absolute left-[38px] top-4 bottom-4 w-1 bg-slate-200 rounded-full z-0"></div>
+    // --- PHASE 2: WEEKS 1 & 2 (FERTILIZATION TO IMPLANTATION) ---
+    {
+        question: "During Week 2 of development, the trophoblast differentiates into two layers. Which layer secretes Human Chorionic Gonadotropin (hCG)?",
+        options: ["A. Cytotrophoblast", "B. Epiblast", "C. Syncytiotrophoblast", "D. Hypoblast", "E. Extraembryonic somatic mesoderm"],
+        answer: "C",
+        explanation: "The Syncytiotrophoblast aggressively invades the maternal endometrium and secretes hCG to rescue the Corpus Luteum."
+    },
+    {
+        question: "By Day 3 of cleavage, the embryo is a 16-cell compacted ball. What is the anatomical term for this stage?",
+        options: ["A. Zygote", "B. Blastocyst", "C. Morula", "D. Trophoblast", "E. Embryoblast"],
+        answer: "C",
+        explanation: "The Morula (resembling a mulberry) forms around Day 3 before fluid enters to create the blastocyst."
+    },
+    {
+        question: "The amniotic cavity forms physically within which of the following embryonic layers?",
+        options: ["A. Hypoblast", "B. Cytotrophoblast", "C. Syncytiotrophoblast", "D. Epiblast", "E. Extraembryonic mesoderm"],
+        answer: "D",
+        explanation: "Small clefts appear within the tall columnar cells of the Epiblast, which coalesce to form the amniotic cavity."
+    },
+    {
+        question: "Which of the following molecules mediates the initial attachment (rolling) of the blastocyst to the uterine epithelium?",
+        options: ["A. L-Selectin", "B. E-Cadherin", "C. Fibronectin", "D. Integrin", "E. Laminin"],
+        answer: "A",
+        explanation: "L-selectin on the trophoblast binds to carbohydrate receptors on the uterine epithelium for initial tethering."
+    },
+    {
+        question: "In a complete Hydatidiform Mole, the trophoblast develops but there is no embryo. What is the genetic origin of this tissue?",
+        options: ["A. 100% Maternal", "B. 100% Paternal", "C. 50% Maternal, 50% Paternal", "D. 75% Paternal", "E. Trisomy 21"],
+        answer: "B",
+        explanation: "Complete moles are diploid but entirely paternal in origin (the maternal pronucleus was absent or inactive)."
+    },
+    {
+        question: "Ectopic pregnancies most commonly occur in which highly specific region of the female reproductive tract?",
+        options: ["A. Isthmus of the uterine tube", "B. Fimbriae", "C. Ampulla of the uterine tube", "D. Cervical os", "E. Pouch of Douglas"],
+        answer: "C",
+        explanation: "95% of ectopic pregnancies occur in the uterine (Fallopian) tube, with the vast majority specifically in the ampulla."
+    },
+    {
+        question: "During the 'Week of Twos', the extraembryonic mesoderm splits. Which layer physically lines the inside of the cytotrophoblast?",
+        options: ["A. Splanchnic mesoderm", "B. Somatic (parietal) mesoderm", "C. Intraembryonic mesoderm", "D. Endoderm", "E. Heuser's membrane"],
+        answer: "B",
+        explanation: "The extraembryonic somatic (parietal) mesoderm lines the cytotrophoblast and amnion, while the splanchnic lines the yolk sac."
+    },
+    {
+        question: "What is the primary physiological function of the Corpus Luteum during the first trimester of pregnancy?",
+        options: ["A. To secrete hCG", "B. To secrete FSH", "C. To secrete massive amounts of Progesterone", "D. To form the placenta", "E. To suppress maternal immunity"],
+        answer: "C",
+        explanation: "Rescued by hCG, the Corpus Luteum secretes progesterone to maintain the secretory endometrium until the placenta takes over."
+    },
+    {
+        question: "In Week 2, cells from the hypoblast migrate to line the inner surface of the cytotrophoblast, forming Heuser's membrane. This creates which cavity?",
+        options: ["A. Amniotic Cavity", "B. Chorionic Cavity", "C. Primitive Yolk Sac (Exocoelomic Cavity)", "D. Blastocoele", "E. Intraembryonic Coelom"],
+        answer: "C",
+        explanation: "Heuser's membrane lines the inner cytotrophoblast, converting the blastocyst cavity into the primitive yolk sac."
+    },
+    {
+        question: "Which of the following is completely absent in the placenta after the 4th month to maximize diffusion efficiency?",
+        options: ["A. Syncytiotrophoblast", "B. Fetal capillary endothelium", "C. Cytotrophoblast", "D. Maternal blood", "E. Chorionic villi"],
+        answer: "C",
+        explanation: "The cytotrophoblast and extraembryonic mesoderm degenerate, thinning the barrier to just Syncytiotrophoblast and Fetal Endothelium."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-amber-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-amber-600 font-bold"><i class="fas fa-seedling"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s1 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 1: Foundation</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li><span class="trap-hl">[TRAP]</span> Aneuploidies & Microdeletions</li>
-                    <li>Spermatogenesis takes <span class="font-bold text-slate-800">74 Days</span></li>
-                    <li>Oogenesis arrests at <span class="font-bold text-slate-800">Dictyotene (Meiosis I)</span></li>
-                    <li>Ovarian Cycle: <span class="gene-hl">GnRH</span> → <span class="gene-hl">FSH/LH</span></li>
-                </ul>
-            </div>
-        </div>
+    // --- PHASE 3: GASTRULATION & BODY AXES ---
+    {
+        question: "Gastrulation is initiated by the formation of the Primitive Streak. The epiblast cells undergo migration controlled by which specific factor?",
+        options: ["A. BMP4", "B. SHH", "C. FGF8", "D. WNT", "E. Nodal"],
+        answer: "C",
+        explanation: "FGF8 (Fibroblast Growth Factor 8) is synthesized by streak cells, downregulating E-cadherin to allow epiblast cells to invaginate."
+    },
+    {
+        question: "Which embryonic layer is the absolute definitive source of the Ectoderm, Mesoderm, and Endoderm?",
+        options: ["A. Hypoblast", "B. Cytotrophoblast", "C. Epiblast", "D. Primitive Node", "E. Extraembryonic Mesoderm"],
+        answer: "C",
+        explanation: "The Epiblast is the exclusive source of all three germ layers in the human embryo."
+    },
+    {
+        question: "Which of the following molecules acts to 'ventralize' the mesoderm, driving it to form skin and lateral plate mesoderm?",
+        options: ["A. BMP4", "B. Noggin", "C. Chordin", "D. Follistatin", "E. SHH"],
+        answer: "A",
+        explanation: "BMP4 permeates the disc and forces ectoderm to become skin and mesoderm to ventralize. It must be inhibited to form the CNS."
+    },
+    {
+        question: "The Primitive Node (Spemann's Organizer) must dorsalize the mesoderm to form the notochord. It does this by secreting all of the following EXCEPT:",
+        options: ["A. Chordin", "B. Noggin", "C. Follistatin", "D. FGF8", "E. None of the above"],
+        answer: "D",
+        explanation: "The Organizer secretes Chordin, Noggin, and Follistatin to physically antagonize and block BMP4. FGF8 is for migration and L-R axis."
+    },
+    {
+        question: "A defect in the Brachyury (T) gene results in a failure of caudal mesoderm formation. What is the clinical presentation?",
+        options: ["A. Holoprosencephaly", "B. Situs Inversus", "C. Sirenomelia (Caudal Dysgenesis)", "D. Anencephaly", "E. Spina Bifida"],
+        answer: "C",
+        explanation: "Brachyury (T) gene defects cause Sirenomelia (Mermaid Syndrome), characterized by fused lower limbs and renal agenesis."
+    },
+    {
+        question: "What is the absolute 'Master Gene' responsible for establishing left-sidedness in the embryo?",
+        options: ["A. SHH", "B. PITX2", "C. Nodal", "D. Lefty-1", "E. OTX2"],
+        answer: "B",
+        explanation: "PITX2 is the master homeobox gene for left-sidedness. Ectopic expression on the right causes Situs Inversus."
+    },
+    {
+        question: "The Anterior Visceral Endoderm (AVE) establishes the cranial end of the embryo by secreting Cerberus and Lefty. What do these factors inhibit?",
+        options: ["A. BMP4", "B. WNT", "C. Nodal", "D. SHH", "E. FGF8"],
+        answer: "C",
+        explanation: "Cerberus and Lefty inhibit Nodal activity at the cranial end, ensuring the head forms there instead of a tail."
+    },
+    {
+        question: "Which structure forms directly from epiblast cells ingressing through the cranial-most part of the primitive node?",
+        options: ["A. Intermediate Mesoderm", "B. Lateral Plate Mesoderm", "C. Notochord", "D. Extraembryonic Mesoderm", "E. Endoderm"],
+        answer: "C",
+        explanation: "Cells moving through the cranial node form the Prechordal Plate and the Notochord."
+    },
+    {
+        question: "The Oropharyngeal and Cloacal membranes are anatomically unique because they consist of tightly adhered Ectoderm and Endoderm with the complete absence of:",
+        options: ["A. Amnion", "B. Yolk Sac", "C. Mesoderm", "D. Neural Crest Cells", "E. Trophoblast"],
+        answer: "C",
+        explanation: "Both terminal membranes are strictly devoid of any intervening mesoderm."
+    },
+    {
+        question: "High concentrations of Serotonin (5HT) are required on the left side of the embryo for laterality. Which enzyme breaks it down on the right side?",
+        options: ["A. Cyclooxygenase", "B. Monoamine Oxidase (MAO)", "C. Protease", "D. Acetylcholinesterase", "E. Kinase"],
+        answer: "B",
+        explanation: "MAO degrades serotonin on the right side of the embryo to maintain the left-sided signaling gradient."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-emerald-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-emerald-600 font-bold"><i class="fas fa-arrows-split-up-and-left"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s2 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 2: Weeks 1 & 2</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li><span class="font-bold text-slate-800">Day 1:</span> Capacitation & Cortical Reaction</li>
-                    <li><span class="font-bold text-slate-800">Days 2-5:</span> Zygote → Morula → Blastocyst</li>
-                    <li><span class="font-bold text-slate-800">Week 2 (Week of Twos):</span> Implantation</li>
-                    <li>Trophoblast → Cyto & Syncytio <span class="text-[10px] bg-emerald-100 text-emerald-700 px-1 rounded">hCG</span></li>
-                    <li>Embryoblast → Epiblast & Hypoblast</li>
-                </ul>
-            </div>
-        </div>
+    // --- PHASE 4: ECTODERM & NEURAL CREST ---
+    {
+        question: "Which of the following factors, secreted by the Notochord and Neural Tube floor plate, induces the ventromedial somite to form the Sclerotome?",
+        options: ["A. WNT", "B. BMP4", "C. Sonic Hedgehog (SHH)", "D. NT-3", "E. FGF8"],
+        answer: "C",
+        explanation: "SHH is the specific molecular signal that forces the ventromedial somite to undergo EMT and form cartilage/bone (Sclerotome)."
+    },
+    {
+        question: "According to the HOD's somite molecular clock, which factor induces the central portion of the somite to form the Dermatome?",
+        options: ["A. SHH", "B. WNT", "C. Neurotrophin-3 (NT-3)", "D. BMP4", "E. PAX1"],
+        answer: "C",
+        explanation: "NT-3, secreted by the Neural Tube, acts on the middle of the somite to form the dermis of the back (Dermatome)."
+    },
+    {
+        question: "Failure of the Cranial Neuropore to close by Day 25 results in which lethal anomaly?",
+        options: ["A. Spina Bifida Occulta", "B. Meningocele", "C. Anencephaly", "D. Encephalocele", "E. Holoprosencephaly"],
+        answer: "C",
+        explanation: "Failure of the cranial neuropore prevents the brain and skull vault from forming (Anencephaly)."
+    },
+    {
+        question: "Which of the following structures is NOT derived from Neural Crest Cells?",
+        options: ["A. Schwann Cells", "B. Adrenal Medulla", "C. Melanocytes", "D. Adrenal Cortex", "E. Pia Mater"],
+        answer: "D",
+        explanation: "The Adrenal Medulla is neural crest derived, but the Adrenal Cortex is derived from Intermediate Mesoderm."
+    },
+    {
+        question: "During neurulation, the Caudal Neuropore officially closes at which somite stage?",
+        options: ["A. 18-20 somite stage", "B. 25-somite stage", "C. 30-somite stage", "D. 10-somite stage", "E. 42-somite stage"],
+        answer: "B",
+        explanation: "The caudal neuropore closes on Day 28, corresponding exactly to the 25-somite stage."
+    },
+    {
+        question: "Which of the following gene expressions is the direct target of WNT to form the Epaxial Myotome (back muscles)?",
+        options: ["A. MYF5", "B. MYOD", "C. PAX1", "D. TBX4", "E. SOX9"],
+        answer: "A",
+        explanation: "WNT acts on the dorsomedial wall to upregulate MYF5 for epaxial muscles. BMP4+WNT upregulates MYOD for hypaxial muscles."
+    },
+    {
+        question: "Neural crest cells migrating via the ventral pathway will form all of the following EXCEPT:",
+        options: ["A. Sympathetic ganglia", "B. Melanocytes", "C. Dorsal root ganglia", "D. Enteric neurons", "E. Schwann cells"],
+        answer: "B",
+        explanation: "Melanocytes are formed by neural crest cells taking the DORSAL pathway through the dermis."
+    },
+    {
+        question: "The Dura Mater is derived from Mesoderm, but the Leptomeninges (Pia and Arachnoid mater) are derived from:",
+        options: ["A. Endoderm", "B. Neural Tube", "C. Surface Ectoderm", "D. Neural Crest Cells", "E. Notochord"],
+        answer: "D",
+        explanation: "The inner meninges covering the brain (Pia and Arachnoid) are strictly Neural Crest derivatives."
+    },
+    {
+        question: "Which layer of the Lateral Plate Mesoderm associates with the Ectoderm to form the lateral body wall?",
+        options: ["A. Splanchnic Mesoderm", "B. Somatic (Parietal) Mesoderm", "C. Intermediate Mesoderm", "D. Paraxial Mesoderm", "E. Extraembryonic Mesoderm"],
+        answer: "B",
+        explanation: "Somatic mesoderm + Ectoderm forms the Somatopleure (body wall). Splanchnic + Endoderm forms the Splanchnopleure (gut wall)."
+    },
+    {
+        question: "Somites form in a strict craniocaudal sequence at what approximate rate during the embryonic period?",
+        options: ["A. 1 pair per day", "B. 3 pairs per day", "C. 5 pairs per day", "D. 10 pairs per day", "E. 1 pair per week"],
+        answer: "B",
+        explanation: "New somites appear at a highly predictable rate of 3 pairs per day, allowing accurate embryological dating."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-cyan-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-cyan-600 font-bold"><i class="fas fa-layer-group"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s3 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 3: Gastrulation</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li>Primitive Streak forms on Epiblast</li>
-                    <li><span class="gene-hl">FGF8</span> triggers migration</li>
-                    <li><span class="font-bold text-slate-800">Trilaminar Disc:</span> Ecto, Meso, Endoderm</li>
-                    <li><span class="font-bold text-slate-800">Axes:</span> <span class="gene-hl">PITX2</span> controls Left-Right sidedness</li>
-                </ul>
-            </div>
-        </div>
+    // --- PHASE 5: ENDODERM & DIGESTIVE SYSTEM ---
+    {
+        question: "The stomach undergoes a highly specific rotation during foregut development. What is the exact motion?",
+        options: ["A. 90 degrees counterclockwise", "B. 180 degrees clockwise", "C. 90 degrees clockwise around its longitudinal axis", "D. 270 degrees counterclockwise", "E. 90 degrees anteriorly"],
+        answer: "C",
+        explanation: "The stomach rotates 90 degrees clockwise, bringing the left vagus nerve to the anterior surface."
+    },
+    {
+        question: "Which of the following structures is a derivative of the Midgut?",
+        options: ["A. Liver", "B. Spleen", "C. Descending Colon", "D. Appendix", "E. Pancreas"],
+        answer: "D",
+        explanation: "The midgut (supplied by SMA) forms the distal duodenum to the proximal 2/3 of the transverse colon, including the appendix."
+    },
+    {
+        question: "During physiological herniation, the midgut loop undergoes a total rotation of how many degrees before returning to the abdomen?",
+        options: ["A. 90 degrees", "B. 180 degrees", "C. 270 degrees counterclockwise", "D. 270 degrees clockwise", "E. 360 degrees"],
+        answer: "C",
+        explanation: "It rotates 90 degrees in the cord, and 180 degrees upon returning, totaling 270 degrees counterclockwise around the SMA."
+    },
+    {
+        question: "A newborn is diagnosed with an Omphalocele. What is the primary anatomical feature distinguishing this from Gastroschisis?",
+        options: ["A. Defect is on the right of the umbilicus", "B. Intestines are exposed directly to amniotic fluid", "C. Intestines are covered by a shiny, translucent amnion", "D. Lack of midgut rotation", "E. Absence of the umbilical cord"],
+        answer: "C",
+        explanation: "In an Omphalocele, the herniated bowel remains inside the umbilical cord and is covered by the amnion. Gastroschisis has no covering."
+    },
+    {
+        question: "Which pancreatic bud is responsible for forming the Uncinate Process and the inferior part of the pancreatic head?",
+        options: ["A. Dorsal pancreatic bud", "B. Ventral pancreatic bud", "C. Lateral pancreatic bud", "D. Hepatic diverticulum", "E. Cystic diverticulum"],
+        answer: "B",
+        explanation: "The Ventral bud swings dorsally to fuse with the Dorsal bud, specifically forming the Uncinate process."
+    },
+    {
+        question: "A newborn presents with severe, non-bilious projectile vomiting. The 'Rule of 2s' is mentioned. What is the most likely embryological remnant?",
+        options: ["A. Urorectal fistula", "B. Tracheoesophageal fistula", "C. Meckel's (Vitelline) Diverticulum", "D. Annular Pancreas", "E. Omphalocele"],
+        answer: "C",
+        explanation: "Meckel's Diverticulum is a remnant of the Vitelline duct. It follows the Rule of 2s (2%, 2 inches, 2 feet from valve)."
+    },
+    {
+        question: "The Cloaca is partitioned into the Urogenital Sinus and the Anorectal Canal by which mesodermal structure?",
+        options: ["A. Septum Transversum", "B. Tracheoesophageal Septum", "C. Urorectal Septum", "D. Aorticopulmonary Septum", "E. Primary Palate"],
+        answer: "C",
+        explanation: "The Urorectal Septum grows downwards to completely divide the cloaca."
+    },
+    {
+        question: "The epithelial lining of the entire gastrointestinal and respiratory tracts is derived from which germ layer?",
+        options: ["A. Ectoderm", "B. Splanchnic Mesoderm", "C. Somatic Mesoderm", "D. Endoderm", "E. Neural Crest"],
+        answer: "D",
+        explanation: "The Endoderm exclusively forms the epithelial linings of the gut tube and its derivatives (lungs, liver, pancreas)."
+    },
+    {
+        question: "If the Ventral Pancreatic Bud splits and swings in both directions around the duodenum, what clinical pathology results?",
+        options: ["A. Meckel's Diverticulum", "B. Biliary Atresia", "C. Annular Pancreas", "D. Pyloric Stenosis", "E. Volvulus"],
+        answer: "C",
+        explanation: "An Annular Pancreas forms a constricting ring around the duodenum, causing severe obstruction and vomiting."
+    },
+    {
+        question: "Which artery supplies the embryological Foregut?",
+        options: ["A. Superior Mesenteric Artery", "B. Inferior Mesenteric Artery", "C. Celiac Trunk", "D. Renal Artery", "E. Umbilical Artery"],
+        answer: "C",
+        explanation: "The Foregut is supplied by the Celiac Trunk. Midgut by the SMA. Hindgut by the IMA."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-violet-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-violet-600 font-bold"><i class="fas fa-brain"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s4 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 4: Organogenesis</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li><span class="font-bold text-violet-700">Ectoderm:</span> Neural Tube closes Day 25/28</li>
-                    <li>Neural Crest <span class="text-[10px] bg-violet-100 text-violet-700 px-1 rounded">4th Germ Layer</span> → Melanocytes</li>
-                    <li><span class="font-bold text-violet-700">Mesoderm:</span> Somites (<span class="gene-hl">SHH</span>, <span class="gene-hl">WNT</span>, <span class="gene-hl">NT-3</span>)</li>
-                    <li><span class="font-bold text-violet-700">Endoderm:</span> Primitive Gut Tube formation</li>
-                </ul>
-            </div>
-        </div>
+    // --- PHASE 6: CARDIOVASCULAR & RESPIRATORY ---
+    {
+        question: "What is the absolute master gene responsible for the induction and development of the heart?",
+        options: ["A. PITX2", "B. TBX4", "C. NKX2.5", "D. HAND1", "E. SRY"],
+        answer: "C",
+        explanation: "NKX2.5 (induced by BMPs from the endoderm) is the master regulatory gene for cardiac field establishment."
+    },
+    {
+        question: "The myocardium (cardiac muscle) of the heart tube is derived exclusively from which embryological layer?",
+        options: ["A. Paraxial Mesoderm", "B. Intermediate Mesoderm", "C. Somatic Lateral Plate Mesoderm", "D. Splanchnic Lateral Plate Mesoderm", "E. Neural Crest"],
+        answer: "D",
+        explanation: "The Splanchnic (Visceral) layer of the lateral plate mesoderm forms the cardiac muscle and visceral serous membranes."
+    },
+    {
+        question: "During cardiac looping, the cephalic (ventricular) portion of the heart tube bends in which specific direction?",
+        options: ["A. Dorsally, cranially, and to the left", "B. Ventrally, caudally, and to the right", "C. Ventrally, cranially, and to the left", "D. Dorsally, caudally, and to the right", "E. Straight down"],
+        answer: "B",
+        explanation: "The ventricular portion bends Ventrally, Caudally, and to the Right, setting up the anatomical position of the ventricles."
+    },
+    {
+        question: "The Aorticopulmonary (AP) Septum spirals 180 degrees to separate the Aorta and Pulmonary Trunk. Which cells are primarily responsible for its formation?",
+        options: ["A. Endocardial cushion cells", "B. Myocardial cells", "C. Neural Crest Cells", "D. Somite cells", "E. Epicardial cells"],
+        answer: "C",
+        explanation: "Migrating Neural Crest Cells form the AP septum. Defects here cause Tetralogy of Fallot or Transposition."
+    },
+    {
+        question: "Which of the following is NOT a component of Tetralogy of Fallot (PROVE)?",
+        options: ["A. Pulmonary Stenosis", "B. Right Ventricular Hypertrophy", "C. Overriding Aorta", "D. Atrial Septal Defect", "E. Ventricular Septal Defect"],
+        answer: "D",
+        explanation: "Tetralogy of Fallot features a VSD (Ventricular Septal Defect), not an ASD."
+    },
+    {
+        question: "At birth, the drop in pulmonary vascular resistance and increase in left atrial pressure physically forces which fetal shunt to close?",
+        options: ["A. Ductus Venosus", "B. Ductus Arteriosus", "C. Foramen Ovale", "D. Umbilical Vein", "E. Umbilical Arteries"],
+        answer: "C",
+        explanation: "The pressure reversal pushes the flexible Septum Primum against the stiff Septum Secundum, closing the Foramen Ovale."
+    },
+    {
+        question: "The respiratory diverticulum (lung bud) branches off the foregut. What is the specific genetic trigger for this outgrowth?",
+        options: ["A. TBX4 up-regulated by Retinoic Acid", "B. NKX2.5 up-regulated by BMP4", "C. FGF8 up-regulated by WNT", "D. SHH up-regulated by Notochord", "E. PITX2 up-regulated by Nodal"],
+        answer: "A",
+        explanation: "Retinoic Acid from adjacent mesoderm upregulates TBX4, which induces the growth of the lung bud."
+    },
+    {
+        question: "During which period of lung maturation do Type II Alveolar cells begin to produce Surfactant?",
+        options: ["A. Pseudoglandular Period", "B. Canalicular Period", "C. Terminal Sac Period", "D. Alveolar Period", "E. Embryonic Period"],
+        answer: "C",
+        explanation: "Surfactant production begins in the Terminal Sac period (Week 26 to Birth), lowering surface tension for breathing."
+    },
+    {
+        question: "A newborn instantly chokes and regurgitates milk upon its first feeding. Polyhydramnios was noted during pregnancy. What is the most likely diagnosis?",
+        options: ["A. Diaphragmatic Hernia", "B. Tracheoesophageal Fistula (TEF)", "C. Omphalocele", "D. Respiratory Distress Syndrome", "E. Pyloric Stenosis"],
+        answer: "B",
+        explanation: "In a TEF (with esophageal atresia), the esophagus is a blind pouch. Food instantly regurgitates, and amniotic fluid cannot be swallowed."
+    },
+    {
+        question: "The cartilaginous and muscular components of the trachea and lungs are derived from:",
+        options: ["A. Endoderm", "B. Paraxial Mesoderm", "C. Somatic Mesoderm", "D. Splanchnic Mesoderm", "E. Neural Crest"],
+        answer: "D",
+        explanation: "The epithelium is Endoderm, but the cartilage and muscle of the airways are derived from Splanchnic Lateral Plate Mesoderm."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-rose-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-rose-600 font-bold"><i class="fas fa-heart"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s5 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 5: Systemic</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li><span class="font-bold text-rose-700">Gut:</span> Stomach rotates 90°, Midgut 270°</li>
-                    <li><span class="font-bold text-rose-700">Pharyngeal:</span> Arch 1 (Malleus), Pouch 3 (Thymus)</li>
-                    <li><span class="font-bold text-rose-700">Cardiac:</span> Tube loops RIGHT (<span class="gene-hl">PITX2</span>)</li>
-                    <li><span class="font-bold text-rose-700">Urogenital:</span> <span class="gene-hl">SRY</span> → Testes (Wolffian)</li>
-                </ul>
-            </div>
-        </div>
+    // --- PHASE 7: PHARYNGEAL APPARATUS & CRANIOFACIAL ---
+    {
+        question: "Which of the following bones/cartilages is derived from the 1st Pharyngeal Arch (Meckel's Cartilage)?",
+        options: ["A. Stapes", "B. Styloid Process", "C. Malleus and Incus", "D. Thyroid Cartilage", "E. Cricoid Cartilage"],
+        answer: "C",
+        explanation: "The Malleus and Incus (middle ear bones) are derived from the 1st Arch. The Stapes is from the 2nd Arch."
+    },
+    {
+        question: "The muscles of facial expression (e.g., Buccinator, Frontalis) are innervated by the Facial Nerve (CN VII). They are derived from which Pharyngeal Arch?",
+        options: ["A. Arch 1", "B. Arch 2", "C. Arch 3", "D. Arch 4", "E. Arch 6"],
+        answer: "B",
+        explanation: "The 2nd Arch (Hyoid Arch) gives rise to the muscles of facial expression and is innervated by CN VII."
+    },
+    {
+        question: "The paradox of the Parathyroid glands: Which endodermal structure gives rise to the INFERIOR Parathyroid Gland?",
+        options: ["A. Pouch 1", "B. Pouch 2", "C. Pouch 3", "D. Pouch 4", "E. Cleft 2"],
+        answer: "C",
+        explanation: "Pouch 3 forms the Inferior Parathyroid (and Thymus). Pouch 4 forms the Superior Parathyroid. The migrating Thymus drags Pouch 3 downward."
+    },
+    {
+        question: "Which of the following is the ONLY Pharyngeal Cleft to persist in the adult human?",
+        options: ["A. Cleft 1", "B. Cleft 2", "C. Cleft 3", "D. Cleft 4", "E. Cleft 6"],
+        answer: "A",
+        explanation: "Cleft 1 deepens to form the External Auditory Meatus (Ear canal). Clefts 2-4 are buried in the Cervical Sinus."
+    },
+    {
+        question: "A Branchial (Cervical) Fistula found on the lateral neck is caused by the failure of which arch to overgrow the others?",
+        options: ["A. Arch 1 fails to overgrow Arch 2", "B. Arch 2 fails to overgrow Arches 3 and 4", "C. Arch 3 fails to overgrow Arch 4", "D. Arch 4 fails to overgrow Arch 6", "E. None of the above"],
+        answer: "B",
+        explanation: "The massive 2nd Arch normally overgrows 3 and 4 to obliterate the cervical sinus. Failure leaves an open fistula."
+    },
+    {
+        question: "The Parafollicular (C-cells) of the thyroid gland, which secrete Calcitonin, are derived from the Ultimobranchial Body. Which pouch forms this?",
+        options: ["A. Pouch 1", "B. Pouch 2", "C. Pouch 3", "D. Pouch 4", "E. Arch 4"],
+        answer: "D",
+        explanation: "The ventral wing of Pouch 4 forms the Ultimobranchial Body, which infiltrates the thyroid gland."
+    },
+    {
+        question: "A cleft lip is a common craniofacial defect. It is caused by the failure of fusion between which two prominences?",
+        options: ["A. The two Medial Nasal Prominences", "B. Maxillary and Mandibular Prominences", "C. Maxillary and Medial Nasal Prominences", "D. The two Palatine Shelves", "E. Lateral Nasal and Maxillary Prominences"],
+        answer: "C",
+        explanation: "A cleft lip occurs when the Maxillary Prominence fails to fuse with the Medial Nasal Prominence."
+    },
+    {
+        question: "The secondary palate forms the roof of the mouth. It is created by the elevation and fusion of the:",
+        options: ["A. Intermaxillary Segment", "B. Palatine Shelves (from Maxillary prominences)", "C. Mandibular Prominences", "D. Frontonasal Prominence", "E. Pharyngeal Arches 1 and 2"],
+        answer: "B",
+        explanation: "The two palatine shelves grow downward, then flip horizontally and fuse above the tongue to form the secondary palate."
+    },
+    {
+        question: "Treacher Collins Syndrome involves hypoplasia of the mandible and malformed ears. It is a failure of neural crest migration to which arch?",
+        options: ["A. First Arch", "B. Second Arch", "C. Third Arch", "D. Fourth Arch", "E. Sixth Arch"],
+        answer: "A",
+        explanation: "It is a First Arch Syndrome, primarily affecting the Mandibular and Maxillary prominences."
+    },
+    {
+        question: "The intrinsic muscles of the larynx (except the cricothyroid) are innervated by the Recurrent Laryngeal Nerve. They belong to which Arch?",
+        options: ["A. Arch 2", "B. Arch 3", "C. Arch 4", "D. Arch 6", "E. Arch 1"],
+        answer: "D",
+        explanation: "Arch 6 is supplied by the Recurrent Laryngeal Nerve. Arch 4 is supplied by the Superior Laryngeal Nerve."
+    },
 
-        <div class="relative z-10 flex gap-4 items-start">
-            <div class="w-10 h-10 rounded-full bg-white border-4 border-orange-600 shadow-md flex items-center justify-center flex-shrink-0 z-10 text-orange-600 font-bold"><i class="fas fa-baby"></i></div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 border-l-4 border-s6 flex-1">
-                <h2 class="title-font font-bold text-lg text-slate-800 uppercase tracking-wide">Stage 6: Fetal Clinics</h2>
-                <ul class="text-xs text-slate-600 mt-2 space-y-1.5 list-disc pl-4">
-                    <li><span class="trap-hl">[TRAP]</span> Polyhydramnios vs Oligohydramnios</li>
-                    <li><span class="font-bold text-orange-700">Twinning:</span> Dizygotic is always DiDi</li>
-                    <li><span class="trap-hl">[TERATOLOGY]</span> Thalidomide, FAS, TORCH</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    // --- PHASE 8: UROGENITAL SYSTEM (HOD NOTES) ---
+    {
+        question: "According to the HOD's notes, which specific part of the Intermediate Mesoderm is UNSEGMENTED and gives rise to the definitive kidney and gonads?",
+        options: ["A. Nephrotomes", "B. Nephrogenic Cord", "C. Pronephros", "D. Mesonephric Duct", "E. Ureteric Bud"],
+        answer: "B",
+        explanation: "The cranial IM is segmented (Nephrotomes). The caudal IM is a solid, unsegmented mass called the Nephrogenic Cord."
+    },
+    {
+        question: "The definitive Kidney (Metanephros) is formed by a reciprocal induction. The Ureteric Bud secretes FGF2/BMP7, while the Metanephric Blastema secretes:",
+        options: ["A. WNT4", "B. SRY", "C. GDNF (Glial Cell Line-Derived Neurotrophic Factor)", "D. WT1", "E. AMH"],
+        answer: "C",
+        explanation: "The Blastema secretes GDNF to induce the Ureteric Bud to branch and form the collecting system."
+    },
+    {
+        question: "Which of the following structures is derived from the Ureteric Bud?",
+        options: ["A. Bowman's Capsule", "B. Proximal Convoluted Tubule", "C. Loop of Henle", "D. Distal Convoluted Tubule", "E. Major and Minor Calyces"],
+        answer: "E",
+        explanation: "The Ureteric Bud forms the entire Collecting System (Ureter, Pelvis, Calyces, Collecting Ducts). The Blastema forms the excretory nephron."
+    },
+    {
+        question: "During male gonadal differentiation, the SRY gene encodes the Testis-Determining Factor (TDF). This causes the primitive sex cords to become:",
+        options: ["A. Cortical Cords", "B. Medullary (Testis) Cords", "C. Paramesonephric Ducts", "D. Tunica Albuginea", "E. Rete Ovarii"],
+        answer: "B",
+        explanation: "TDF drives the cords deep into the medulla to form the Testis Cords. In females (no SRY), cortical cords form."
+    },
+    {
+        question: "Which hormone is directly responsible for the complete degeneration of the Paramesonephric (Müllerian) Ducts in males?",
+        options: ["A. Testosterone", "B. DHT", "C. Anti-Müllerian Hormone (AMH)", "D. Estrogen", "E. Progesterone"],
+        answer: "C",
+        explanation: "Sertoli cells secrete AMH to destroy the female (Müllerian) ducts. Leydig cells secrete Testosterone to stimulate the Wolffian ducts."
+    },
+    {
+        question: "In the absence of SRY and AMH, the Paramesonephric (Müllerian) Ducts thrive and fuse to form the:",
+        options: ["A. Epididymis and Vas Deferens", "B. Uterine Tubes, Uterus, and upper Vagina", "C. Labia Majora", "D. Clitoris", "E. Seminal Vesicles"],
+        answer: "B",
+        explanation: "The Müllerian ducts are the precursors to the female internal reproductive tract."
+    },
+    {
+        question: "A patient presents with a 'Horseshoe Kidney'. What specific anatomical structure physically traps the fused kidney in the lower lumbar region?",
+        options: ["A. Superior Mesenteric Artery", "B. Celiac Trunk", "C. Inferior Mesenteric Artery", "D. Aorta", "E. Renal Artery"],
+        answer: "C",
+        explanation: "The fused inferior poles of the metanephros get hooked under the Inferior Mesenteric Artery (IMA) as they attempt to ascend."
+    },
+    {
+        question: "Primordial Germ Cells (the precursors to sperm and eggs) do NOT originate in the gonads. Where do they originally form before migrating?",
+        options: ["A. Intermediate Mesoderm", "B. Epiblast", "C. Endoderm", "D. Neural Crest", "E. Somatic Mesoderm"],
+        answer: "B",
+        explanation: "PGCs originate in the Epiblast, migrate to the Yolk Sac, and then migrate back into the Gonadal Ridge via the dorsal mesentery."
+    },
+    {
+        question: "Failure of the two Paramesonephric Ducts to fuse in the midline results in which of the following conditions?",
+        options: ["A. Hypospadias", "B. Cryptorchidism", "C. Uterine Didelphys (Double Uterus)", "D. Renal Agenesis", "E. Ectopic Ureter"],
+        answer: "C",
+        explanation: "Complete failure of Müllerian duct fusion leads to Uterine Didelphys (a double uterus and double vagina)."
+    },
+    {
+        question: "The trigone of the bladder is unique because it is formed by the incorporation of which mesodermal structures into the endodermal cloaca?",
+        options: ["A. Paramesonephric Ducts", "B. Mesonephric (Wolffian) Ducts", "C. Ureteric Buds", "D. Allantois", "E. Urachus"],
+        answer: "B",
+        explanation: "The mesonephric ducts are absorbed into the wall of the bladder, forming the smooth triangular area known as the trigone."
+    },
 
-    <div class="text-center mt-4">
-        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Engineered by Splendid's Academy</p>
-    </div>
-
-</body>
-</html>
+    // --- PHASE 9: FETAL PERIOD, TWINNING, & TERATOLOGY ---
+    {
+        question: "During which embryonic window is the developing human at the absolute MAXIMUM susceptibility to major structural teratogens?",
+        options: ["A. Weeks 1-2", "B. Weeks 3-8 (Embryonic Period)", "C. Weeks 9-12", "D. Months 4-6", "E. Third Trimester"],
+        answer: "B",
+        explanation: "Weeks 3-8 (Organogenesis) is the critical period. Tissues are undergoing rapid division and EMT, making them highly vulnerable."
+    },
+    {
+        question: "A pregnant woman presents with Oligohydramnios (< 400 mL of amniotic fluid). Which fetal organ system has most likely failed?",
+        options: ["A. Respiratory System", "B. Gastrointestinal System", "C. Cardiovascular System", "D. Central Nervous System", "E. Renal System (Kidneys)"],
+        answer: "E",
+        explanation: "By month 4, amniotic fluid is primarily fetal urine. Bilateral renal agenesis completely halts urine production, causing Oligohydramnios."
+    },
+    {
+        question: "Polyhydramnios (> 1500 mL) indicates the fetus cannot swallow or absorb amniotic fluid. Which of the following conditions is a primary cause?",
+        options: ["A. Renal Agenesis", "B. Esophageal Atresia", "C. Uterine Didelphys", "D. Tetralogy of Fallot", "E. Spina Bifida Occulta"],
+        answer: "B",
+        explanation: "Esophageal atresia blocks the gut tube, preventing the fetus from swallowing and clearing the amniotic fluid."
+    },
+    {
+        question: "In Monozygotic (Identical) twinning, if the single zygote splits during the Blastocyst stage (Days 4-8), what is the membrane configuration?",
+        options: ["A. Dichorionic, Diamniotic (DiDi)", "B. Monochorionic, Diamniotic (MoDi)", "C. Monochorionic, Monoamniotic (MoMo)", "D. Conjoined Twins", "E. Dizygotic"],
+        answer: "B",
+        explanation: "The Inner Cell Mass splits inside one trophoblast. Result: One shared placenta (Monochorionic), two separate sacs (Diamniotic)."
+    },
+    {
+        question: "If an embryo splits at the Bilaminar Disc stage (Days 8-13) right before gastrulation, the twins will be Monochorionic and Monoamniotic (MoMo). What is the greatest clinical risk?",
+        options: ["A. Conjoined bodies", "B. Differing blood types", "C. Umbilical cord entanglement and strangulation", "D. Trisomy 21", "E. Ectopic pregnancy"],
+        answer: "C",
+        explanation: "Because MoMo twins share the exact same amniotic sac with no separating membrane, their umbilical cords frequently entangle."
+    },
+    {
+        question: "Thalidomide, a 1950s anti-nausea drug, acts as a severe teratogen by inhibiting FGF signaling at the Apical Ectodermal Ridge. What is the classic defect?",
+        options: ["A. Microcephaly", "B. Amelia or Phocomelia (Absent or flipper-like limbs)", "C. Cleft Palate", "D. Spina Bifida", "E. Blindness"],
+        answer: "B",
+        explanation: "The AER controls proximal-distal limb growth. Inhibiting it stops limb development, resulting in Amelia or Phocomelia."
+    },
+    {
+        question: "Fetal Alcohol Syndrome (FAS) destroys cells in the anterior midline of the epiblast. Which severe brain defect is associated with FAS?",
+        options: ["A. Anencephaly", "B. Encephalocele", "C. Holoprosencephaly", "D. Hydrocephalus", "E. Spina Bifida"],
+        answer: "C",
+        explanation: "Loss of anterior midline structures causes Holoprosencephaly (merged ventricles, small forebrain, hypotelorism)."
+    },
+    {
+        question: "Which class of infections can uniquely cross the placental barrier and cause severe fetal defects like cataracts, deafness, and microcephaly?",
+        options: ["A. Enteric Bacteria", "B. Dermatophytes", "C. TORCH Infections (Toxoplasmosis, Rubella, CMV, Herpes)", "D. Helminths", "E. Prions"],
+        answer: "C",
+        explanation: "The TORCH pathogens are notorious for crossing the placenta and directly destroying developing neurological and ocular tissues."
+    },
+    {
+        question: "A Dizygotic (Fraternal) twin pregnancy is characterized by the fertilization of two separate oocytes by two separate sperm. What is their REQUIRED membrane configuration?",
+        options: ["A. Always MoDi", "B. Always MoMo", "C. Always DiDi (Dichorionic, Diamniotic)", "D. It depends on the day of splitting", "E. Conjoined"],
+        answer: "C",
+        explanation: "Because they are two completely separate embryos implanting independently, they will always have two chorions and two amnions (DiDi)."
+    },
+    {
+        question: "Which of the following describes the mechanism of an Acquired Immunodeficiency (e.g., AIDS) rather than a Congenital one?",
+        options: ["A. Genetic microdeletion of 22q11.2", "B. Lack of B-cell maturation", "C. Viral destruction of mature CD4+ T-Helper Cells", "D. Defective thymus gland development", "E. Absence of NADPH Oxidase"],
+        answer: "C",
+        explanation: "AIDS is acquired. HIV directly targets and lyses mature CD4+ cells, unlike DiGeorge or Hypogammaglobulinemia which are genetic (congenital)."
+    }
