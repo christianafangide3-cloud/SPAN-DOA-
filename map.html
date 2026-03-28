@@ -11,26 +11,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Master Map | Splendid's Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         :root {
-            --bg:        #060c18;
-            --glass:     rgba(6, 12, 24, 0.88);
-            --border:    rgba(255,255,255,0.06);
-            --text:      #e8f0ff;
-            --muted:     rgba(148,163,184,0.65);
-            /* Per-stage spectrum */
-            --c0: #fbbf24; /* Root       — amber  */
-            --c1: #f59e0b; /* Stage 1    — gold   */
-            --c2: #34d399; /* Stage 2    — emerald*/
-            --c3: #22d3ee; /* Stage 3    — cyan   */
-            --c4: #a78bfa; /* Stage 4    — violet */
-            --c5: #fb7185; /* Stage 5    — rose   */
-            --c6: #fb923c; /* Stage 6    — orange */
-            --danger:    #f87171;
-            --gene:      #fcd34d;
+            /* Light Theme Palette */
+            --bg:        #f8fafc; /* Slate-50 */
+            --glass:     rgba(255, 255, 255, 0.85);
+            --border:    rgba(15, 23, 42, 0.08);
+            --text:      #0f172a; /* Slate-900 */
+            --muted:     rgba(71, 85, 105, 0.8); /* Slate-600 */
+            
+            /* Per-stage spectrum - Deepened for white background */
+            --c0: #0284c7; /* Root       — Cyan-600 */
+            --c1: #d97706; /* Stage 1    — Amber-600  */
+            --c2: #059669; /* Stage 2    — Emerald-600*/
+            --c3: #0284c7; /* Stage 3    — Cyan-600   */
+            --c4: #7c3aed; /* Stage 4    — Violet-600 */
+            --c5: #e11d48; /* Stage 5    — Rose-600   */
+            --c6: #ea580c; /* Stage 6    — Orange-600 */
+            --danger:    #dc2626; /* Red-600 */
+            --gene:      #d97706; /* Amber-600 */
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,41 +55,40 @@
             border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 14px;
-            /* Subtle amber top accent line */
-            box-shadow: 0 1px 0 rgba(251,191,36,0.15), 0 4px 24px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
         .header-brand { display: flex; align-items: center; gap: 12px; }
         .header-icon {
             width: 40px; height: 40px; border-radius: 11px;
-            background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.06));
-            border: 1px solid rgba(251,191,36,0.28);
+            background: linear-gradient(135deg, rgba(2,132,199,0.1), rgba(2,132,199,0.02));
+            border: 1px solid rgba(2,132,199,0.2);
             display: flex; align-items: center; justify-content: center;
             color: var(--c0);
-            box-shadow: 0 0 18px rgba(251,191,36,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+            box-shadow: 0 4px 10px rgba(2,132,199,0.1);
             font-size: 15px;
         }
         .header-title {
             font-family: 'Rajdhani', sans-serif;
             font-size: 20px; font-weight: 700;
-            color: #fff; letter-spacing: 0.3px; line-height: 1;
+            color: var(--text); letter-spacing: 0.3px; line-height: 1;
         }
         .header-sub {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 9px; font-weight: 600;
+            font-size: 9px; font-weight: 700;
             letter-spacing: 3.5px; text-transform: uppercase;
-            color: var(--c0); opacity: 0.85;
+            color: var(--c0); opacity: 0.9;
             margin-top: 3px;
         }
         .header-close {
             width: 36px; height: 36px; border-radius: 10px;
-            background: rgba(239,68,68,0.07);
-            border: 1px solid rgba(239,68,68,0.18);
-            color: var(--muted);
+            background: rgba(239,68,68,0.05);
+            border: 1px solid rgba(239,68,68,0.15);
+            color: #ef4444;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s;
             font-size: 15px;
         }
-        .header-close:hover { color: #ef4444; background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.4); }
+        .header-close:hover { color: #fff; background: #ef4444; border-color: #ef4444; }
 
         /* ═══════════════ CANVAS ═══════════════ */
         #d3-container {
@@ -100,41 +101,47 @@
         #d3-container::before {
             content: '';
             position: absolute; inset: 0; pointer-events: none; z-index: 0;
-            background-image: radial-gradient(circle, rgba(99,102,241,0.18) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px);
             background-size: 36px 36px;
-            opacity: 0.4;
         }
-        /* Radial vignette + ambient colour blobs */
+        /* Radial ambient color blobs */
         #d3-container::after {
             content: '';
             position: absolute; inset: 0; pointer-events: none; z-index: 0;
             background:
-                radial-gradient(ellipse 800px 500px at 15% 25%, rgba(99,102,241,0.05) 0%, transparent 70%),
-                radial-gradient(ellipse 600px 400px at 85% 75%, rgba(6,182,212,0.05) 0%, transparent 70%),
-                radial-gradient(ellipse 500px 500px at 50% 110%, rgba(0,0,0,0.6) 0%, transparent 60%);
+                radial-gradient(ellipse 800px 500px at 15% 25%, rgba(99,102,241,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 600px 400px at 85% 75%, rgba(6,182,212,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 50% 110%, rgba(255,255,255,0.8) 0%, transparent 60%);
         }
 
         /* D3 elements */
-        .link { fill: none; stroke-width: 1.5px; }
+        .link { fill: none; stroke-width: 1.5px; opacity: 0.6; }
         .node { cursor: pointer; }
         .node text {
             font-family: 'DM Sans', sans-serif;
-            text-shadow: 0 1px 6px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,0.9);
+            font-weight: 600;
+            /* White halo effect so text is readable over lines */
+            text-shadow: 
+                0 1px 3px rgba(255,255,255,1), 
+                0 -1px 3px rgba(255,255,255,1), 
+                1px 0 3px rgba(255,255,255,1), 
+                -1px 0 3px rgba(255,255,255,1),
+                0 0 8px rgba(255,255,255,0.9);
             pointer-events: none;
         }
 
         /* ═══════════════ TOOLTIP ═══════════════ */
         #tooltip {
             position: fixed; z-index: 200;
-            padding: 9px 14px;
-            background: rgba(6,12,24,0.97);
-            border: 1px solid rgba(255,255,255,0.09);
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            font-size: 12px; font-weight: 500; line-height: 1.4;
+            font-size: 13px; font-weight: 600; line-height: 1.4;
             color: var(--text);
             pointer-events: none;
             backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 290px;
             transition: opacity 0.12s;
             opacity: 0;
@@ -148,113 +155,110 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 12px 14px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             display: flex; flex-direction: column; gap: 7px;
         }
         .legend-hd {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 9px; font-weight: 700;
+            font-size: 10px; font-weight: 700;
             letter-spacing: 3px; text-transform: uppercase;
-            color: var(--muted); margin-bottom: 1px;
+            color: var(--muted); margin-bottom: 2px;
         }
         .legend-row { display: flex; align-items: center; gap: 9px; }
-        .legend-dot {
-            width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
-        }
-        .legend-lbl { font-size: 10.5px; font-weight: 500; color: var(--muted); white-space: nowrap; }
-        .legend-sep { height: 1px; background: var(--border); margin: 1px 0; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .legend-lbl { font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; }
+        .legend-sep { height: 1px; background: var(--border); margin: 2px 0; }
 
         /* ═══════════════ BOTTOM HINT ═══════════════ */
         .hint-bar {
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
             z-index: 50; pointer-events: none; white-space: nowrap;
-            background: rgba(6,12,24,0.92);
+            background: rgba(255,255,255,0.9);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
             border-radius: 100px;
             padding: 8px 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             display: flex; align-items: center; gap: 10px;
         }
-        .hint-bar i { color: var(--c3); font-size: 11px; }
+        .hint-bar i { color: var(--c0); font-size: 12px; }
         .hint-txt {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 11px; font-weight: 600;
-            letter-spacing: 2px; text-transform: uppercase;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
             color: var(--muted);
         }
-        .hint-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(148,163,184,0.25); }
+        .hint-sep { width: 4px; height: 4px; border-radius: 50%; background: rgba(15,23,42,0.2); }
 
         /* ═══════════════ CONTROLS ═══════════════ */
         .ctrl-stack {
             position: fixed; bottom: 16px; right: 14px; z-index: 50;
-            display: flex; flex-direction: column; gap: 7px;
+            display: flex; flex-direction: column; gap: 8px;
         }
         .ctrl-btn {
             width: 44px; height: 44px; border-radius: 12px;
-            background: rgba(6,12,24,0.92);
+            background: var(--glass);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.09);
+            border: 1px solid var(--border);
             color: var(--muted);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+            cursor: pointer; font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: all 0.2s;
         }
-        .ctrl-btn:hover { color: var(--c3); border-color: rgba(34,211,238,0.35); background: rgba(34,211,238,0.08); }
+        .ctrl-btn:hover { color: var(--c0); border-color: rgba(2,132,199,0.3); background: rgba(2,132,199,0.05); }
         .ctrl-btn:active { transform: scale(0.92); }
         .ctrl-btn.primary {
-            color: var(--c3); border-color: rgba(34,211,238,0.3);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 14px rgba(34,211,238,0.1);
+            color: var(--c0); border-color: rgba(2,132,199,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05), 0 0 10px rgba(2,132,199,0.1);
         }
 
-        /* Expand all button (top-right) */
+        /* Expand all button */
         .expand-all-btn {
             position: fixed; top: 76px; right: 14px; z-index: 50;
-            background: rgba(6,12,24,0.92);
+            background: var(--glass);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(167,139,250,0.22);
+            border: 1px solid rgba(124,58,237,0.2);
             border-radius: 12px;
             padding: 9px 15px;
             display: flex; align-items: center; gap: 9px;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: all 0.2s;
         }
-        .expand-all-btn:hover { border-color: rgba(167,139,250,0.45); background: rgba(167,139,250,0.08); }
-        .expand-all-btn i { color: #a78bfa; font-size: 11px; }
+        .expand-all-btn:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.05); }
+        .expand-all-btn i { color: #7c3aed; font-size: 12px; }
         .expand-all-btn span {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 11px; font-weight: 700;
+            font-size: 12px; font-weight: 700;
             letter-spacing: 2px; text-transform: uppercase;
-            color: rgba(167,139,250,0.9);
+            color: #6d28d9;
         }
 
         /* Node count */
         .node-counter {
             position: fixed; top: 76px; left: 50%; transform: translateX(-50%);
             z-index: 50; pointer-events: none;
-            background: rgba(6,12,24,0.82);
+            background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 100px;
-            padding: 5px 16px;
+            padding: 6px 18px;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+            font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
             color: var(--muted);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
         }
-        .node-counter b { color: var(--c3); font-weight: 700; }
+        .node-counter b { color: var(--c0); font-weight: 800; font-size: 13px;}
 
-        /* Pulse animation on expandable circles */
         @keyframes pulse-out {
-            0%   { opacity: 0.55; }
-            100% { opacity: 0; }
+            0%   { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.6); }
         }
-        .pulse-ring { animation: pulse-out 2.2s ease-out infinite; }
+        .pulse-ring { transform-origin: center; animation: pulse-out 2s ease-out infinite; }
     </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="header-brand">
         <div class="header-icon"><i class="fas fa-dna"></i></div>
@@ -268,52 +272,45 @@
     </button>
 </header>
 
-<!-- CANVAS -->
 <main id="d3-container"></main>
-
-<!-- TOOLTIP -->
 <div id="tooltip"></div>
 
-<!-- LEGEND -->
 <div class="legend">
     <div class="legend-hd">Legend</div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:var(--c0); box-shadow:0 0 7px rgba(251,191,36,0.7);"></div>
+        <div class="legend-dot" style="background:var(--c0); box-shadow:0 2px 5px rgba(2,132,199,0.3);"></div>
         <span class="legend-lbl">Root</span>
     </div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:var(--c2); box-shadow:0 0 7px rgba(52,211,153,0.6);"></div>
+        <div class="legend-dot" style="background:var(--c2); box-shadow:0 2px 5px rgba(5,150,105,0.3);"></div>
         <span class="legend-lbl">Stage</span>
     </div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:#a78bfa; box-shadow:0 0 7px rgba(167,139,250,0.6);"></div>
+        <div class="legend-dot" style="background:#a78bfa; box-shadow:0 2px 5px rgba(167,139,250,0.3);"></div>
         <span class="legend-lbl">Expandable</span>
     </div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:#1e3352; border:1px solid #334155;"></div>
+        <div class="legend-dot" style="background:#ffffff; border:1.5px solid #cbd5e1;"></div>
         <span class="legend-lbl">Terminal</span>
     </div>
     <div class="legend-sep"></div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:var(--danger); box-shadow:0 0 7px rgba(239,68,68,0.7);"></div>
+        <div class="legend-dot" style="background:var(--danger); box-shadow:0 2px 5px rgba(220,38,38,0.3);"></div>
         <span class="legend-lbl">Clinical Trap</span>
     </div>
     <div class="legend-row">
-        <div class="legend-dot" style="background:var(--gene); box-shadow:0 0 7px rgba(252,211,77,0.6);"></div>
+        <div class="legend-dot" style="background:var(--gene); box-shadow:0 2px 5px rgba(217,119,6,0.3);"></div>
         <span class="legend-lbl">Gene Marker</span>
     </div>
 </div>
 
-<!-- EXPAND ALL -->
 <button class="expand-all-btn" id="expandBtn" onclick="toggleAll()">
     <i class="fas fa-expand-alt" id="expandIcon"></i>
     <span id="expandTxt">Expand All</span>
 </button>
 
-<!-- NODE COUNT -->
 <div class="node-counter" id="nodeCount"><b>—</b> nodes visible</div>
 
-<!-- HINT -->
 <div class="hint-bar">
     <i class="fas fa-hand-pointer"></i>
     <span class="hint-txt">Drag to Pan</span>
@@ -323,7 +320,6 @@
     <span class="hint-txt">Pinch to Zoom</span>
 </div>
 
-<!-- CONTROLS -->
 <div class="ctrl-stack">
     <button class="ctrl-btn" onclick="zoomIn()" title="Zoom In"><i class="fas fa-plus"></i></button>
     <button class="ctrl-btn primary" onclick="resetZoom()" title="Reset View"><i class="fas fa-crosshairs"></i></button>
@@ -331,24 +327,18 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════
-   STAGE COLOUR PALETTE
-═══════════════════════════════════ */
 const STAGE_COLORS = [
-    "#f59e0b", // Stage 1 – amber / gold
-    "#34d399", // Stage 2 – emerald
-    "#22d3ee", // Stage 3 – cyan
-    "#a78bfa", // Stage 4 – violet
-    "#fb7185", // Stage 5 – rose
-    "#fb923c"  // Stage 6 – orange
+    "#d97706", // Stage 1 – Amber-600
+    "#059669", // Stage 2 – Emerald-600
+    "#0284c7", // Stage 3 – Cyan-600
+    "#7c3aed", // Stage 4 – Violet-600
+    "#e11d48", // Stage 5 – Rose-600
+    "#ea580c"  // Stage 6 – Orange-600
 ];
 
 const GENES = ["FGF8","PITX2","SHH","WNT","SRY","TBX4","BMP4","NT-3","GnRH","FSH","LH"];
 const CLINICAL_KW = ["[CLINICAL TRAP]","TERATOLOGY","[TERATOLOGY"];
 
-/* ═══════════════════════════════════
-   DATA
-═══════════════════════════════════ */
 const treeData = {
     name: "ANA 213: EMBRYOLOGY",
     children: [
@@ -461,44 +451,31 @@ const treeData = {
     ]
 };
 
-/* ═══════════════════════════════════
-   HELPERS
-═══════════════════════════════════ */
 function isClinical(name) { return CLINICAL_KW.some(k => name.includes(k)); }
 function isGene(name)     { return GENES.some(g => name.includes(g)); }
 
+/* Dynamic Light Theme Coloring */
 function nodeColor(d) {
-    if (d.depth === 0) return "#fbbf24";
+    if (d.depth === 0) return "#0ea5e9"; 
     if (d.depth === 1) return STAGE_COLORS[d.data._si % STAGE_COLORS.length];
-    return d._children ? "#a78bfa" : "#1e3352";
+    return d._children ? "#8b5cf6" : "#ffffff"; 
 }
 function nodeStroke(d) {
-    if (d.depth === 0) return "#fde68a";
+    if (d.depth === 0) return "#0284c7";
     if (d.depth === 1) return STAGE_COLORS[d.data._si % STAGE_COLORS.length];
-    return d._children ? "#c4b5fd" : "#2e4268";
+    return d._children ? "#6d28d9" : "#cbd5e1";
 }
 function nodeR(d) {
-    return d.depth === 0 ? 11 : d.depth === 1 ? 7 : 5;
+    return d.depth === 0 ? 11 : d.depth === 1 ? 8 : 6;
 }
 function textColor(d) {
-    if (isClinical(d.data.name)) return "#f87171";
-    if (isGene(d.data.name))     return "#fcd34d";
-    if (d.depth === 0) return "#fde68a";
-    if (d.depth === 1) return "#ffffff";
-    return "#c8d8f0";
+    if (isClinical(d.data.name)) return "#dc2626"; // Crimson
+    if (isGene(d.data.name))     return "#d97706"; // Burnt Amber
+    return "#0f172a"; // Slate-900
 }
-function glowFilter(d) {
-    if (d.depth === 0) return "url(#glow-strong)";
-    if (d.depth === 1 || d._children) return "url(#glow)";
-    if (isClinical(d.data.name)) return "url(#glow-danger)";
-    return null;
-}
-function truncate(s, n=50) { return s.length > n ? s.slice(0,n-1)+"…" : s; }
-function linkColor(d) { return d.target.data._sc || "#334155"; }
+function truncate(s, n=52) { return s.length > n ? s.slice(0,n-1)+"…" : s; }
+function linkColor(d) { return d.target.data._sc || "#94a3b8"; }
 
-/* ═══════════════════════════════════
-   D3 ENGINE
-═══════════════════════════════════ */
 const container = document.getElementById("d3-container");
 let W, H, svg, g, zoomBeh, root, allExpanded = false;
 
@@ -508,12 +485,12 @@ let tooltipTimer;
 function showTip(event, d) {
     clearTimeout(tooltipTimer);
     tooltip.textContent = d.data.name;
-    tooltip.style.borderColor = isClinical(d.data.name) ? "rgba(248,113,113,0.4)"
-                              : isGene(d.data.name)     ? "rgba(252,211,77,0.35)"
-                              : "rgba(255,255,255,0.09)";
-    tooltip.style.color = isClinical(d.data.name) ? "#f87171"
-                        : isGene(d.data.name)     ? "#fcd34d"
-                        : "#e8f0ff";
+    tooltip.style.borderColor = isClinical(d.data.name) ? "rgba(220,38,38,0.3)"
+                              : isGene(d.data.name)     ? "rgba(217,119,6,0.3)"
+                              : "var(--border)";
+    tooltip.style.color = isClinical(d.data.name) ? "#dc2626"
+                        : isGene(d.data.name)     ? "#d97706"
+                        : "var(--text)";
     moveTip(event);
     tooltip.style.opacity = "1";
 }
@@ -544,51 +521,33 @@ function initMap() {
         .style("position","relative").style("z-index","1")
         .call(zoomBeh).on("dblclick.zoom", null);
 
-    /* ── SVG DEFS ── */
-    const defs = svg.append("defs");
-
-    const addGlow = (id, blur, col) => {
-        const f = defs.append("filter").attr("id", id)
-            .attr("x","-60%").attr("y","-60%").attr("width","220%").attr("height","220%");
-        f.append("feGaussianBlur").attr("in","SourceGraphic").attr("stdDeviation", blur).attr("result","blur");
-        const m = f.append("feMerge");
-        m.append("feMergeNode").attr("in","blur");
-        m.append("feMergeNode").attr("in","SourceGraphic");
-    };
-    addGlow("glow",        3.5);
-    addGlow("glow-strong", 7);
-    addGlow("glow-danger", 5);
-
     g = svg.append("g");
 
-    /* initial view */
+    /* initial view - safe for mobile */
     svg.call(zoomBeh.transform, d3.zoomIdentity.translate(64, H/2.25).scale(0.85));
 
     /* tree layout */
-    const treeLayout = d3.tree().nodeSize([38, 268]);
+    const treeLayout = d3.tree().nodeSize([42, 280]);
 
     root = d3.hierarchy(treeData);
     root.x0 = 0; root.y0 = 0;
 
-    /* tag each node with its stage index + stage color */
     root.children && root.children.forEach((stage, i) => {
         const sc = STAGE_COLORS[i % STAGE_COLORS.length];
         stage.descendants().forEach(d => { d.data._si = i; d.data._sc = sc; });
         stage.data._si = i; stage.data._sc = sc;
     });
 
-    /* collapse all except root */
     root.descendants().forEach((d, i) => {
         d.id = i;
         if (d.depth > 0) { d._children = d.children; d.children = null; }
     });
 
-    /* ── RENDER ── */
     function update(source) {
         treeLayout(root);
         const nodes = root.descendants();
         const links  = root.links();
-        const t = svg.transition().duration(380).ease(d3.easeCubicInOut);
+        const t = svg.transition().duration(400).ease(d3.easeCubicInOut);
 
         /* LINKS */
         const link = g.selectAll("path.link").data(links, d => d.target.id);
@@ -602,7 +561,7 @@ function initMap() {
         link.merge(linkEnter).transition(t)
             .attr("d", diagonal)
             .attr("stroke", d => linkColor(d))
-            .attr("opacity", d => d.target.depth === 1 ? 0.55 : 0.28);
+            .attr("opacity", d => d.target.depth === 1 ? 0.7 : 0.4);
 
         link.exit().transition(t)
             .attr("d", () => { const o={x:source.x,y:source.y}; return diagonal({source:o,target:o}); })
@@ -627,7 +586,6 @@ function initMap() {
             .on("mousemove",  ev   => moveTip(ev))
             .on("mouseout",  ()   => hideTip());
 
-        /* pulse ring – only for expandable depth>0 */
         nodeEnter.append("circle")
             .attr("class","pulse-ring")
             .attr("r", 1e-6)
@@ -635,26 +593,21 @@ function initMap() {
             .attr("stroke-width", 1.5)
             .attr("stroke", d => nodeColor(d));
 
-        /* main circle */
         nodeEnter.append("circle")
             .attr("class","main-c")
             .attr("r", 1e-6)
             .attr("fill",   d => nodeColor(d))
             .attr("stroke", d => nodeStroke(d))
-            .attr("stroke-width", 1.5)
-            .attr("filter", d => glowFilter(d));
+            .attr("stroke-width", 2);
 
-        /* label */
         nodeEnter.append("text")
             .attr("class","lbl")
             .attr("dy","0.32em")
-            .attr("x",  d => (d._children||d.children) ? -15 : 15)
+            .attr("x",  d => (d._children||d.children) ? -16 : 16)
             .attr("text-anchor", d => (d._children||d.children) ? "end" : "start")
             .text(d => truncate(d.data.name))
             .attr("fill", d => textColor(d))
-            .attr("fill-opacity", 1e-6)
-            .attr("font-size", d => d.depth===0?"14px": d.depth===1?"13px":"11.5px")
-            .attr("font-weight", d => d.depth<=1?"600":"500");
+            .attr("fill-opacity", 1e-6);
 
         /* UPDATE */
         const nodeUp = node.merge(nodeEnter).transition(t)
@@ -663,16 +616,15 @@ function initMap() {
         nodeUp.select("circle.main-c")
             .attr("r",      d => nodeR(d))
             .attr("fill",   d => nodeColor(d))
-            .attr("stroke", d => nodeStroke(d))
-            .attr("filter", d => glowFilter(d));
+            .attr("stroke", d => nodeStroke(d));
 
         nodeUp.select("circle.pulse-ring")
-            .attr("r", d => (d._children && d.depth > 0) ? nodeR(d) + 4 : 0)
+            .attr("r", d => (d._children && d.depth > 0) ? nodeR(d) + 5 : 0)
             .attr("stroke", d => nodeColor(d));
 
         nodeUp.select("text.lbl")
             .attr("fill-opacity", 1)
-            .attr("x",  d => (d._children||d.children) ? -15 : 15)
+            .attr("x",  d => (d._children||d.children) ? -16 : 16)
             .attr("text-anchor", d => (d._children||d.children) ? "end" : "start")
             .attr("fill", d => textColor(d));
 
@@ -692,7 +644,6 @@ function initMap() {
         return `M${target.y},${target.x}C${mx},${target.x} ${mx},${source.x} ${source.y},${source.x}`;
     }
 
-    /* expose update for controls */
     window._update = update;
     update(root);
 }
@@ -722,12 +673,8 @@ window.toggleAll = function() {
     window._update(root);
 };
 
-/* ═══════════════════════════════════
-   BOOT
-═══════════════════════════════════ */
 initMap();
 window.addEventListener("resize", () => setTimeout(initMap, 200));
 </script>
 </body>
-</html>
-
+        </html>
