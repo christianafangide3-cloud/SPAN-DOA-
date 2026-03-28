@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VVDT1PMHNX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VVDT1PMHNX');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Map | Splendid's Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0b1120; 
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Prevent native scroll, D3 will handle panning */
+        }
+        .glass-header { 
+            background: rgba(11, 17, 32, 0.85); 
+            backdrop-filter: blur(16px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+        
+        /* D3 Node Styling */
+        .node circle { cursor: pointer; stroke-width: 2px; transition: all 0.3s ease; }
+        .node text { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; fill: #f8fafc; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; }
+        .link { fill: none; stroke: #334155; stroke-width: 1.5px; opacity: 0.6; }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col">
+
+    <header class="glass-header z-50 px-4 py-3 flex justify-between items-center shadow-lg w-full fixed top-0">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-cyan-900/40 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                <i class="fas fa-sitemap"></i>
+            </div>
+            <div>
+                <h1 class="font-black text-lg text-white tracking-tight leading-tight">ANA 213 Map</h1>
+                <p class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase">Chronological Roadmap</p>
+            </div>
+        </div>
+        <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg active:scale-95">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+    </header>
+
+    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 bg-slate-900/80 backdrop-blur-md px-6 py-3 rounded-full border border-slate-700 shadow-2xl flex items-center gap-3 pointer-events-none">
+        <i class="fas fa-hand-pointer text-cyan-400 animate-pulse"></i>
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Drag to Pan • Tap to Expand</span>
+    </div>
+
+    <main id="d3-container" class="flex-1 w-full h-screen mt-16 cursor-move bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-[#0b1120]"></main>
+
+    <script>
+        // 1. THE EMBRYOLOGY MASTER DATA STRUCTURE
+        const treeData = {
+            name: "ANA 213: EMBRYOLOGY",
+            children: [
+                {
+                    name: "STAGE 1: THE FOUNDATION",
+                    children: [
+                        { name: "Clinical Genetics (Aneuploidies, Microdeletions)" },
+                        { name: "Gametogenesis", children: [
+                            { name: "Spermatogenesis (74 Days)" },
+                            { name: "Oogenesis (Meiosis I Arrest)" }
+                        ]},
+                        { name: "Reproductive Cycles", children: [
+                            { name: "Ovarian Cycle (GnRH -> FSH/LH)" },
+                            { name: "Menstrual Cycle" }
+                        ]}
+                    ]
+                },
+                {
+                    name: "STAGE 2: WEEKS 1 & 2",
+                    children: [
+                        { name: "Day 1: Fertilization", children: [
+                            { name: "Capacitation & Acrosome Reaction" },
+                            { name: "Cortical Reaction (Polyspermy block)" }
+                        ]},
+                        { name: "Days 2-5: Cleavage", children: [
+                            { name: "Zygote (2n, 46) -> Morula (16-cell)" },
+                            { name: "Blastocyst (Enters uterus)" }
+                        ]},
+                        { name: "Week 2: Implantation", children: [
+                            { name: "Trophoblast -> Cyto & Syncytiotrophoblast" },
+                            { name: "Embryoblast -> Epiblast & Hypoblast" },
+                            { name: "Cavities -> Amniotic & Yolk Sac" }
+                        ]}
+                    ]
+                },
+                {
+                    name: "STAGE 3: WEEK 3",
+                    children: [
+                        { name: "Gastrulation", children: [
+                            { name: "Primitive Streak forms" },
+                            { name: "FGF8 downregulates E-cadherin" },
+                            { name: "Trilaminar Disc (Ecto, Meso, Endoderm)" }
+                        ]},
+                        { name: "Notochordogenesis (Axial Template)" },
+                        { name: "Body Axes (PITX2 for Left-Right)" }
+                    ]
+                },
+                {
+                    name: "STAGE 4: WEEKS 3-8 (ORGANOGENESIS)",
+                    children: [
+                        { name: "Ectoderm Pathway", children: [
+                            { name: "Neurulation (Neural Tube closes Day 25/28)" },
+                            { name: "Neural Crest (The 4th Germ Layer)" }
+                        ]},
+                        { name: "Mesoderm Pathway", children: [
+                            { name: "Paraxial (Somites: Sclerotome, Myotome)" },
+                            { name: "Intermediate (Urogenital)" },
+                            { name: "Lateral Plate (Somatic & Splanchnic)" }
+                        ]},
+                        { name: "Endoderm Pathway", children: [
+                            { name: "Primitive Gut Tube formation" },
+                            { name: "Embryonic Folding (Cephalocaudal/Lateral)" }
+                        ]}
+                    ]
+                },
+                {
+                    name: "STAGE 5: SYSTEMIC EMBRYOLOGY",
+                    children: [
+                        { name: "Pharyngeal Apparatus", children: [
+                            { name: "Arches (1: Malleus/Incus, 2: Stapes)" },
+                            { name: "Pouches (3 & 4: Parathyroids/Thymus)" }
+                        ]},
+                        { name: "Cardiovascular", children: [
+                            { name: "Heart Tube looping (PITX2)" },
+                            { name: "Fetal Shunts (Ductus Venosus/Arteriosus, Foramen Ovale)" }
+                        ]},
+                        { name: "Urogenital", children: [
+                            { name: "Renal (Pronephros -> Meso -> Metanephros)" },
+                            { name: "Gonadal (SRY Gene Cascade)" }
+                        ]}
+                    ]
+                },
+                {
+                    name: "STAGE 6: FETAL PERIOD",
+                    children: [
+                        { name: "Twinning Genetics (Dizygotic vs Monozygotic)" },
+                        { name: "Placentation & Fluid Dynamics" },
+                        { name: "Teratology (Thalidomide, FAS, TORCH)" }
+                    ]
+                }
+            ]
+        };
+
+        // 2. D3.JS ENGINE INITIALIZATION
+        const container = document.getElementById("d3-container");
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const margin = {top: 20, right: 90, bottom: 30, left: 90};
+        
+        // Setup Zoom and SVG Canvas
+        const svg = d3.select("#d3-container").append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            }))
+            .on("dblclick.zoom", null); // Disable double click zoom for mobile sanity
+
+        const g = svg.append("g");
+
+        // Center the root node on mobile load
+        const initialTransform = d3.zoomIdentity.translate(width / 8, height / 2).scale(0.8);
+        svg.call(d3.zoom().transform, initialTransform);
+
+        // Setup Tree Layout (Node Spacing: dy is horizontal, dx is vertical)
+        const dx = 40; 
+        const dy = width > 600 ? 250 : 180; 
+        const tree = d3.tree().nodeSize([dx, dy]);
+
+        const root = d3.hierarchy(treeData);
+        root.x0 = 0;
+        root.y0 = 0;
+
+        // Auto-Collapse deeply nested nodes on load for a clean UI
+        root.descendants().forEach((d, i) => {
+            d.id = i;
+            if (d.depth > 1) { 
+                d._children = d.children;
+                d.children = null;
+            }
+        });
+
+        // 3. THE RENDER CYCLE
+        function update(source) {
+            const nodes = root.descendants();
+            const links = root.links();
+
+            tree(root);
+
+            let left = root;
+            let right = root;
+            root.eachBefore(node => {
+                if (node.x < left.x) left = node;
+                if (node.x > right.x) right = node;
+            });
+
+            const transition = svg.transition().duration(400);
+
+            // --- NODES ---
+            const node = g.selectAll("g.node")
+                .data(nodes, d => d.id);
+
+            const nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                .on("click", (event, d) => {
+                    // Toggle children on click
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    update(d);
+                });
+
+            // Node Circles (Color coding based on depth)
+            nodeEnter.append("circle")
+                .attr("r", 1e-6)
+                .attr("fill", d => {
+                    if(d.depth === 0) return "#06b6d4"; // Root: Cyan
+                    if(d.depth === 1) return "#10b981"; // Stages: Emerald
+                    return d._children ? "#a855f7" : "#1e293b"; // Purple if expandable, Slate if end node
+                })
+                .attr("stroke", d => {
+                    if(d.depth === 0) return "#22d3ee";
+                    if(d.depth === 1) return "#34d399";
+                    return d._children ? "#c084fc" : "#475569";
+                });
+
+            // Node Labels
+            nodeEnter.append("text")
+                .attr("dy", "0.31em")
+                .attr("x", d => d._children || d.children ? -12 : 12)
+                .attr("text-anchor", d => d._children || d.children ? "end" : "start")
+                .text(d => d.data.name)
+                .attr("fill-opacity", 1e-6);
+
+            // Transition Nodes to their new position
+            const nodeUpdate = node.merge(nodeEnter).transition(transition)
+                .attr("transform", d => `translate(${d.y},${d.x})`);
+
+            nodeUpdate.select("circle")
+                .attr("r", d => d.depth === 0 ? 8 : (d.depth === 1 ? 6 : 5))
+                .attr("fill", d => {
+                    if(d.depth === 0) return "#06b6d4"; 
+                    if(d.depth === 1) return "#10b981"; 
+                    return d._children ? "#a855f7" : "#1e293b"; 
+                });
+
+            nodeUpdate.select("text")
+                .attr("fill-opacity", 1);
+
+            // Transition exiting nodes to parent's new position
+            const nodeExit = node.exit().transition(transition)
+                .attr("transform", d => `translate(${source.y},${source.x})`)
+                .remove();
+
+            nodeExit.select("circle").attr("r", 1e-6);
+            nodeExit.select("text").attr("fill-opacity", 1e-6);
+
+            // --- LINKS ---
+            const link = g.selectAll("path.link")
+                .data(links, d => d.target.id);
+
+            const linkEnter = link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", d => {
+                    const o = {x: source.x0, y: source.y0};
+                    return diagonal({source: o, target: o});
+                });
+
+            link.merge(linkEnter).transition(transition)
+                .attr("d", diagonal);
+
+            link.exit().transition(transition)
+                .attr("d", d => {
+                    const o = {x: source.x, y: source.y};
+                    return diagonal({source: o, target: o});
+                })
+                .remove();
+
+            nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        }
+
+        // Curved link generator
+        function diagonal({source, target}) {
+            return `M ${target.y} ${target.x}
+                    C ${(source.y + target.y) / 2} ${target.x},
+                      ${(source.y + target.y) / 2} ${source.x},
+                      ${source.y} ${source.x}`;
+        }
+
+        // Ignite the map
+        update(root);
+    </script>
+</body>
+</html>
