@@ -11,352 +11,723 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Master Map | Splendid's Academy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #0b1120; 
-            color: #f8fafc;
+        :root {
+            --bg:        #060c18;
+            --glass:     rgba(6, 12, 24, 0.88);
+            --border:    rgba(255,255,255,0.06);
+            --text:      #e8f0ff;
+            --muted:     rgba(148,163,184,0.65);
+            /* Per-stage spectrum */
+            --c0: #fbbf24; /* Root       — amber  */
+            --c1: #f59e0b; /* Stage 1    — gold   */
+            --c2: #34d399; /* Stage 2    — emerald*/
+            --c3: #22d3ee; /* Stage 3    — cyan   */
+            --c4: #a78bfa; /* Stage 4    — violet */
+            --c5: #fb7185; /* Stage 5    — rose   */
+            --c6: #fb923c; /* Stage 6    — orange */
+            --danger:    #f87171;
+            --gene:      #fcd34d;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            overscroll-behavior: none;
             -webkit-tap-highlight-color: transparent;
-            overflow: hidden; 
-            overscroll-behavior-y: none;
         }
-        .glass-header { 
-            background: rgba(11, 17, 32, 0.85); 
-            backdrop-filter: blur(16px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+
+        /* ═══════════════ HEADER ═══════════════ */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 60;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 14px;
+            /* Subtle amber top accent line */
+            box-shadow: 0 1px 0 rgba(251,191,36,0.15), 0 4px 24px rgba(0,0,0,0.6);
         }
-        
-        /* D3 Node Styling */
-        .node circle { cursor: pointer; stroke-width: 2px; transition: all 0.3s ease; }
-        .node text { 
-            font-family: 'Inter', sans-serif; 
-            font-size: 13px; 
-            font-weight: 600; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9); 
-            pointer-events: none; 
+        .header-brand { display: flex; align-items: center; gap: 12px; }
+        .header-icon {
+            width: 40px; height: 40px; border-radius: 11px;
+            background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.06));
+            border: 1px solid rgba(251,191,36,0.28);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--c0);
+            box-shadow: 0 0 18px rgba(251,191,36,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+            font-size: 15px;
         }
-        .link { fill: none; stroke: #334155; stroke-width: 2px; opacity: 0.7; }
-        
-        /* The Canvas */
+        .header-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px; font-weight: 700;
+            color: #fff; letter-spacing: 0.3px; line-height: 1;
+        }
+        .header-sub {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 3.5px; text-transform: uppercase;
+            color: var(--c0); opacity: 0.85;
+            margin-top: 3px;
+        }
+        .header-close {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(239,68,68,0.07);
+            border: 1px solid rgba(239,68,68,0.18);
+            color: var(--muted);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+            font-size: 15px;
+        }
+        .header-close:hover { color: #ef4444; background: rgba(239,68,68,0.14); border-color: rgba(239,68,68,0.4); }
+
+        /* ═══════════════ CANVAS ═══════════════ */
         #d3-container {
-            position: absolute;
-            top: 60px;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: radial-gradient(ellipse at center, #0f172a, #0b1120);
+            position: absolute; top: 60px; bottom: 0; left: 0; right: 0;
+            cursor: grab; overflow: hidden;
         }
+        #d3-container:active { cursor: grabbing; }
+
+        /* Dot grid */
+        #d3-container::before {
+            content: '';
+            position: absolute; inset: 0; pointer-events: none; z-index: 0;
+            background-image: radial-gradient(circle, rgba(99,102,241,0.18) 1px, transparent 1px);
+            background-size: 36px 36px;
+            opacity: 0.4;
+        }
+        /* Radial vignette + ambient colour blobs */
+        #d3-container::after {
+            content: '';
+            position: absolute; inset: 0; pointer-events: none; z-index: 0;
+            background:
+                radial-gradient(ellipse 800px 500px at 15% 25%, rgba(99,102,241,0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 600px 400px at 85% 75%, rgba(6,182,212,0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 500px at 50% 110%, rgba(0,0,0,0.6) 0%, transparent 60%);
+        }
+
+        /* D3 elements */
+        .link { fill: none; stroke-width: 1.5px; }
+        .node { cursor: pointer; }
+        .node text {
+            font-family: 'DM Sans', sans-serif;
+            text-shadow: 0 1px 6px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,0.9);
+            pointer-events: none;
+        }
+
+        /* ═══════════════ TOOLTIP ═══════════════ */
+        #tooltip {
+            position: fixed; z-index: 200;
+            padding: 9px 14px;
+            background: rgba(6,12,24,0.97);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 10px;
+            font-size: 12px; font-weight: 500; line-height: 1.4;
+            color: var(--text);
+            pointer-events: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+            max-width: 290px;
+            transition: opacity 0.12s;
+            opacity: 0;
+        }
+
+        /* ═══════════════ LEGEND ═══════════════ */
+        .legend {
+            position: fixed; top: 76px; left: 12px; z-index: 50;
+            background: var(--glass);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+            display: flex; flex-direction: column; gap: 7px;
+        }
+        .legend-hd {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 9px; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 1px;
+        }
+        .legend-row { display: flex; align-items: center; gap: 9px; }
+        .legend-dot {
+            width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+        }
+        .legend-lbl { font-size: 10.5px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+        .legend-sep { height: 1px; background: var(--border); margin: 1px 0; }
+
+        /* ═══════════════ BOTTOM HINT ═══════════════ */
+        .hint-bar {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            z-index: 50; pointer-events: none; white-space: nowrap;
+            background: rgba(6,12,24,0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 100px;
+            padding: 8px 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .hint-bar i { color: var(--c3); font-size: 11px; }
+        .hint-txt {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--muted);
+        }
+        .hint-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(148,163,184,0.25); }
+
+        /* ═══════════════ CONTROLS ═══════════════ */
+        .ctrl-stack {
+            position: fixed; bottom: 16px; right: 14px; z-index: 50;
+            display: flex; flex-direction: column; gap: 7px;
+        }
+        .ctrl-btn {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(6,12,24,0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: var(--muted);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+            transition: all 0.2s;
+        }
+        .ctrl-btn:hover { color: var(--c3); border-color: rgba(34,211,238,0.35); background: rgba(34,211,238,0.08); }
+        .ctrl-btn:active { transform: scale(0.92); }
+        .ctrl-btn.primary {
+            color: var(--c3); border-color: rgba(34,211,238,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 14px rgba(34,211,238,0.1);
+        }
+
+        /* Expand all button (top-right) */
+        .expand-all-btn {
+            position: fixed; top: 76px; right: 14px; z-index: 50;
+            background: rgba(6,12,24,0.92);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(167,139,250,0.22);
+            border-radius: 12px;
+            padding: 9px 15px;
+            display: flex; align-items: center; gap: 9px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+            transition: all 0.2s;
+        }
+        .expand-all-btn:hover { border-color: rgba(167,139,250,0.45); background: rgba(167,139,250,0.08); }
+        .expand-all-btn i { color: #a78bfa; font-size: 11px; }
+        .expand-all-btn span {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(167,139,250,0.9);
+        }
+
+        /* Node count */
+        .node-counter {
+            position: fixed; top: 76px; left: 50%; transform: translateX(-50%);
+            z-index: 50; pointer-events: none;
+            background: rgba(6,12,24,0.82);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 5px 16px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+            color: var(--muted);
+        }
+        .node-counter b { color: var(--c3); font-weight: 700; }
+
+        /* Pulse animation on expandable circles */
+        @keyframes pulse-out {
+            0%   { opacity: 0.55; }
+            100% { opacity: 0; }
+        }
+        .pulse-ring { animation: pulse-out 2.2s ease-out infinite; }
     </style>
 </head>
 <body>
 
-    <header class="glass-header z-50 px-4 py-3 flex justify-between items-center shadow-lg w-full fixed top-0 h-[60px]">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-xl bg-cyan-900/40 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
-                <i class="fas fa-sitemap"></i>
-            </div>
-            <div>
-                <h1 class="font-black text-lg text-white tracking-tight leading-none">ANA 213 Map</h1>
-                <p class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase mt-0.5">Embryology Core Array</p>
-            </div>
+<!-- HEADER -->
+<header class="header">
+    <div class="header-brand">
+        <div class="header-icon"><i class="fas fa-dna"></i></div>
+        <div>
+            <div class="header-title">ANA 213 Map</div>
+            <div class="header-sub">Embryology Core Array</div>
         </div>
-        <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg active:scale-95 border border-slate-700">
-            <i class="fas fa-times text-xl"></i>
-        </button>
-    </header>
-
-    <main id="d3-container" class="cursor-move"></main>
-
-    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 bg-slate-900/90 backdrop-blur-md px-5 py-2 rounded-full border border-slate-700 shadow-2xl flex items-center gap-2 pointer-events-none whitespace-nowrap">
-        <i class="fas fa-arrows-alt text-cyan-400 animate-pulse"></i>
-        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Drag to Pan • Tap to Expand</span>
     </div>
-
-    <button onclick="resetZoom()" class="fixed bottom-6 right-4 z-40 h-12 w-12 bg-slate-800 border border-cyan-500/50 rounded-full flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] active:scale-95 transition-transform">
-        <i class="fas fa-crosshairs"></i>
+    <button class="header-close" onclick="window.location.href='dashboard.html'">
+        <i class="fas fa-times"></i>
     </button>
+</header>
 
-    <script>
-        // 1. THE COMPLETE, RICH EMBRYOLOGY MASTER DATA
-        const treeData = {
-            name: "ANA 213: EMBRYOLOGY",
+<!-- CANVAS -->
+<main id="d3-container"></main>
+
+<!-- TOOLTIP -->
+<div id="tooltip"></div>
+
+<!-- LEGEND -->
+<div class="legend">
+    <div class="legend-hd">Legend</div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:var(--c0); box-shadow:0 0 7px rgba(251,191,36,0.7);"></div>
+        <span class="legend-lbl">Root</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:var(--c2); box-shadow:0 0 7px rgba(52,211,153,0.6);"></div>
+        <span class="legend-lbl">Stage</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:#a78bfa; box-shadow:0 0 7px rgba(167,139,250,0.6);"></div>
+        <span class="legend-lbl">Expandable</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:#1e3352; border:1px solid #334155;"></div>
+        <span class="legend-lbl">Terminal</span>
+    </div>
+    <div class="legend-sep"></div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:var(--danger); box-shadow:0 0 7px rgba(239,68,68,0.7);"></div>
+        <span class="legend-lbl">Clinical Trap</span>
+    </div>
+    <div class="legend-row">
+        <div class="legend-dot" style="background:var(--gene); box-shadow:0 0 7px rgba(252,211,77,0.6);"></div>
+        <span class="legend-lbl">Gene Marker</span>
+    </div>
+</div>
+
+<!-- EXPAND ALL -->
+<button class="expand-all-btn" id="expandBtn" onclick="toggleAll()">
+    <i class="fas fa-expand-alt" id="expandIcon"></i>
+    <span id="expandTxt">Expand All</span>
+</button>
+
+<!-- NODE COUNT -->
+<div class="node-counter" id="nodeCount"><b>—</b> nodes visible</div>
+
+<!-- HINT -->
+<div class="hint-bar">
+    <i class="fas fa-hand-pointer"></i>
+    <span class="hint-txt">Drag to Pan</span>
+    <div class="hint-sep"></div>
+    <span class="hint-txt">Tap to Expand</span>
+    <div class="hint-sep"></div>
+    <span class="hint-txt">Pinch to Zoom</span>
+</div>
+
+<!-- CONTROLS -->
+<div class="ctrl-stack">
+    <button class="ctrl-btn" onclick="zoomIn()" title="Zoom In"><i class="fas fa-plus"></i></button>
+    <button class="ctrl-btn primary" onclick="resetZoom()" title="Reset View"><i class="fas fa-crosshairs"></i></button>
+    <button class="ctrl-btn" onclick="zoomOut()" title="Zoom Out"><i class="fas fa-minus"></i></button>
+</div>
+
+<script>
+/* ═══════════════════════════════════
+   STAGE COLOUR PALETTE
+═══════════════════════════════════ */
+const STAGE_COLORS = [
+    "#f59e0b", // Stage 1 – amber / gold
+    "#34d399", // Stage 2 – emerald
+    "#22d3ee", // Stage 3 – cyan
+    "#a78bfa", // Stage 4 – violet
+    "#fb7185", // Stage 5 – rose
+    "#fb923c"  // Stage 6 – orange
+];
+
+const GENES = ["FGF8","PITX2","SHH","WNT","SRY","TBX4","BMP4","NT-3","GnRH","FSH","LH"];
+const CLINICAL_KW = ["[CLINICAL TRAP]","TERATOLOGY","[TERATOLOGY"];
+
+/* ═══════════════════════════════════
+   DATA
+═══════════════════════════════════ */
+const treeData = {
+    name: "ANA 213: EMBRYOLOGY",
+    children: [
+        {
+            name: "STAGE 1: THE FOUNDATION",
             children: [
-                {
-                    name: "STAGE 1: THE FOUNDATION",
-                    children: [
-                        { name: "[CLINICAL TRAP] Aneuploidies & Microdeletions" },
-                        { name: "Gametogenesis", children: [
-                            { name: "Male: Spermatogenesis (74 Days to Spermatozoa)" },
-                            { name: "Female: Oogenesis (Meiosis I Arrest at Dictyotene)" }
-                        ]},
-                        { name: "Reproductive Cycles", children: [
-                            { name: "Ovarian Cycle: GnRH -> FSH/LH -> Ovulation" },
-                            { name: "Menstrual Cycle: Estrogen/Progesterone phases" }
-                        ]}
-                    ]
-                },
-                {
-                    name: "STAGE 2: WEEKS 1 & 2",
-                    children: [
-                        { name: "Day 1: Fertilization (Ampulla)", children: [
-                            { name: "Capacitation & Acrosome Reaction" },
-                            { name: "Cortical Reaction (Polyspermy block)" }
-                        ]},
-                        { name: "Days 2-5: Cleavage", children: [
-                            { name: "Zygote (2n, 46) forms" },
-                            { name: "Morula (16-cell compacted ball)" },
-                            { name: "Blastocyst (Enters uterine cavity)" }
-                        ]},
-                        { name: "Week 2: Implantation (Week of Twos)", children: [
-                            { name: "Trophoblast splits -> Cyto & Syncytiotrophoblast (secretes hCG)" },
-                            { name: "Embryoblast splits -> Epiblast & Hypoblast (Bilaminar Disc)" },
-                            { name: "Cavities form -> Amniotic Cavity & Yolk Sac" }
-                        ]}
-                    ]
-                },
-                {
-                    name: "STAGE 3: THE THIRD WEEK",
-                    children: [
-                        { name: "Gastrulation (Most Critical Week)", children: [
-                            { name: "Primitive Streak forms on Epiblast" },
-                            { name: "FGF8 gene triggers migration, downregulates E-cadherin" },
-                            { name: "TRILAMINAR DISC: Ectoderm, Mesoderm, Endoderm" }
-                        ]},
-                        { name: "Notochordogenesis (Forms axial skeleton template)" },
-                        { name: "Body Axes Established (PITX2 gene controls Left-Right sidedness)" }
-                    ]
-                },
-                {
-                    name: "STAGE 4: WEEKS 3-8 (ORGANOGENESIS)",
-                    children: [
-                        { name: "Branch A: ECTODERM (Skin & Nerves)", children: [
-                            { name: "BMP4 Inhibition (via Chordin/Noggin allows neural tissue)" },
-                            { name: "Neurulation: Neural Plate -> Neural Tube (Closes Day 25/28)" },
-                            { name: "Neural Crest (4th Germ Layer) -> DRGs, Melanocytes, Adrenal Medulla" }
-                        ]},
-                        { name: "Branch B: MESODERM (Muscle, Bone, Blood, Kidney)", children: [
-                            { name: "Paraxial: Somites (SHH->Sclerotome, WNT->Myotome, NT-3->Dermatome)" },
-                            { name: "Intermediate: Nephrogenic Cord (Kidneys & Gonads)" },
-                            { name: "Lateral Plate: Splits into Somatic (Body Wall) & Splanchnic (Gut Muscle)" }
-                        ]},
-                        { name: "Branch C: ENDODERM (Linings & Glands)", children: [
-                            { name: "Embryonic Folding: Cephalocaudal & Lateral folds the flat disc" },
-                            { name: "Primitive Gut Tube formed by pinching off Yolk Sac" }
-                        ]}
-                    ]
-                },
-                {
-                    name: "STAGE 5: SYSTEMIC SPECIALIZATION",
-                    children: [
-                        { name: "The Gut Tube", children: [
-                            { name: "Foregut: Stomach (90° rotation), Liver, Pancreas (Ventral/Dorsal fusion)" },
-                            { name: "Midgut: Herniates into umbilicus -> 270° counterclockwise rotation" },
-                            { name: "Hindgut: Forms Cloaca (partitioned by Urorectal Septum)" }
-                        ]},
-                        { name: "Pharyngeal Apparatus", children: [
-                            { name: "Arches: 1(Malleus/Incus), 2(Stapes), 3/4/6(Laryngeal cartilages)" },
-                            { name: "Pouches: 3(Inf. Parathyroid/Thymus), 4(Sup. Parathyroid)" },
-                            { name: "Resp Tube: Lung Buds (TBX4 gene) & Tracheoesophageal Septum" }
-                        ]},
-                        { name: "Cardiovascular System", children: [
-                            { name: "Heart Tube: Loops RIGHT under influence of PITX2" },
-                            { name: "Septation: Atrial (Foramen Ovale), Ventricular, Outflow Tract" },
-                            { name: "Fetal Shunts: Ductus Venosus, Foramen Ovale, Ductus Arteriosus" }
-                        ]},
-                        { name: "Urogenital System", children: [
-                            { name: "Renal: Pronephros -> Mesonephros -> Metanephros (Definitive Kidney)" },
-                            { name: "Gonadal: SRY Gene Cascade -> Testes (Wolffian) vs Ovaries (Müllerian)" }
-                        ]}
-                    ]
-                },
-                {
-                    name: "STAGE 6: FETAL PERIOD & CLINICS",
-                    children: [
-                        { name: "Placentation & Fluids", children: [
-                            { name: "Placental Barrier thins for diffusion" },
-                            { name: "[CLINICAL TRAP] Polyhydramnios vs Oligohydramnios dynamics" }
-                        ]},
-                        { name: "Twinning Genetics", children: [
-                            { name: "Dizygotic (Always DiDi)" },
-                            { name: "Monozygotic (Splitting time dictates DiDi, MoDi, MoMo, Conjoined)" }
-                        ]},
-                        { name: "[TERATOLOGY WARNING]", children: [
-                            { name: "Thalidomide (Limb defects)" },
-                            { name: "Fetal Alcohol Syndrome (FAS)" },
-                            { name: "TORCH Infections (Toxo, Rubella, CMV, Herpes)" }
-                        ]}
-                    ]
-                }
+                { name: "[CLINICAL TRAP] Aneuploidies & Microdeletions" },
+                { name: "Gametogenesis", children: [
+                    { name: "Male: Spermatogenesis (74 Days to Spermatozoa)" },
+                    { name: "Female: Oogenesis (Meiosis I Arrest at Dictyotene)" }
+                ]},
+                { name: "Reproductive Cycles", children: [
+                    { name: "Ovarian Cycle: GnRH → FSH/LH → Ovulation" },
+                    { name: "Menstrual Cycle: Estrogen/Progesterone phases" }
+                ]}
             ]
-        };
-
-        // 2. D3.JS ENGINE SETUP
-        const container = document.getElementById("d3-container");
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-
-        let svg, g, zoom;
-
-        function initMap() {
-            d3.select("#d3-container").selectAll("*").remove();
-
-            zoom = d3.zoom().scaleExtent([0.4, 3]).on("zoom", (event) => {
-                g.attr("transform", event.transform);
-            });
-
-            svg = d3.select("#d3-container").append("svg")
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .call(zoom)
-                .on("dblclick.zoom", null);
-
-            g = svg.append("g");
-
-            // SAFE VIEWPORT CENTERING FOR MOBILE
-            // Pushes the root node slightly right (40px) and down to the middle of the screen
-            const initialTransform = d3.zoomIdentity.translate(40, height / 2.5).scale(0.85);
-            svg.call(zoom.transform, initialTransform);
-
-            const dx = 35; // Vertical spacing between items
-            const dy = 240; // Horizontal spacing between branches (wider for longer text)
-            const tree = d3.tree().nodeSize([dx, dy]);
-
-            const root = d3.hierarchy(treeData);
-            root.x0 = 0;
-            root.y0 = 0;
-
-            // Collapse deep nodes on load
-            root.descendants().forEach((d, i) => {
-                d.id = i;
-                if (d.depth > 0) { // Keep root open, collapse stages
-                    d._children = d.children;
-                    d.children = null;
-                }
-            });
-
-            // 3. THE RENDER CYCLE
-            function update(source) {
-                const nodes = root.descendants();
-                const links = root.links();
-                tree(root);
-
-                const transition = svg.transition().duration(400);
-
-                // --- NODES ---
-                const node = g.selectAll("g.node").data(nodes, d => d.id);
-                const nodeEnter = node.enter().append("g")
-                    .attr("class", "node")
-                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
-                    .on("click", (event, d) => {
-                        if (d.children) {
-                            d._children = d.children;
-                            d.children = null;
-                        } else {
-                            d.children = d._children;
-                            d._children = null;
-                        }
-                        update(d);
-                    });
-
-                // Node Circles
-                nodeEnter.append("circle")
-                    .attr("r", 1e-6)
-                    .attr("fill", d => {
-                        if(d.depth === 0) return "#06b6d4"; // Cyan Root
-                        if(d.depth === 1) return "#10b981"; // Emerald Stage
-                        return d._children ? "#a855f7" : "#1e293b"; // Purple Expandable, Slate Terminal
-                    })
-                    .attr("stroke", d => {
-                        if(d.depth === 0) return "#22d3ee";
-                        if(d.depth === 1) return "#34d399";
-                        return d._children ? "#c084fc" : "#475569";
-                    });
-
-                // Syntax Highlighting for Text
-                nodeEnter.append("text")
-                    .attr("dy", "0.31em")
-                    .attr("x", d => d._children || d.children ? -12 : 12)
-                    .attr("text-anchor", d => d._children || d.children ? "end" : "start")
-                    .text(d => d.data.name)
-                    .attr("fill", d => {
-                        const txt = d.data.name;
-                        // RED for Clinical Traps / Warnings
-                        if(txt.includes("[CLINICAL TRAP]") || txt.includes("TERATOLOGY") || txt.includes("Defect")) return "#ef4444"; 
-                        // YELLOW for Specific Genes
-                        if(txt.includes("FGF8") || txt.includes("PITX2") || txt.includes("SHH") || txt.includes("WNT") || txt.includes("SRY") || txt.includes("TBX4") || txt.includes("BMP4")) return "#fbbf24";
-                        // DEFAULT White
-                        return "#f8fafc";
-                    })
-                    .attr("fill-opacity", 1e-6);
-
-                const nodeUpdate = node.merge(nodeEnter).transition(transition)
-                    .attr("transform", d => `translate(${d.y},${d.x})`);
-
-                nodeUpdate.select("circle")
-                    .attr("r", d => d.depth === 0 ? 8 : (d.depth === 1 ? 6 : 5))
-                    .attr("fill", d => {
-                        if(d.depth === 0) return "#06b6d4"; 
-                        if(d.depth === 1) return "#10b981"; 
-                        return d._children ? "#a855f7" : "#1e293b"; 
-                    });
-
-                nodeUpdate.select("text").attr("fill-opacity", 1);
-
-                const nodeExit = node.exit().transition(transition)
-                    .attr("transform", d => `translate(${source.y},${source.x})`)
-                    .remove();
-
-                nodeExit.select("circle").attr("r", 1e-6);
-                nodeExit.select("text").attr("fill-opacity", 1e-6);
-
-                // --- LINKS ---
-                const link = g.selectAll("path.link").data(links, d => d.target.id);
-                const linkEnter = link.enter().insert("path", "g")
-                    .attr("class", "link")
-                    .attr("d", d => {
-                        const o = {x: source.x0, y: source.y0};
-                        return diagonal({source: o, target: o});
-                    });
-
-                link.merge(linkEnter).transition(transition).attr("d", diagonal);
-
-                link.exit().transition(transition)
-                    .attr("d", d => {
-                        const o = {x: source.x, y: source.y};
-                        return diagonal({source: o, target: o});
-                    })
-                    .remove();
-
-                nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
-            }
-
-            function diagonal({source, target}) {
-                return `M ${target.y} ${target.x}
-                        C ${(source.y + target.y) / 2} ${target.x},
-                          ${(source.y + target.y) / 2} ${source.x},
-                          ${source.y} ${source.x}`;
-            }
-
-            update(root);
+        },
+        {
+            name: "STAGE 2: WEEKS 1 & 2",
+            children: [
+                { name: "Day 1: Fertilization (Ampulla)", children: [
+                    { name: "Capacitation & Acrosome Reaction" },
+                    { name: "Cortical Reaction (Polyspermy block)" }
+                ]},
+                { name: "Days 2-5: Cleavage", children: [
+                    { name: "Zygote (2n, 46) forms" },
+                    { name: "Morula (16-cell compacted ball)" },
+                    { name: "Blastocyst (Enters uterine cavity)" }
+                ]},
+                { name: "Week 2: Implantation (Week of Twos)", children: [
+                    { name: "Trophoblast → Cyto & Syncytiotrophoblast (secretes hCG)" },
+                    { name: "Embryoblast → Epiblast & Hypoblast (Bilaminar Disc)" },
+                    { name: "Cavities: Amniotic Cavity & Yolk Sac" }
+                ]}
+            ]
+        },
+        {
+            name: "STAGE 3: THE THIRD WEEK",
+            children: [
+                { name: "Gastrulation (Most Critical Week)", children: [
+                    { name: "Primitive Streak forms on Epiblast" },
+                    { name: "FGF8 triggers migration, downregulates E-cadherin" },
+                    { name: "TRILAMINAR DISC: Ectoderm, Mesoderm, Endoderm" }
+                ]},
+                { name: "Notochordogenesis (Forms axial skeleton template)" },
+                { name: "Body Axes Established (PITX2 gene – Left-Right sidedness)" }
+            ]
+        },
+        {
+            name: "STAGE 4: WEEKS 3-8 (ORGANOGENESIS)",
+            children: [
+                { name: "Branch A: ECTODERM (Skin & Nerves)", children: [
+                    { name: "BMP4 Inhibition (via Chordin/Noggin → neural tissue)" },
+                    { name: "Neurulation: Neural Plate → Neural Tube (Closes Day 25/28)" },
+                    { name: "Neural Crest (4th Germ Layer) → DRGs, Melanocytes, Adrenal Medulla" }
+                ]},
+                { name: "Branch B: MESODERM (Muscle, Bone, Blood, Kidney)", children: [
+                    { name: "Paraxial: Somites (SHH→Sclerotome, WNT→Myotome, NT-3→Dermatome)" },
+                    { name: "Intermediate: Nephrogenic Cord (Kidneys & Gonads)" },
+                    { name: "Lateral Plate: Somatic (Body Wall) & Splanchnic (Gut Muscle)" }
+                ]},
+                { name: "Branch C: ENDODERM (Linings & Glands)", children: [
+                    { name: "Embryonic Folding: Cephalocaudal & Lateral" },
+                    { name: "Primitive Gut Tube formed by pinching off Yolk Sac" }
+                ]}
+            ]
+        },
+        {
+            name: "STAGE 5: SYSTEMIC SPECIALIZATION",
+            children: [
+                { name: "The Gut Tube", children: [
+                    { name: "Foregut: Stomach (90° rotation), Liver, Pancreas" },
+                    { name: "Midgut: Herniates → 270° counterclockwise rotation" },
+                    { name: "Hindgut: Cloaca (partitioned by Urorectal Septum)" }
+                ]},
+                { name: "Pharyngeal Apparatus", children: [
+                    { name: "Arches: 1(Malleus/Incus), 2(Stapes), 3/4/6(Laryngeal cartilages)" },
+                    { name: "Pouches: 3(Inf. Parathyroid/Thymus), 4(Sup. Parathyroid)" },
+                    { name: "Lung Buds (TBX4 gene) & Tracheoesophageal Septum" }
+                ]},
+                { name: "Cardiovascular System", children: [
+                    { name: "Heart Tube: Loops RIGHT under PITX2 influence" },
+                    { name: "Septation: Atrial (Foramen Ovale), Ventricular, Outflow Tract" },
+                    { name: "Fetal Shunts: Ductus Venosus, Foramen Ovale, Ductus Arteriosus" }
+                ]},
+                { name: "Urogenital System", children: [
+                    { name: "Renal: Pronephros → Mesonephros → Metanephros" },
+                    { name: "Gonadal: SRY Gene → Testes (Wolffian) vs Ovaries (Müllerian)" }
+                ]}
+            ]
+        },
+        {
+            name: "STAGE 6: FETAL PERIOD & CLINICS",
+            children: [
+                { name: "Placentation & Fluids", children: [
+                    { name: "Placental Barrier thins for diffusion" },
+                    { name: "[CLINICAL TRAP] Polyhydramnios vs Oligohydramnios" }
+                ]},
+                { name: "Twinning Genetics", children: [
+                    { name: "Dizygotic (Always DiDi)" },
+                    { name: "Monozygotic: splitting time → DiDi, MoDi, MoMo, Conjoined" }
+                ]},
+                { name: "[TERATOLOGY WARNING]", children: [
+                    { name: "Thalidomide (Limb defects)" },
+                    { name: "Fetal Alcohol Syndrome (FAS)" },
+                    { name: "TORCH Infections (Toxo, Rubella, CMV, Herpes)" }
+                ]}
+            ]
         }
+    ]
+};
 
-        // Function for the Crosshairs button
-        window.resetZoom = function() {
-            const initialTransform = d3.zoomIdentity.translate(40, height / 2.5).scale(0.85);
-            svg.transition().duration(750).call(zoom.transform, initialTransform);
+/* ═══════════════════════════════════
+   HELPERS
+═══════════════════════════════════ */
+function isClinical(name) { return CLINICAL_KW.some(k => name.includes(k)); }
+function isGene(name)     { return GENES.some(g => name.includes(g)); }
+
+function nodeColor(d) {
+    if (d.depth === 0) return "#fbbf24";
+    if (d.depth === 1) return STAGE_COLORS[d.data._si % STAGE_COLORS.length];
+    return d._children ? "#a78bfa" : "#1e3352";
+}
+function nodeStroke(d) {
+    if (d.depth === 0) return "#fde68a";
+    if (d.depth === 1) return STAGE_COLORS[d.data._si % STAGE_COLORS.length];
+    return d._children ? "#c4b5fd" : "#2e4268";
+}
+function nodeR(d) {
+    return d.depth === 0 ? 11 : d.depth === 1 ? 7 : 5;
+}
+function textColor(d) {
+    if (isClinical(d.data.name)) return "#f87171";
+    if (isGene(d.data.name))     return "#fcd34d";
+    if (d.depth === 0) return "#fde68a";
+    if (d.depth === 1) return "#ffffff";
+    return "#c8d8f0";
+}
+function glowFilter(d) {
+    if (d.depth === 0) return "url(#glow-strong)";
+    if (d.depth === 1 || d._children) return "url(#glow)";
+    if (isClinical(d.data.name)) return "url(#glow-danger)";
+    return null;
+}
+function truncate(s, n=50) { return s.length > n ? s.slice(0,n-1)+"…" : s; }
+function linkColor(d) { return d.target.data._sc || "#334155"; }
+
+/* ═══════════════════════════════════
+   D3 ENGINE
+═══════════════════════════════════ */
+const container = document.getElementById("d3-container");
+let W, H, svg, g, zoomBeh, root, allExpanded = false;
+
+const tooltip = document.getElementById("tooltip");
+let tooltipTimer;
+
+function showTip(event, d) {
+    clearTimeout(tooltipTimer);
+    tooltip.textContent = d.data.name;
+    tooltip.style.borderColor = isClinical(d.data.name) ? "rgba(248,113,113,0.4)"
+                              : isGene(d.data.name)     ? "rgba(252,211,77,0.35)"
+                              : "rgba(255,255,255,0.09)";
+    tooltip.style.color = isClinical(d.data.name) ? "#f87171"
+                        : isGene(d.data.name)     ? "#fcd34d"
+                        : "#e8f0ff";
+    moveTip(event);
+    tooltip.style.opacity = "1";
+}
+function moveTip(event) {
+    const x = event.clientX + 16, y = event.clientY - 12;
+    tooltip.style.left = Math.min(x, window.innerWidth - 310) + "px";
+    tooltip.style.top  = Math.max(y, 72) + "px";
+}
+function hideTip() {
+    tooltipTimer = setTimeout(() => tooltip.style.opacity = "0", 80);
+}
+
+function updateCount() {
+    if (!root) return;
+    const n = root.descendants().filter(d => !d.parent || (d.parent.children && d.parent.children.includes(d))).length;
+    document.getElementById("nodeCount").innerHTML = `<b>${n}</b> nodes visible`;
+}
+
+function initMap() {
+    d3.select("#d3-container").selectAll("svg").remove();
+    W = container.clientWidth;
+    H = container.clientHeight;
+
+    zoomBeh = d3.zoom().scaleExtent([0.25, 4]).on("zoom", e => g.attr("transform", e.transform));
+
+    svg = d3.select("#d3-container").append("svg")
+        .attr("width","100%").attr("height","100%")
+        .style("position","relative").style("z-index","1")
+        .call(zoomBeh).on("dblclick.zoom", null);
+
+    /* ── SVG DEFS ── */
+    const defs = svg.append("defs");
+
+    const addGlow = (id, blur, col) => {
+        const f = defs.append("filter").attr("id", id)
+            .attr("x","-60%").attr("y","-60%").attr("width","220%").attr("height","220%");
+        f.append("feGaussianBlur").attr("in","SourceGraphic").attr("stdDeviation", blur).attr("result","blur");
+        const m = f.append("feMerge");
+        m.append("feMergeNode").attr("in","blur");
+        m.append("feMergeNode").attr("in","SourceGraphic");
+    };
+    addGlow("glow",        3.5);
+    addGlow("glow-strong", 7);
+    addGlow("glow-danger", 5);
+
+    g = svg.append("g");
+
+    /* initial view */
+    svg.call(zoomBeh.transform, d3.zoomIdentity.translate(64, H/2.25).scale(0.85));
+
+    /* tree layout */
+    const treeLayout = d3.tree().nodeSize([38, 268]);
+
+    root = d3.hierarchy(treeData);
+    root.x0 = 0; root.y0 = 0;
+
+    /* tag each node with its stage index + stage color */
+    root.children && root.children.forEach((stage, i) => {
+        const sc = STAGE_COLORS[i % STAGE_COLORS.length];
+        stage.descendants().forEach(d => { d.data._si = i; d.data._sc = sc; });
+        stage.data._si = i; stage.data._sc = sc;
+    });
+
+    /* collapse all except root */
+    root.descendants().forEach((d, i) => {
+        d.id = i;
+        if (d.depth > 0) { d._children = d.children; d.children = null; }
+    });
+
+    /* ── RENDER ── */
+    function update(source) {
+        treeLayout(root);
+        const nodes = root.descendants();
+        const links  = root.links();
+        const t = svg.transition().duration(380).ease(d3.easeCubicInOut);
+
+        /* LINKS */
+        const link = g.selectAll("path.link").data(links, d => d.target.id);
+
+        const linkEnter = link.enter().insert("path","g")
+            .attr("class","link")
+            .attr("d", () => { const o={x:source.x0,y:source.y0}; return diagonal({source:o,target:o}); })
+            .attr("stroke", d => linkColor(d))
+            .attr("opacity", 0);
+
+        link.merge(linkEnter).transition(t)
+            .attr("d", diagonal)
+            .attr("stroke", d => linkColor(d))
+            .attr("opacity", d => d.target.depth === 1 ? 0.55 : 0.28);
+
+        link.exit().transition(t)
+            .attr("d", () => { const o={x:source.x,y:source.y}; return diagonal({source:o,target:o}); })
+            .attr("opacity", 0).remove();
+
+        /* NODES */
+        const node = g.selectAll("g.node").data(nodes, d => d.id);
+
+        const nodeEnter = node.enter().append("g")
+            .attr("class","node")
+            .attr("transform", `translate(${source.y0},${source.x0})`)
+            .on("click", (ev, d) => {
+                ev.stopPropagation();
+                if (d.children) { d._children=d.children; d.children=null; }
+                else             { d.children=d._children; d._children=null; }
+                allExpanded = false;
+                document.getElementById("expandIcon").className = "fas fa-expand-alt";
+                document.getElementById("expandTxt").textContent = "Expand All";
+                update(d);
+            })
+            .on("mouseover", (ev,d) => showTip(ev,d))
+            .on("mousemove",  ev   => moveTip(ev))
+            .on("mouseout",  ()   => hideTip());
+
+        /* pulse ring – only for expandable depth>0 */
+        nodeEnter.append("circle")
+            .attr("class","pulse-ring")
+            .attr("r", 1e-6)
+            .attr("fill","none")
+            .attr("stroke-width", 1.5)
+            .attr("stroke", d => nodeColor(d));
+
+        /* main circle */
+        nodeEnter.append("circle")
+            .attr("class","main-c")
+            .attr("r", 1e-6)
+            .attr("fill",   d => nodeColor(d))
+            .attr("stroke", d => nodeStroke(d))
+            .attr("stroke-width", 1.5)
+            .attr("filter", d => glowFilter(d));
+
+        /* label */
+        nodeEnter.append("text")
+            .attr("class","lbl")
+            .attr("dy","0.32em")
+            .attr("x",  d => (d._children||d.children) ? -15 : 15)
+            .attr("text-anchor", d => (d._children||d.children) ? "end" : "start")
+            .text(d => truncate(d.data.name))
+            .attr("fill", d => textColor(d))
+            .attr("fill-opacity", 1e-6)
+            .attr("font-size", d => d.depth===0?"14px": d.depth===1?"13px":"11.5px")
+            .attr("font-weight", d => d.depth<=1?"600":"500");
+
+        /* UPDATE */
+        const nodeUp = node.merge(nodeEnter).transition(t)
+            .attr("transform", d => `translate(${d.y},${d.x})`);
+
+        nodeUp.select("circle.main-c")
+            .attr("r",      d => nodeR(d))
+            .attr("fill",   d => nodeColor(d))
+            .attr("stroke", d => nodeStroke(d))
+            .attr("filter", d => glowFilter(d));
+
+        nodeUp.select("circle.pulse-ring")
+            .attr("r", d => (d._children && d.depth > 0) ? nodeR(d) + 4 : 0)
+            .attr("stroke", d => nodeColor(d));
+
+        nodeUp.select("text.lbl")
+            .attr("fill-opacity", 1)
+            .attr("x",  d => (d._children||d.children) ? -15 : 15)
+            .attr("text-anchor", d => (d._children||d.children) ? "end" : "start")
+            .attr("fill", d => textColor(d));
+
+        /* EXIT */
+        const nodeExit = node.exit().transition(t)
+            .attr("transform", `translate(${source.y},${source.x})`).remove();
+        nodeExit.select("circle.main-c").attr("r", 1e-6);
+        nodeExit.select("circle.pulse-ring").attr("r", 0);
+        nodeExit.select("text.lbl").attr("fill-opacity", 1e-6);
+
+        nodes.forEach(d => { d.x0=d.x; d.y0=d.y; });
+        updateCount();
+    }
+
+    function diagonal({source, target}) {
+        const mx = (source.y + target.y) / 2;
+        return `M${target.y},${target.x}C${mx},${target.x} ${mx},${source.x} ${source.y},${source.x}`;
+    }
+
+    /* expose update for controls */
+    window._update = update;
+    update(root);
+}
+
+/* ═══════════════════════════════════
+   CONTROLS
+═══════════════════════════════════ */
+window.resetZoom = function() {
+    svg.transition().duration(700).ease(d3.easeCubicInOut)
+       .call(zoomBeh.transform, d3.zoomIdentity.translate(64, H/2.25).scale(0.85));
+};
+window.zoomIn  = () => svg.transition().duration(280).call(zoomBeh.scaleBy, 1.4);
+window.zoomOut = () => svg.transition().duration(280).call(zoomBeh.scaleBy, 0.72);
+
+window.toggleAll = function() {
+    allExpanded = !allExpanded;
+    document.getElementById("expandIcon").className = allExpanded ? "fas fa-compress-alt" : "fas fa-expand-alt";
+    document.getElementById("expandTxt").textContent = allExpanded ? "Collapse All" : "Expand All";
+
+    root.descendants().forEach(d => {
+        if (allExpanded) {
+            if (d._children) { d.children = d._children; d._children = null; }
+        } else {
+            if (d.depth > 0 && d.children) { d._children = d.children; d.children = null; }
         }
+    });
+    window._update(root);
+};
 
-        // Boot system
-        initMap();
-        
-        // Re-center on device rotation
-        window.addEventListener('resize', () => {
-            setTimeout(initMap, 200); 
-        });
-    </script>
+/* ═══════════════════════════════════
+   BOOT
+═══════════════════════════════════ */
+initMap();
+window.addEventListener("resize", () => setTimeout(initMap, 200));
+</script>
 </body>
 </html>
+
