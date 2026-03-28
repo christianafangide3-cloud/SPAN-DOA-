@@ -21,7 +21,8 @@
             background-color: #0b1120; 
             color: #f8fafc;
             -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* Prevent native scroll, D3 will handle panning */
+            overflow: hidden; 
+            overscroll-behavior-y: none;
         }
         .glass-header { 
             background: rgba(11, 17, 32, 0.85); 
@@ -31,286 +32,331 @@
         
         /* D3 Node Styling */
         .node circle { cursor: pointer; stroke-width: 2px; transition: all 0.3s ease; }
-        .node text { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; fill: #f8fafc; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; }
-        .link { fill: none; stroke: #334155; stroke-width: 1.5px; opacity: 0.6; }
+        .node text { 
+            font-family: 'Inter', sans-serif; 
+            font-size: 13px; 
+            font-weight: 600; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9); 
+            pointer-events: none; 
+        }
+        .link { fill: none; stroke: #334155; stroke-width: 2px; opacity: 0.7; }
+        
+        /* The Canvas */
+        #d3-container {
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: radial-gradient(ellipse at center, #0f172a, #0b1120);
+        }
     </style>
 </head>
-<body class="min-h-screen relative flex flex-col">
+<body>
 
-    <header class="glass-header z-50 px-4 py-3 flex justify-between items-center shadow-lg w-full fixed top-0">
+    <header class="glass-header z-50 px-4 py-3 flex justify-between items-center shadow-lg w-full fixed top-0 h-[60px]">
         <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-xl bg-cyan-900/40 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+            <div class="h-10 w-10 rounded-xl bg-cyan-900/40 text-cyan-400 flex items-center justify-center border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                 <i class="fas fa-sitemap"></i>
             </div>
             <div>
-                <h1 class="font-black text-lg text-white tracking-tight leading-tight">ANA 213 Map</h1>
-                <p class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase">Chronological Roadmap</p>
+                <h1 class="font-black text-lg text-white tracking-tight leading-none">ANA 213 Map</h1>
+                <p class="text-[9px] text-cyan-400 font-bold tracking-widest uppercase mt-0.5">Embryology Core Array</p>
             </div>
         </div>
-        <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg active:scale-95">
+        <button onclick="window.location.href='dashboard.html'" class="text-slate-400 hover:text-red-400 transition-colors p-2 bg-slate-800/50 rounded-lg active:scale-95 border border-slate-700">
             <i class="fas fa-times text-xl"></i>
         </button>
     </header>
 
-    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 bg-slate-900/80 backdrop-blur-md px-6 py-3 rounded-full border border-slate-700 shadow-2xl flex items-center gap-3 pointer-events-none">
-        <i class="fas fa-hand-pointer text-cyan-400 animate-pulse"></i>
-        <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Drag to Pan • Tap to Expand</span>
+    <main id="d3-container" class="cursor-move"></main>
+
+    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 bg-slate-900/90 backdrop-blur-md px-5 py-2 rounded-full border border-slate-700 shadow-2xl flex items-center gap-2 pointer-events-none whitespace-nowrap">
+        <i class="fas fa-arrows-alt text-cyan-400 animate-pulse"></i>
+        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Drag to Pan • Tap to Expand</span>
     </div>
 
-    <main id="d3-container" class="flex-1 w-full h-screen mt-16 cursor-move bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-[#0b1120]"></main>
+    <button onclick="resetZoom()" class="fixed bottom-6 right-4 z-40 h-12 w-12 bg-slate-800 border border-cyan-500/50 rounded-full flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] active:scale-95 transition-transform">
+        <i class="fas fa-crosshairs"></i>
+    </button>
 
     <script>
-        // 1. THE EMBRYOLOGY MASTER DATA STRUCTURE
+        // 1. THE COMPLETE, RICH EMBRYOLOGY MASTER DATA
         const treeData = {
             name: "ANA 213: EMBRYOLOGY",
             children: [
                 {
                     name: "STAGE 1: THE FOUNDATION",
                     children: [
-                        { name: "Clinical Genetics (Aneuploidies, Microdeletions)" },
+                        { name: "[CLINICAL TRAP] Aneuploidies & Microdeletions" },
                         { name: "Gametogenesis", children: [
-                            { name: "Spermatogenesis (74 Days)" },
-                            { name: "Oogenesis (Meiosis I Arrest)" }
+                            { name: "Male: Spermatogenesis (74 Days to Spermatozoa)" },
+                            { name: "Female: Oogenesis (Meiosis I Arrest at Dictyotene)" }
                         ]},
                         { name: "Reproductive Cycles", children: [
-                            { name: "Ovarian Cycle (GnRH -> FSH/LH)" },
-                            { name: "Menstrual Cycle" }
+                            { name: "Ovarian Cycle: GnRH -> FSH/LH -> Ovulation" },
+                            { name: "Menstrual Cycle: Estrogen/Progesterone phases" }
                         ]}
                     ]
                 },
                 {
                     name: "STAGE 2: WEEKS 1 & 2",
                     children: [
-                        { name: "Day 1: Fertilization", children: [
+                        { name: "Day 1: Fertilization (Ampulla)", children: [
                             { name: "Capacitation & Acrosome Reaction" },
                             { name: "Cortical Reaction (Polyspermy block)" }
                         ]},
                         { name: "Days 2-5: Cleavage", children: [
-                            { name: "Zygote (2n, 46) -> Morula (16-cell)" },
-                            { name: "Blastocyst (Enters uterus)" }
+                            { name: "Zygote (2n, 46) forms" },
+                            { name: "Morula (16-cell compacted ball)" },
+                            { name: "Blastocyst (Enters uterine cavity)" }
                         ]},
-                        { name: "Week 2: Implantation", children: [
-                            { name: "Trophoblast -> Cyto & Syncytiotrophoblast" },
-                            { name: "Embryoblast -> Epiblast & Hypoblast" },
-                            { name: "Cavities -> Amniotic & Yolk Sac" }
+                        { name: "Week 2: Implantation (Week of Twos)", children: [
+                            { name: "Trophoblast splits -> Cyto & Syncytiotrophoblast (secretes hCG)" },
+                            { name: "Embryoblast splits -> Epiblast & Hypoblast (Bilaminar Disc)" },
+                            { name: "Cavities form -> Amniotic Cavity & Yolk Sac" }
                         ]}
                     ]
                 },
                 {
-                    name: "STAGE 3: WEEK 3",
+                    name: "STAGE 3: THE THIRD WEEK",
                     children: [
-                        { name: "Gastrulation", children: [
-                            { name: "Primitive Streak forms" },
-                            { name: "FGF8 downregulates E-cadherin" },
-                            { name: "Trilaminar Disc (Ecto, Meso, Endoderm)" }
+                        { name: "Gastrulation (Most Critical Week)", children: [
+                            { name: "Primitive Streak forms on Epiblast" },
+                            { name: "FGF8 gene triggers migration, downregulates E-cadherin" },
+                            { name: "TRILAMINAR DISC: Ectoderm, Mesoderm, Endoderm" }
                         ]},
-                        { name: "Notochordogenesis (Axial Template)" },
-                        { name: "Body Axes (PITX2 for Left-Right)" }
+                        { name: "Notochordogenesis (Forms axial skeleton template)" },
+                        { name: "Body Axes Established (PITX2 gene controls Left-Right sidedness)" }
                     ]
                 },
                 {
                     name: "STAGE 4: WEEKS 3-8 (ORGANOGENESIS)",
                     children: [
-                        { name: "Ectoderm Pathway", children: [
-                            { name: "Neurulation (Neural Tube closes Day 25/28)" },
-                            { name: "Neural Crest (The 4th Germ Layer)" }
+                        { name: "Branch A: ECTODERM (Skin & Nerves)", children: [
+                            { name: "BMP4 Inhibition (via Chordin/Noggin allows neural tissue)" },
+                            { name: "Neurulation: Neural Plate -> Neural Tube (Closes Day 25/28)" },
+                            { name: "Neural Crest (4th Germ Layer) -> DRGs, Melanocytes, Adrenal Medulla" }
                         ]},
-                        { name: "Mesoderm Pathway", children: [
-                            { name: "Paraxial (Somites: Sclerotome, Myotome)" },
-                            { name: "Intermediate (Urogenital)" },
-                            { name: "Lateral Plate (Somatic & Splanchnic)" }
+                        { name: "Branch B: MESODERM (Muscle, Bone, Blood, Kidney)", children: [
+                            { name: "Paraxial: Somites (SHH->Sclerotome, WNT->Myotome, NT-3->Dermatome)" },
+                            { name: "Intermediate: Nephrogenic Cord (Kidneys & Gonads)" },
+                            { name: "Lateral Plate: Splits into Somatic (Body Wall) & Splanchnic (Gut Muscle)" }
                         ]},
-                        { name: "Endoderm Pathway", children: [
-                            { name: "Primitive Gut Tube formation" },
-                            { name: "Embryonic Folding (Cephalocaudal/Lateral)" }
+                        { name: "Branch C: ENDODERM (Linings & Glands)", children: [
+                            { name: "Embryonic Folding: Cephalocaudal & Lateral folds the flat disc" },
+                            { name: "Primitive Gut Tube formed by pinching off Yolk Sac" }
                         ]}
                     ]
                 },
                 {
-                    name: "STAGE 5: SYSTEMIC EMBRYOLOGY",
+                    name: "STAGE 5: SYSTEMIC SPECIALIZATION",
                     children: [
+                        { name: "The Gut Tube", children: [
+                            { name: "Foregut: Stomach (90° rotation), Liver, Pancreas (Ventral/Dorsal fusion)" },
+                            { name: "Midgut: Herniates into umbilicus -> 270° counterclockwise rotation" },
+                            { name: "Hindgut: Forms Cloaca (partitioned by Urorectal Septum)" }
+                        ]},
                         { name: "Pharyngeal Apparatus", children: [
-                            { name: "Arches (1: Malleus/Incus, 2: Stapes)" },
-                            { name: "Pouches (3 & 4: Parathyroids/Thymus)" }
+                            { name: "Arches: 1(Malleus/Incus), 2(Stapes), 3/4/6(Laryngeal cartilages)" },
+                            { name: "Pouches: 3(Inf. Parathyroid/Thymus), 4(Sup. Parathyroid)" },
+                            { name: "Resp Tube: Lung Buds (TBX4 gene) & Tracheoesophageal Septum" }
                         ]},
-                        { name: "Cardiovascular", children: [
-                            { name: "Heart Tube looping (PITX2)" },
-                            { name: "Fetal Shunts (Ductus Venosus/Arteriosus, Foramen Ovale)" }
+                        { name: "Cardiovascular System", children: [
+                            { name: "Heart Tube: Loops RIGHT under influence of PITX2" },
+                            { name: "Septation: Atrial (Foramen Ovale), Ventricular, Outflow Tract" },
+                            { name: "Fetal Shunts: Ductus Venosus, Foramen Ovale, Ductus Arteriosus" }
                         ]},
-                        { name: "Urogenital", children: [
-                            { name: "Renal (Pronephros -> Meso -> Metanephros)" },
-                            { name: "Gonadal (SRY Gene Cascade)" }
+                        { name: "Urogenital System", children: [
+                            { name: "Renal: Pronephros -> Mesonephros -> Metanephros (Definitive Kidney)" },
+                            { name: "Gonadal: SRY Gene Cascade -> Testes (Wolffian) vs Ovaries (Müllerian)" }
                         ]}
                     ]
                 },
                 {
-                    name: "STAGE 6: FETAL PERIOD",
+                    name: "STAGE 6: FETAL PERIOD & CLINICS",
                     children: [
-                        { name: "Twinning Genetics (Dizygotic vs Monozygotic)" },
-                        { name: "Placentation & Fluid Dynamics" },
-                        { name: "Teratology (Thalidomide, FAS, TORCH)" }
+                        { name: "Placentation & Fluids", children: [
+                            { name: "Placental Barrier thins for diffusion" },
+                            { name: "[CLINICAL TRAP] Polyhydramnios vs Oligohydramnios dynamics" }
+                        ]},
+                        { name: "Twinning Genetics", children: [
+                            { name: "Dizygotic (Always DiDi)" },
+                            { name: "Monozygotic (Splitting time dictates DiDi, MoDi, MoMo, Conjoined)" }
+                        ]},
+                        { name: "[TERATOLOGY WARNING]", children: [
+                            { name: "Thalidomide (Limb defects)" },
+                            { name: "Fetal Alcohol Syndrome (FAS)" },
+                            { name: "TORCH Infections (Toxo, Rubella, CMV, Herpes)" }
+                        ]}
                     ]
                 }
             ]
         };
 
-        // 2. D3.JS ENGINE INITIALIZATION
+        // 2. D3.JS ENGINE SETUP
         const container = document.getElementById("d3-container");
         const width = container.clientWidth;
         const height = container.clientHeight;
 
-        const margin = {top: 20, right: 90, bottom: 30, left: 90};
-        
-        // Setup Zoom and SVG Canvas
-        const svg = d3.select("#d3-container").append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", (event) => {
+        let svg, g, zoom;
+
+        function initMap() {
+            d3.select("#d3-container").selectAll("*").remove();
+
+            zoom = d3.zoom().scaleExtent([0.4, 3]).on("zoom", (event) => {
                 g.attr("transform", event.transform);
-            }))
-            .on("dblclick.zoom", null); // Disable double click zoom for mobile sanity
+            });
 
-        const g = svg.append("g");
+            svg = d3.select("#d3-container").append("svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .call(zoom)
+                .on("dblclick.zoom", null);
 
-        // Center the root node on mobile load
-        const initialTransform = d3.zoomIdentity.translate(width / 8, height / 2).scale(0.8);
-        svg.call(d3.zoom().transform, initialTransform);
+            g = svg.append("g");
 
-        // Setup Tree Layout (Node Spacing: dy is horizontal, dx is vertical)
-        const dx = 40; 
-        const dy = width > 600 ? 250 : 180; 
-        const tree = d3.tree().nodeSize([dx, dy]);
+            // SAFE VIEWPORT CENTERING FOR MOBILE
+            // Pushes the root node slightly right (40px) and down to the middle of the screen
+            const initialTransform = d3.zoomIdentity.translate(40, height / 2.5).scale(0.85);
+            svg.call(zoom.transform, initialTransform);
 
-        const root = d3.hierarchy(treeData);
-        root.x0 = 0;
-        root.y0 = 0;
+            const dx = 35; // Vertical spacing between items
+            const dy = 240; // Horizontal spacing between branches (wider for longer text)
+            const tree = d3.tree().nodeSize([dx, dy]);
 
-        // Auto-Collapse deeply nested nodes on load for a clean UI
-        root.descendants().forEach((d, i) => {
-            d.id = i;
-            if (d.depth > 1) { 
-                d._children = d.children;
-                d.children = null;
+            const root = d3.hierarchy(treeData);
+            root.x0 = 0;
+            root.y0 = 0;
+
+            // Collapse deep nodes on load
+            root.descendants().forEach((d, i) => {
+                d.id = i;
+                if (d.depth > 0) { // Keep root open, collapse stages
+                    d._children = d.children;
+                    d.children = null;
+                }
+            });
+
+            // 3. THE RENDER CYCLE
+            function update(source) {
+                const nodes = root.descendants();
+                const links = root.links();
+                tree(root);
+
+                const transition = svg.transition().duration(400);
+
+                // --- NODES ---
+                const node = g.selectAll("g.node").data(nodes, d => d.id);
+                const nodeEnter = node.enter().append("g")
+                    .attr("class", "node")
+                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                    .on("click", (event, d) => {
+                        if (d.children) {
+                            d._children = d.children;
+                            d.children = null;
+                        } else {
+                            d.children = d._children;
+                            d._children = null;
+                        }
+                        update(d);
+                    });
+
+                // Node Circles
+                nodeEnter.append("circle")
+                    .attr("r", 1e-6)
+                    .attr("fill", d => {
+                        if(d.depth === 0) return "#06b6d4"; // Cyan Root
+                        if(d.depth === 1) return "#10b981"; // Emerald Stage
+                        return d._children ? "#a855f7" : "#1e293b"; // Purple Expandable, Slate Terminal
+                    })
+                    .attr("stroke", d => {
+                        if(d.depth === 0) return "#22d3ee";
+                        if(d.depth === 1) return "#34d399";
+                        return d._children ? "#c084fc" : "#475569";
+                    });
+
+                // Syntax Highlighting for Text
+                nodeEnter.append("text")
+                    .attr("dy", "0.31em")
+                    .attr("x", d => d._children || d.children ? -12 : 12)
+                    .attr("text-anchor", d => d._children || d.children ? "end" : "start")
+                    .text(d => d.data.name)
+                    .attr("fill", d => {
+                        const txt = d.data.name;
+                        // RED for Clinical Traps / Warnings
+                        if(txt.includes("[CLINICAL TRAP]") || txt.includes("TERATOLOGY") || txt.includes("Defect")) return "#ef4444"; 
+                        // YELLOW for Specific Genes
+                        if(txt.includes("FGF8") || txt.includes("PITX2") || txt.includes("SHH") || txt.includes("WNT") || txt.includes("SRY") || txt.includes("TBX4") || txt.includes("BMP4")) return "#fbbf24";
+                        // DEFAULT White
+                        return "#f8fafc";
+                    })
+                    .attr("fill-opacity", 1e-6);
+
+                const nodeUpdate = node.merge(nodeEnter).transition(transition)
+                    .attr("transform", d => `translate(${d.y},${d.x})`);
+
+                nodeUpdate.select("circle")
+                    .attr("r", d => d.depth === 0 ? 8 : (d.depth === 1 ? 6 : 5))
+                    .attr("fill", d => {
+                        if(d.depth === 0) return "#06b6d4"; 
+                        if(d.depth === 1) return "#10b981"; 
+                        return d._children ? "#a855f7" : "#1e293b"; 
+                    });
+
+                nodeUpdate.select("text").attr("fill-opacity", 1);
+
+                const nodeExit = node.exit().transition(transition)
+                    .attr("transform", d => `translate(${source.y},${source.x})`)
+                    .remove();
+
+                nodeExit.select("circle").attr("r", 1e-6);
+                nodeExit.select("text").attr("fill-opacity", 1e-6);
+
+                // --- LINKS ---
+                const link = g.selectAll("path.link").data(links, d => d.target.id);
+                const linkEnter = link.enter().insert("path", "g")
+                    .attr("class", "link")
+                    .attr("d", d => {
+                        const o = {x: source.x0, y: source.y0};
+                        return diagonal({source: o, target: o});
+                    });
+
+                link.merge(linkEnter).transition(transition).attr("d", diagonal);
+
+                link.exit().transition(transition)
+                    .attr("d", d => {
+                        const o = {x: source.x, y: source.y};
+                        return diagonal({source: o, target: o});
+                    })
+                    .remove();
+
+                nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
             }
+
+            function diagonal({source, target}) {
+                return `M ${target.y} ${target.x}
+                        C ${(source.y + target.y) / 2} ${target.x},
+                          ${(source.y + target.y) / 2} ${source.x},
+                          ${source.y} ${source.x}`;
+            }
+
+            update(root);
+        }
+
+        // Function for the Crosshairs button
+        window.resetZoom = function() {
+            const initialTransform = d3.zoomIdentity.translate(40, height / 2.5).scale(0.85);
+            svg.transition().duration(750).call(zoom.transform, initialTransform);
+        }
+
+        // Boot system
+        initMap();
+        
+        // Re-center on device rotation
+        window.addEventListener('resize', () => {
+            setTimeout(initMap, 200); 
         });
-
-        // 3. THE RENDER CYCLE
-        function update(source) {
-            const nodes = root.descendants();
-            const links = root.links();
-
-            tree(root);
-
-            let left = root;
-            let right = root;
-            root.eachBefore(node => {
-                if (node.x < left.x) left = node;
-                if (node.x > right.x) right = node;
-            });
-
-            const transition = svg.transition().duration(400);
-
-            // --- NODES ---
-            const node = g.selectAll("g.node")
-                .data(nodes, d => d.id);
-
-            const nodeEnter = node.enter().append("g")
-                .attr("class", "node")
-                .attr("transform", d => `translate(${source.y0},${source.x0})`)
-                .on("click", (event, d) => {
-                    // Toggle children on click
-                    if (d.children) {
-                        d._children = d.children;
-                        d.children = null;
-                    } else {
-                        d.children = d._children;
-                        d._children = null;
-                    }
-                    update(d);
-                });
-
-            // Node Circles (Color coding based on depth)
-            nodeEnter.append("circle")
-                .attr("r", 1e-6)
-                .attr("fill", d => {
-                    if(d.depth === 0) return "#06b6d4"; // Root: Cyan
-                    if(d.depth === 1) return "#10b981"; // Stages: Emerald
-                    return d._children ? "#a855f7" : "#1e293b"; // Purple if expandable, Slate if end node
-                })
-                .attr("stroke", d => {
-                    if(d.depth === 0) return "#22d3ee";
-                    if(d.depth === 1) return "#34d399";
-                    return d._children ? "#c084fc" : "#475569";
-                });
-
-            // Node Labels
-            nodeEnter.append("text")
-                .attr("dy", "0.31em")
-                .attr("x", d => d._children || d.children ? -12 : 12)
-                .attr("text-anchor", d => d._children || d.children ? "end" : "start")
-                .text(d => d.data.name)
-                .attr("fill-opacity", 1e-6);
-
-            // Transition Nodes to their new position
-            const nodeUpdate = node.merge(nodeEnter).transition(transition)
-                .attr("transform", d => `translate(${d.y},${d.x})`);
-
-            nodeUpdate.select("circle")
-                .attr("r", d => d.depth === 0 ? 8 : (d.depth === 1 ? 6 : 5))
-                .attr("fill", d => {
-                    if(d.depth === 0) return "#06b6d4"; 
-                    if(d.depth === 1) return "#10b981"; 
-                    return d._children ? "#a855f7" : "#1e293b"; 
-                });
-
-            nodeUpdate.select("text")
-                .attr("fill-opacity", 1);
-
-            // Transition exiting nodes to parent's new position
-            const nodeExit = node.exit().transition(transition)
-                .attr("transform", d => `translate(${source.y},${source.x})`)
-                .remove();
-
-            nodeExit.select("circle").attr("r", 1e-6);
-            nodeExit.select("text").attr("fill-opacity", 1e-6);
-
-            // --- LINKS ---
-            const link = g.selectAll("path.link")
-                .data(links, d => d.target.id);
-
-            const linkEnter = link.enter().insert("path", "g")
-                .attr("class", "link")
-                .attr("d", d => {
-                    const o = {x: source.x0, y: source.y0};
-                    return diagonal({source: o, target: o});
-                });
-
-            link.merge(linkEnter).transition(transition)
-                .attr("d", diagonal);
-
-            link.exit().transition(transition)
-                .attr("d", d => {
-                    const o = {x: source.x, y: source.y};
-                    return diagonal({source: o, target: o});
-                })
-                .remove();
-
-            nodes.forEach(d => {
-                d.x0 = d.x;
-                d.y0 = d.y;
-            });
-        }
-
-        // Curved link generator
-        function diagonal({source, target}) {
-            return `M ${target.y} ${target.x}
-                    C ${(source.y + target.y) / 2} ${target.x},
-                      ${(source.y + target.y) / 2} ${source.x},
-                      ${source.y} ${source.x}`;
-        }
-
-        // Ignite the map
-        update(root);
     </script>
 </body>
 </html>
