@@ -11,434 +11,1043 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Splendid's Academy | Command Center</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap');
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #0b1120; 
-            color: #f8fafc;
+        /* ══════════════════════════════════════════
+           DESIGN TOKENS
+        ══════════════════════════════════════════ */
+        :root {
+            --bg:           #05080f;
+            --bg2:          #080d1a;
+            --surface:      rgba(10,16,30,0.85);
+            --border:       rgba(255,255,255,0.055);
+            --border-bright:rgba(255,255,255,0.10);
+            --text:         #dde8f5;
+            --muted:        rgba(148,170,204,0.55);
+
+            --amber:  #f59e0b;
+            --amber2: #fbbf24;
+            --cyan:   #22d3ee;
+            --cyan2:  #06b6d4;
+            --red:    #f87171;
+            --red2:   #ef4444;
+            --emerald:#34d399;
+            --violet: #a78bfa;
+            --rose:   #fb7185;
+            --orange: #fb923c;
+
+            --mono: 'JetBrains Mono', monospace;
+            --head: 'Rajdhani', sans-serif;
+            --body: 'Outfit', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
-        
-        html { scroll-behavior: smooth; }
-        
-        /* Sidebar Animations */
-        #sidebar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .sidebar-open { transform: translateX(0); }
+
+        /* ── Hex-dot grid background ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                radial-gradient(circle, rgba(34,211,238,0.07) 1px, transparent 1px),
+                radial-gradient(circle, rgba(245,158,11,0.04) 1px, transparent 1px);
+            background-size: 44px 44px, 88px 88px;
+            background-position: 0 0, 22px 22px;
+        }
+        /* Ambient color blobs */
+        body::after {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(ellipse 700px 400px at -5% 10%, rgba(245,158,11,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 600px 500px at 110% 80%, rgba(34,211,238,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 800px 600px at 50% 120%, rgba(5,8,15,0.7) 0%, transparent 50%);
+        }
+
+        /* ══════════════════════════════════════════
+           NAVIGATION
+        ══════════════════════════════════════════ */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; height: 62px; z-index: 60;
+            background: rgba(5,8,15,0.92);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 1px 0 rgba(245,158,11,0.08), 0 4px 32px rgba(0,0,0,0.6);
+        }
+        .nav-left  { display: flex; align-items: center; gap: 14px; }
+        .nav-right { display: flex; align-items: center; gap: 14px; }
+
+        .menu-btn {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-bright);
+            color: var(--muted); font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .menu-btn:hover { color: var(--cyan); border-color: rgba(34,211,238,0.3); background: rgba(34,211,238,0.06); }
+
+        .nav-brand {
+            font-family: var(--head);
+            font-size: 19px; font-weight: 700; letter-spacing: 0.5px;
+            background: linear-gradient(90deg, var(--amber2), var(--cyan));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-status { display: flex; flex-direction: column; align-items: flex-end; }
+        .nav-name {
+            font-family: var(--head); font-size: 13px; font-weight: 600;
+            color: #fff; letter-spacing: 0.3px;
+        }
+        .nav-mode {
+            display: flex; align-items: center; gap: 5px;
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--amber);
+        }
+        .pulse-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            position: relative; flex-shrink: 0;
+        }
+        .pulse-dot::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            background: var(--amber);
+            animation: pd 1.8s ease-out infinite;
+        }
+        .pulse-dot::after {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            background: var(--amber);
+        }
+        @keyframes pd { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(2.5);opacity:0;} }
+
+        .avatar-btn {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: linear-gradient(135deg, rgba(34,211,238,0.2), rgba(6,182,212,0.1));
+            border: 1px solid rgba(34,211,238,0.25);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--cyan); font-size: 13px;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 0 12px rgba(34,211,238,0.1);
+        }
+        .avatar-btn:hover { background: rgba(34,211,238,0.18); border-color: rgba(34,211,238,0.5); }
+
+        /* ══════════════════════════════════════════
+           SIDEBAR
+        ══════════════════════════════════════════ */
+        #sidebar {
+            position: fixed; top: 0; left: 0; height: 100%; width: 280px;
+            background: rgba(5,8,15,0.98);
+            border-right: 1px solid rgba(245,158,11,0.12);
+            z-index: 80; display: flex; flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 4px 0 40px rgba(0,0,0,0.7);
+        }
         .sidebar-closed { transform: translateX(-100%); }
-        
-        /* Glassmorphism */
-        .glass-nav { 
-            background: rgba(11, 17, 32, 0.85); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-        }
-        
-        .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        .sidebar-open   { transform: translateX(0); }
+
+        #sidebar-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 70; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            display: none;
         }
 
-        /* Hover Effects */
-        .hover-card { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        @media (hover: hover) {
-            .hover-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -5px rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.3); }
+        .sb-header {
+            padding: 22px 20px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: flex-start;
         }
-        .hover-card:active { transform: scale(0.98); }
+        .sb-title {
+            font-family: var(--head); font-size: 22px; font-weight: 700; color: #fff;
+        }
+        .sb-sub {
+            font-family: var(--head); font-size: 9px; font-weight: 600;
+            letter-spacing: 3.5px; text-transform: uppercase; color: var(--amber);
+            margin-top: 3px;
+        }
+        .sb-close {
+            color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px;
+            transition: color 0.2s;
+        }
+        .sb-close:hover { color: var(--red); }
 
-        /* Dynamic Gradients */
-        @keyframes gradient-xy {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .sb-nav { flex: 1; overflow-y: auto; padding: 16px 12px; }
+        .sb-section {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 3.5px; text-transform: uppercase;
+            color: rgba(148,170,204,0.35); padding: 0 10px;
+            margin: 22px 0 8px;
         }
-        .animate-gradient-xy { background-size: 200% 200%; animation: gradient-xy 4s ease infinite; }
+        .sb-link {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 12px; border-radius: 10px;
+            color: rgba(148,170,204,0.7); font-size: 14px; font-weight: 500;
+            text-decoration: none; transition: all 0.18s; margin-bottom: 2px;
+        }
+        .sb-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sb-link.active {
+            background: rgba(34,211,238,0.08);
+            color: var(--cyan); border: 1px solid rgba(34,211,238,0.18);
+        }
+        .sb-link i { width: 18px; text-align: center; font-size: 13px; }
+        .sb-link.active i { filter: drop-shadow(0 0 6px currentColor); }
 
-        /* Scroll Reveal */
-        .reveal-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .sb-footer {
+            padding: 14px 12px;
+            border-top: 1px solid var(--border);
         }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-        
-        .timeline-line { position: absolute; left: 1.25rem; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.05); z-index: 0; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
-        /* Campaign Progress Bar Animation */
-        @keyframes fillProgress { from { width: 0; } to { width: var(--progress-width); } }
-        .progress-animate { animation: fillProgress 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .logout-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 11px;
+            font-family: var(--head); font-size: 13px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            color: var(--red); border: 1px solid rgba(248,113,113,0.18);
+            border-radius: 10px; background: rgba(248,113,113,0.05);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .logout-btn:hover { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.4); color: #fff; }
+
+        /* ══════════════════════════════════════════
+           MAIN CONTENT
+        ══════════════════════════════════════════ */
+        main {
+            position: relative; z-index: 10;
+            padding: 86px 16px 80px;
+            max-width: 860px; margin: 0 auto;
+        }
+
+        /* ── Stack spacing ── */
+        .stack > * + * { margin-top: 20px; }
+
+        /* ══════════════════════════════════════════
+           HERO BANNER
+        ══════════════════════════════════════════ */
+        .hero {
+            position: relative; overflow: hidden;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #0a1020 0%, #0d1525 60%, #090e1c 100%);
+            border: 1px solid rgba(245,158,11,0.18);
+            padding: 32px 28px 28px;
+            box-shadow: 0 20px 60px -10px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,158,11,0.06) inset;
+        }
+        /* Diagonal slice */
+        .hero::before {
+            content: ''; position: absolute;
+            top: 0; right: -20%; width: 55%; height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(245,158,11,0.04), transparent);
+            transform: skewX(-12deg); pointer-events: none;
+        }
+        /* Faint watermark */
+        .hero::after {
+            content: '\f242';
+            font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; bottom: -24px; right: 16px;
+            font-size: 140px; color: rgba(255,255,255,0.025);
+            pointer-events: none; line-height: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 5px 12px; border-radius: 100px;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.25);
+            margin-bottom: 16px;
+        }
+        .hero-badge span {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--amber2);
+        }
+        .hero-badge-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--amber); animation: pd 1.8s ease-out infinite;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: var(--head);
+            font-size: clamp(32px, 8vw, 52px);
+            font-weight: 700; color: #fff;
+            line-height: 1; letter-spacing: -0.5px;
+            margin-bottom: 12px; position: relative; z-index: 1;
+        }
+        .hero-title em {
+            font-style: normal;
+            background: linear-gradient(90deg, var(--amber), var(--amber2) 50%, var(--cyan));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            font-size: 14px; font-weight: 400; line-height: 1.65;
+            color: rgba(148,170,204,0.75); max-width: 480px;
+            position: relative; z-index: 1;
+        }
+        .hero-desc strong { color: var(--cyan2); font-weight: 600; }
+
+        /* ══════════════════════════════════════════
+           THREAT BANNER (Countdown)
+        ══════════════════════════════════════════ */
+        .threat-banner {
+            border-radius: 18px;
+            background: rgba(8,5,5,0.7);
+            border: 1px solid rgba(248,113,113,0.2);
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(239,68,68,0.06), inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+        /* Danger stripe top */
+        .threat-stripe {
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--red2) 0px, var(--red2) 12px,
+                transparent 12px, transparent 20px
+            );
+            opacity: 0.6;
+        }
+        .threat-inner {
+            padding: 18px 20px;
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        @media(min-width:600px) {
+            .threat-inner { flex-direction: row; align-items: center; }
+        }
+        .threat-left { display: flex; align-items: flex-start; gap: 14px; flex: 1; }
+        .threat-icon-wrap {
+            width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--red); font-size: 16px;
+            box-shadow: 0 0 16px rgba(239,68,68,0.12);
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%,100%{box-shadow:0 0 16px rgba(239,68,68,0.12);}
+            50%{box-shadow:0 0 28px rgba(239,68,68,0.25);}
+        }
+        .threat-label {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 3.5px; text-transform: uppercase; color: var(--red);
+            margin-bottom: 5px;
+        }
+        .threat-directive {
+            font-size: 13px; font-weight: 400; font-style: italic;
+            color: rgba(220,230,245,0.85); line-height: 1.5;
+        }
+        .threat-timer-box {
+            text-align: center; flex-shrink: 0;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(239,68,68,0.15);
+            border-radius: 12px; padding: 12px 20px; min-width: 200px;
+        }
+        .threat-target-label {
+            font-family: var(--head); font-size: 9px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 6px;
+        }
+        .threat-target-code { color: var(--cyan); }
+        #countdown-timer {
+            font-family: var(--mono); font-size: 22px; font-weight: 700;
+            color: var(--red); letter-spacing: 1px;
+        }
+
+        /* ══════════════════════════════════════════
+           CBT VAULT CARD
+        ══════════════════════════════════════════ */
+        .vault-card {
+            position: relative; overflow: hidden; border-radius: 18px; cursor: pointer;
+            background: var(--bg2);
+            border: 1px solid rgba(34,211,238,0.15);
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+        .vault-card:hover {
+            border-color: rgba(34,211,238,0.35);
+            box-shadow: 0 20px 50px -8px rgba(34,211,238,0.1), 0 0 0 1px rgba(34,211,238,0.1);
+            transform: translateY(-3px);
+        }
+        .vault-card:active { transform: scale(0.98); }
+        /* Animated gradient border */
+        .vault-card::before {
+            content: ''; position: absolute;
+            top: 0; left: -100%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(34,211,238,0.06), transparent);
+            transition: left 0.6s ease;
+        }
+        .vault-card:hover::before { left: 140%; }
+
+        .vault-inner {
+            padding: 24px; display: flex;
+            flex-direction: column; gap: 18px;
+        }
+        @media(min-width:580px) {
+            .vault-inner { flex-direction: row; align-items: center; }
+        }
+        .vault-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+        .vault-tag {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 6px;
+        }
+        .vault-tag.online  { background: rgba(34,211,238,0.1); color: var(--cyan);  border: 1px solid rgba(34,211,238,0.2); }
+        .vault-tag.cbt     { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid rgba(255,255,255,0.07); }
+        .vault-title {
+            font-family: var(--head); font-size: 30px; font-weight: 700;
+            color: #fff; letter-spacing: 0.2px; line-height: 1; margin-bottom: 8px;
+        }
+        .vault-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+        .vault-desc strong { color: var(--cyan); font-weight: 600; }
+        .vault-cta {
+            flex-shrink: 0;
+            background: var(--cyan);
+            color: #050810; font-family: var(--head); font-size: 13px;
+            font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            padding: 13px 24px; border-radius: 10px;
+            display: flex; align-items: center; gap: 10px; white-space: nowrap;
+            transition: all 0.2s; border: none; cursor: pointer;
+            box-shadow: 0 8px 24px rgba(34,211,238,0.25);
+        }
+        .vault-cta:hover { background: var(--cyan2); box-shadow: 0 12px 32px rgba(34,211,238,0.35); }
+
+        /* ══════════════════════════════════════════
+           SECTION HEADER
+        ══════════════════════════════════════════ */
+        .section-hd {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .section-hd-title {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--head); font-size: 18px; font-weight: 700; color: #fff;
+        }
+        .section-hd-title i { font-size: 14px; }
+        .section-badge {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-bright);
+            color: var(--muted);
+        }
+
+        /* ══════════════════════════════════════════
+           TOOLSET GRID
+        ══════════════════════════════════════════ */
+        .tools-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+        }
+        @media(min-width:560px) {
+            .tools-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .tool-card {
+            position: relative; overflow: hidden;
+            border-radius: 14px; padding: 18px 12px;
+            background: rgba(10,16,30,0.8);
+            border: 1px solid var(--border);
+            text-decoration: none; text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+            cursor: pointer;
+        }
+        .tool-card:hover { transform: translateY(-4px); }
+        .tool-card:active { transform: scale(0.96); }
+        .tool-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 2px; opacity: 0; transition: opacity 0.25s;
+        }
+        .tool-card:hover::after { opacity: 1; }
+
+        .tool-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+            transition: transform 0.25s;
+        }
+        .tool-card:hover .tool-icon { transform: scale(1.12); }
+
+        .tool-name {
+            font-family: var(--head); font-size: 11px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+            transition: color 0.2s;
+        }
+        .tool-card:hover .tool-name { color: #fff; }
+
+        /* Color variants */
+        .tc-emerald:hover { border-color: rgba(52,211,153,0.3); box-shadow: 0 12px 32px rgba(52,211,153,0.08); }
+        .tc-emerald::after { background: var(--emerald); }
+        .tc-emerald .tool-icon { background: rgba(52,211,153,0.1); color: var(--emerald); border: 1px solid rgba(52,211,153,0.18); }
+
+        .tc-violet:hover { border-color: rgba(167,139,250,0.3); box-shadow: 0 12px 32px rgba(167,139,250,0.08); }
+        .tc-violet::after { background: var(--violet); }
+        .tc-violet .tool-icon { background: rgba(167,139,250,0.1); color: var(--violet); border: 1px solid rgba(167,139,250,0.18); }
+
+        .tc-amber:hover { border-color: rgba(245,158,11,0.3); box-shadow: 0 12px 32px rgba(245,158,11,0.08); }
+        .tc-amber::after { background: var(--amber); }
+        .tc-amber .tool-icon { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.18); }
+
+        .tc-rose:hover { border-color: rgba(251,113,133,0.3); box-shadow: 0 12px 32px rgba(251,113,133,0.08); }
+        .tc-rose::after { background: var(--rose); }
+        .tc-rose .tool-icon { background: rgba(251,113,133,0.1); color: var(--rose); border: 1px solid rgba(251,113,133,0.18); }
+
+        .tc-cyan:hover { border-color: rgba(34,211,238,0.4); box-shadow: 0 12px 32px rgba(34,211,238,0.12); }
+        .tc-cyan::after { background: var(--cyan); }
+        .tc-cyan .tool-icon { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.22); }
+        .tc-cyan .tool-name { color: rgba(34,211,238,0.7); }
+        .tc-cyan:hover .tool-name { color: var(--cyan); }
+
+        /* MAP special glow */
+        .tc-map-glow .tool-icon {
+            animation: mapPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes mapPulse {
+            0%,100%{box-shadow:0 0 0 rgba(34,211,238,0);}
+            50%{box-shadow:0 0 18px rgba(34,211,238,0.3);}
+        }
+
+        /* ══════════════════════════════════════════
+           STATS ROW
+        ══════════════════════════════════════════ */
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+        .stat-card {
+            border-radius: 14px; padding: 18px 14px;
+            background: rgba(10,16,30,0.8);
+            border: 1px solid var(--border);
+            position: relative; overflow: hidden;
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        }
+        .stat-card.sc-emerald::before { background: linear-gradient(90deg, transparent, var(--emerald), transparent); }
+        .stat-card.sc-amber::before   { background: linear-gradient(90deg, transparent, var(--amber),   transparent); }
+        .stat-card.sc-cyan::before    { background: linear-gradient(90deg, transparent, var(--cyan),    transparent); }
+
+        .stat-label {
+            font-family: var(--head); font-size: 8.5px; font-weight: 700;
+            letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted);
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .stat-value {
+            font-family: var(--head); font-size: 34px; font-weight: 700;
+            color: #fff; line-height: 1;
+        }
+        .stat-unit { font-size: 11px; font-weight: 500; color: var(--muted); margin-left: 3px; }
+
+        /* ══════════════════════════════════════════
+           TIMETABLE
+        ══════════════════════════════════════════ */
+        .campaign-bar-wrap {
+            background: rgba(10,16,30,0.8); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+        }
+        .campaign-bar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px;
+        }
+        .campaign-bar-label {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted);
+        }
+        .campaign-bar-pct {
+            font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--emerald);
+        }
+        .bar-track {
+            width: 100%; height: 4px; border-radius: 100px;
+            background: rgba(255,255,255,0.05); overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%; border-radius: 100px;
+            background: linear-gradient(90deg, var(--emerald), var(--cyan));
+            animation: fillProgress 1.5s cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+        @keyframes fillProgress { from{width:0} to{width:var(--progress-width)} }
+
+        /* Timeline list */
+        .timetable-list {
+            background: rgba(10,16,30,0.8); border: 1px solid var(--border);
+            border-radius: 18px; overflow: hidden;
+        }
+
+        .exam-row {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex; flex-direction: column; gap: 10px;
+            position: relative; transition: background 0.2s;
+        }
+        .exam-row:last-child { border-bottom: none; }
+        @media(min-width:540px) {
+            .exam-row { flex-direction: row; align-items: center; }
+        }
+        .exam-row.is-next { background: rgba(239,68,68,0.05); }
+        .exam-row.is-done { opacity: 0.5; }
+
+        .next-badge {
+            position: absolute; top: -1px; right: 12px;
+            font-family: var(--head); font-size: 8px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: var(--red2); color: #fff;
+            padding: 3px 8px; border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 14px rgba(239,68,68,0.5);
+            animation: pd2 1.5s ease-in-out infinite;
+        }
+        @keyframes pd2 { 0%,100%{opacity:1} 50%{opacity:0.7} }
+
+        .exam-code-box {
+            width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
+            background: rgba(5,8,15,0.9); border: 1px solid rgba(255,255,255,0.07);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: 12px; font-weight: 700;
+        }
+        .exam-row.is-next .exam-code-box { color: var(--red); border-color: rgba(239,68,68,0.3); }
+        .exam-row.is-done .exam-code-box { color: rgba(52,211,153,0.5); }
+        .exam-code-box:not(.is-done) { color: var(--cyan); }
+
+        .exam-info { flex: 1; }
+        .exam-meta {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+        }
+        .exam-date {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+        }
+        .exam-time {
+            font-family: var(--mono); font-size: 9px; font-weight: 500; color: var(--cyan);
+        }
+        .exam-title {
+            font-family: var(--head); font-size: 15px; font-weight: 700;
+            color: #fff; line-height: 1; margin-bottom: 3px;
+        }
+        .exam-row.is-done .exam-title { text-decoration: line-through; text-decoration-color: rgba(52,211,153,0.4); }
+        .exam-subtitle { font-size: 11px; color: var(--muted); }
+
+        .exam-actions {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        @media(min-width:540px) {
+            .exam-actions { border-top: none; padding-top: 0; flex-direction: column; align-items: flex-end; min-width: 120px; }
+        }
+        .exam-venue {
+            font-family: var(--head); font-size: 9px; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+        }
+        .exam-venue i { margin-right: 4px; }
+
+        .exam-btn {
+            font-family: var(--head); font-size: 10px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 8px 16px; border-radius: 8px; cursor: pointer;
+            border: none; display: flex; align-items: center; gap: 6px;
+            transition: all 0.18s; white-space: nowrap;
+        }
+        .exam-btn.attack {
+            background: var(--red2); color: #fff;
+            box-shadow: 0 4px 16px rgba(239,68,68,0.3);
+        }
+        .exam-btn.attack:hover { background: #dc2626; box-shadow: 0 6px 22px rgba(239,68,68,0.45); }
+        .exam-btn.drill {
+            background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border-bright);
+        }
+        .exam-btn.drill:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .exam-btn.cleared {
+            background: none; color: var(--emerald); cursor: default;
+        }
+        .exam-btn:active { transform: scale(0.95); }
+
+        /* ══════════════════════════════════════════
+           SCROLL REVEAL
+        ══════════════════════════════════════════ */
+        .reveal {
+            opacity: 0; transform: translateY(18px);
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.is-visible { opacity: 1; transform: none; }
+
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
+        footer {
+            position: relative; z-index: 10;
+            text-align: center; padding: 24px 16px 32px;
+        }
+        .footer-brand {
+            font-family: var(--head); font-size: 10px; font-weight: 700;
+            letter-spacing: 3.5px; text-transform: uppercase; color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .footer-status {
+            font-family: var(--mono); font-size: 9px; color: rgba(148,170,204,0.25);
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 100px; }
     </style>
 </head>
-<body class="min-h-screen relative overflow-x-hidden">
+<body>
 
-    <nav class="glass-nav fixed w-full top-0 z-50 px-4 py-3 flex justify-between items-center shadow-lg">
-        <div class="flex items-center gap-4">
-            <button onclick="toggleSidebar()" class="text-slate-300 text-xl hover:text-cyan-400 transition-colors p-2 rounded-xl focus:outline-none">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="font-black text-lg text-cyan-400 tracking-tight">Splendid's Academy</h1>
+<!-- ══════ NAVIGATION ══════ -->
+<nav class="nav">
+    <div class="nav-left">
+        <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <span class="nav-brand">Splendid's Academy</span>
+    </div>
+    <div class="nav-right">
+        <div class="nav-status hidden-xs" style="display:none" id="nav-status-desktop">
+            <span class="nav-name">Christian Afangide</span>
+            <span class="nav-mode">
+                <span class="pulse-dot"></span> Standby Mode
+            </span>
         </div>
-        
-        <div class="flex items-center gap-4">
-            <div class="hidden md:flex flex-col items-end">
-                <p id="user-name-display" class="text-xs font-bold text-white">Christian Afangide</p>
-                <p class="text-[10px] text-amber-400 font-black uppercase tracking-widest flex items-center gap-1">
-                    <span class="relative flex h-2 w-2">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                    </span>
-                    Standby Mode
-                </p>
-            </div>
-            <div onclick="window.location.href='profile.html'" class="h-10 w-10 rounded-xl bg-cyan-600 flex items-center justify-center text-white font-bold cursor-pointer hover:bg-cyan-500 transition-colors">
-                <i class="fas fa-user text-sm"></i>
-            </div>
+        <div id="nav-status-md" class="nav-status" style="display:flex;flex-direction:column;align-items:flex-end;">
+            <span class="nav-name" style="font-family:var(--head);font-size:13px;font-weight:600;color:#fff;">Christian Afangide</span>
+            <span class="nav-mode" style="font-size:9px;">
+                <span class="pulse-dot"></span> Standby Mode
+            </span>
         </div>
+        <div class="avatar-btn" onclick="window.location.href='profile.html'">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- ══════ SIDEBAR OVERLAY ══════ -->
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- ══════ SIDEBAR ══════ -->
+<aside id="sidebar" class="sidebar-closed">
+    <div class="sb-header">
+        <div>
+            <div class="sb-title">Command Menu</div>
+            <div class="sb-sub">Root Navigation</div>
+        </div>
+        <span class="sb-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></span>
+    </div>
+
+    <nav class="sb-nav">
+        <a href="dashboard.html" class="sb-link active">
+            <i class="fas fa-home" style="color:var(--cyan)"></i> Home Dashboard
+        </a>
+
+        <div class="sb-section">Academic Resources</div>
+        <a href="outline.html"  class="sb-link"><i class="fas fa-list-ul"    style="color:#818cf8"></i> Course Outlines</a>
+        <a href="notes.html"    class="sb-link"><i class="fas fa-book-open"  style="color:var(--emerald)"></i> Lecture Notes</a>
+        <a href="clinical.html" class="sb-link"><i class="fas fa-microscope" style="color:var(--violet)"></i> Clinical Cases</a>
+
+        <div class="sb-section">Testing & Evaluation</div>
+        <a href="hub.html"        class="sb-link"><i class="fas fa-laptop-code" style="color:var(--cyan)"></i> CBT Assessments</a>
+        <a href="flashcards.html" class="sb-link"><i class="fas fa-bolt"        style="color:var(--rose)"></i> Flashcards</a>
+
+        <div class="sb-section">Tools & Rank</div>
+        <a href="calculator.html"  class="sb-link"><i class="fas fa-calculator" style="color:var(--amber)"></i> GP Forecaster</a>
+        <a href="leaderboard.html" class="sb-link"><i class="fas fa-trophy"     style="color:var(--orange)"></i> Hall of Fame</a>
+        <a href="profile.html"     class="sb-link"><i class="fas fa-id-card"    style="color:#f472b6"></i> Digital Profile</a>
     </nav>
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-950/80 z-40 hidden backdrop-blur-sm transition-opacity"></div>
-    
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-slate-800 text-white z-50 sidebar-closed shadow-2xl flex flex-col">
-        <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-            <div>
-                <h2 class="font-black text-xl text-white tracking-tight">Command Menu</h2>
-                <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Root Navigation</p>
-            </div>
-            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white transition-colors p-2"><i class="fas fa-times text-xl"></i></button>
+    <div class="sb-footer">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-power-off"></i> Terminate Session
+        </button>
+    </div>
+</aside>
+
+<!-- ══════ MAIN ══════ -->
+<main>
+<div class="stack">
+
+    <!-- HERO -->
+    <div class="hero reveal">
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span>Phase 1 Complete · Strategic Recovery</span>
         </div>
+        <h1 class="hero-title" id="welcome-msg">Welcome Back, <em>Christian.</em></h1>
+        <p class="hero-desc">
+            The battlefield is quiet until April. Do not fall into the trap of total relaxation.
+            Maintain your streak. <strong>Map the Embryology timelines now.</strong>
+        </p>
+    </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-            <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-slate-800 rounded-xl text-cyan-400 font-bold border border-cyan-500/30">
-                <i class="fas fa-home w-6"></i> Home Dashboard
-            </a>
-            
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Academic Resources</p>
-            <a href="outline.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-list-ul w-6 text-indigo-400"></i> Course Outlines</a>
-            <a href="notes.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-book-open w-6 text-emerald-400"></i> Lecture Notes</a>
-            <a href="clinical.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-microscope w-6 text-purple-400"></i> Clinical Cases</a>
-
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Testing & Evaluation</p>
-            <a href="hub.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-laptop-code w-6 text-cyan-400"></i> CBT Assessments</a>
-            <a href="flashcards.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-bolt w-6 text-rose-400"></i> Flashcards</a>
-
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-8 mb-3 px-4">Tools & Rank</p>
-            <a href="calculator.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-calculator w-6 text-amber-400"></i> GP Forecaster</a>
-            <a href="leaderboard.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-trophy w-6 text-orange-400"></i> Hall of Fame</a>
-            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-slate-800 rounded-xl transition-all"><i class="fas fa-id-card w-6 text-pink-400"></i> Digital Profile</a>
-        </nav>
-
-        <div class="p-4 border-t border-slate-800 bg-slate-900">
-            <button onclick="logout()" class="flex items-center justify-center gap-3 w-full px-4 py-3 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20 rounded-xl transition-all font-bold">
-                <i class="fas fa-power-off"></i> Terminate Session
-            </button>
-        </div>
-    </aside>
-
-    <main class="pt-24 px-4 pb-12 max-w-5xl mx-auto space-y-6 relative z-10">
-        
-        <div class="reveal-on-scroll bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
-            <div class="absolute right-0 top-0 h-full w-2/3 bg-white/5 skew-x-12 transform origin-top-right transition-transform duration-1000 hover:skew-x-0"></div>
-            <div class="absolute -bottom-8 -right-8 text-[12rem] opacity-[0.03] transform rotate-12"><i class="fas fa-battery-half"></i></div>
-            <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-amber-500/20 border border-amber-400/30 backdrop-blur-md">
-                    <span class="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span class="text-[10px] font-black tracking-widest uppercase text-amber-200">Phase 1 Complete • Strategic Recovery</span>
-                </div>
-                <h2 id="welcome-msg" class="text-4xl md:text-5xl font-black mb-3 tracking-tight">Welcome Back!</h2>
-                <p class="text-slate-300 text-sm md:text-base font-medium max-w-lg leading-relaxed">The battlefield is quiet until April. Do not fall into the psychological trap of total relaxation. Maintain your study streak. Map the Embryology timelines now.</p>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll bg-red-950/40 border border-red-500/30 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg">
-            <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 text-xl border border-red-500/50 flex-shrink-0 animate-pulse">
+    <!-- THREAT BANNER -->
+    <div class="threat-banner reveal">
+        <div class="threat-stripe"></div>
+        <div class="threat-inner">
+            <div class="threat-left">
+                <div class="threat-icon-wrap">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <div class="flex-1">
-                    <h3 class="text-red-400 font-black uppercase tracking-widest text-xs">Director's Directive</h3>
-                    <p id="directive-text" class="text-white text-sm font-medium mt-1 italic">"Loading target objective..."</p>
+                <div>
+                    <div class="threat-label">Director's Directive</div>
+                    <div class="threat-directive" id="directive-text">"Loading target objective..."</div>
                 </div>
             </div>
-            <div class="text-center md:text-right bg-black/40 px-5 py-3 rounded-xl border border-red-500/20 flex-shrink-0 min-w-[200px]">
-                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1">T-Minus to <span id="countdown-target-name" class="text-cyan-400">...</span></p>
-                <p id="countdown-timer" class="text-2xl font-mono font-black text-red-400 tracking-wider">--:--:--</p>
-            </div>
-        </div>
-
-        <div class="reveal-on-scroll relative overflow-hidden rounded-2xl p-[1px] bg-gradient-to-r from-cyan-500 to-blue-600 hover-card cursor-pointer" onclick="window.location.href='simulator.html'">
-            <div class="bg-slate-900 rounded-[15px] p-6 h-full relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 z-10">
-                <div class="flex-1 relative z-10 w-full">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-cyan-900/50 text-cyan-400 text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest border border-cyan-500/30"><i class="fas fa-server mr-1"></i> Mainframe Online</span>
-                        <span class="bg-slate-800 text-slate-400 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest border border-slate-700">CBT Assessment Protocol</span>
-                    </div>
-                    <h2 class="text-3xl font-black text-white mb-2 tracking-tight">The Exam Vault</h2>
-                    <p class="text-slate-400 text-sm font-medium">Pure Extraction from Lecturer Core Materials. The engine pulls <span class="text-cyan-400 font-bold">50 questions</span> per session. Prepare for Your Exams.</p>
+            <div class="threat-timer-box">
+                <div class="threat-target-label">
+                    T-Minus to <span class="threat-target-code" id="countdown-target-name">…</span>
                 </div>
-                
-                <div class="w-full md:w-auto relative z-10">
-                    <button class="w-full bg-white text-slate-900 px-6 py-3 rounded-lg font-black tracking-widest uppercase hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 text-sm">
-                        ENTER CBT <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
+                <div id="countdown-timer">--:--:--</div>
             </div>
         </div>
-
-        <div class="reveal-on-scroll">
-            <h3 class="font-bold text-white mb-3 flex items-center gap-2 text-lg tracking-tight">
-                <i class="fas fa-toolbox text-emerald-400"></i> Academy Toolset
-            </h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <a href="notes.html" class="glass-card hover-card p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group border-b-2 border-emerald-500">
-                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg"><i class="fas fa-book-open"></i></div>
-                    <span class="font-bold text-xs text-slate-300 group-hover:text-white">Lecture Notes</span>
-                </a>
-                <a href="clinical.html" class="glass-card hover-card p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group border-b-2 border-purple-500">
-                    <div class="w-10 h-10 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg"><i class="fas fa-microscope"></i></div>
-                    <span class="font-bold text-xs text-slate-300 group-hover:text-white">Clinical Cases</span>
-                </a>
-                <a href="calculator.html" class="glass-card hover-card p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group border-b-2 border-amber-500">
-                    <div class="w-10 h-10 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg"><i class="fas fa-calculator"></i></div>
-                    <span class="font-bold text-xs text-slate-300 group-hover:text-white">GP Forecaster</span>
-                </a>
-                <a href="flashcards.html" class="glass-card hover-card p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group border-b-2 border-rose-500">
-                    <div class="w-10 h-10 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center text-lg"><i class="fas fa-bolt"></i></div>
-                    <span class="font-bold text-xs text-slate-300 group-hover:text-white">Flashcard Blitz</span>
-                </a>
-                <a href="map.html" class="glass-card hover-card p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group border-b-2 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-    <div class="w-10 h-10 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg animate-pulse">
-        <i class="fas fa-sitemap"></i>
     </div>
-    <span class="font-black text-xs text-cyan-400 group-hover:text-white transition-colors uppercase tracking-widest">Master Map</span>
-                </a>
+
+    <!-- CBT VAULT -->
+    <div class="vault-card reveal" onclick="window.location.href='simulator.html'">
+        <div class="vault-inner">
+            <div style="flex:1">
+                <div class="vault-tags">
+                    <span class="vault-tag online"><i class="fas fa-server" style="margin-right:5px"></i>Mainframe Online</span>
+                    <span class="vault-tag cbt">CBT Assessment Protocol</span>
+                </div>
+                <div class="vault-title">The Exam Vault</div>
+                <div class="vault-desc">Pure extraction from lecturer core materials. The engine pulls <strong>50 questions</strong> per session. Prepare for your exams.</div>
+            </div>
+            <button class="vault-cta">Enter CBT <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <!-- TOOLSET -->
+    <div class="reveal">
+        <div class="section-hd">
+            <div class="section-hd-title">
+                <i class="fas fa-toolbox" style="color:var(--emerald)"></i> Academy Toolset
+            </div>
+        </div>
+        <div class="tools-grid">
+            <a href="notes.html"     class="tool-card tc-emerald">
+                <div class="tool-icon"><i class="fas fa-book-open"></i></div>
+                <span class="tool-name">Lecture Notes</span>
+            </a>
+            <a href="clinical.html"  class="tool-card tc-violet">
+                <div class="tool-icon"><i class="fas fa-microscope"></i></div>
+                <span class="tool-name">Clinical Cases</span>
+            </a>
+            <a href="calculator.html" class="tool-card tc-amber">
+                <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+                <span class="tool-name">GP Forecaster</span>
+            </a>
+            <a href="flashcards.html" class="tool-card tc-rose">
+                <div class="tool-icon"><i class="fas fa-bolt"></i></div>
+                <span class="tool-name">Flashcard Blitz</span>
+            </a>
+            <a href="map.html" class="tool-card tc-cyan tc-map-glow" style="grid-column: span 2" id="map-tool">
+                <div class="tool-icon"><i class="fas fa-dna"></i></div>
+                <span class="tool-name" style="letter-spacing:2.5px;">Master Map</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row reveal">
+        <div class="stat-card sc-emerald">
+            <div class="stat-label">
+                Exams Cleared <i class="fas fa-list-check" style="color:var(--emerald)"></i>
+            </div>
+            <div class="stat-value" id="stat-cleared">0</div>
+        </div>
+        <div class="stat-card sc-amber">
+            <div class="stat-label">
+                Study Streak <i class="fas fa-fire" style="color:var(--amber)"></i>
+            </div>
+            <div class="stat-value">14<span class="stat-unit">d</span></div>
+        </div>
+        <div class="stat-card sc-cyan">
+            <div class="stat-label">
+                Target CGPA <i class="fas fa-chart-line" style="color:var(--cyan)"></i>
+            </div>
+            <div class="stat-value" id="stat-target">4.6</div>
+        </div>
+    </div>
+
+    <!-- TIMETABLE -->
+    <div class="reveal">
+        <div class="section-hd">
+            <div class="section-hd-title">
+                <i class="fas fa-calendar-alt" style="color:var(--cyan)"></i> Active Timetable
+            </div>
+            <span class="section-badge">MAR / APR 2026</span>
+        </div>
+
+        <div class="campaign-bar-wrap">
+            <div class="campaign-bar-header">
+                <span class="campaign-bar-label">Core Week Campaign Progress</span>
+                <span class="campaign-bar-pct" id="campaign-percentage">0%</span>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="campaign-progress-bar" style="--progress-width:0%"></div>
             </div>
         </div>
 
-        <div class="reveal-on-scroll grid grid-cols-3 gap-3">
-            <div class="glass-card p-4 rounded-xl relative overflow-hidden">
-                <div class="flex justify-between items-start mb-2">
-                    <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Exams Cleared</div>
-                    <div class="text-emerald-500"><i class="fas fa-list-check"></i></div>
-                </div>
-                <div class="text-3xl font-black text-white" id="stat-cleared">0</div>
-            </div>
-            
-            <div class="glass-card p-4 rounded-xl relative overflow-hidden">
-                <div class="flex justify-between items-start mb-2">
-                    <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Study Streak</div>
-                    <div class="text-amber-500"><i class="fas fa-fire"></i></div>
-                </div>
-                <div class="text-3xl font-black text-white">14<span class="text-xs font-bold text-slate-500 ml-1">Days</span></div>
-            </div>
+        <div class="timetable-list" id="vertical-timetable"></div>
+    </div>
 
-            <div class="glass-card p-4 rounded-xl relative overflow-hidden">
-                <div class="flex justify-between items-start mb-2">
-                    <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Target CGPA</div>
-                    <div class="text-cyan-500"><i class="fas fa-chart-line"></i></div>
-                </div>
-                <div class="text-3xl font-black text-white" id="stat-target">4.6</div>
-            </div>
-        </div>
+</div><!-- /stack -->
+</main>
 
-        <div class="reveal-on-scroll mt-6">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-white flex items-center gap-2 text-lg tracking-tight">
-                    <i class="fas fa-calendar-alt text-cyan-500"></i> Active Timetable
-                </h3>
-                <span class="text-[10px] bg-slate-800 text-slate-400 font-bold px-2 py-1 rounded uppercase tracking-widest border border-slate-700">MAR / APR 2026</span>
-            </div>
-            
-            <div class="mb-4 bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Core Week Campaign Progress</span>
-                    <span class="text-xs font-black text-emerald-400" id="campaign-percentage">0%</span>
-                </div>
-                <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                    <div id="campaign-progress-bar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-1.5 rounded-full progress-animate" style="--progress-width: 0%"></div>
-                </div>
-            </div>
+<!-- FOOTER -->
+<footer>
+    <div class="footer-brand">Splendid's Academy</div>
+    <div class="footer-status">System running optimally.</div>
+</footer>
 
-            <div class="glass-card rounded-2xl p-4 md:p-6 relative overflow-hidden">
-                <div class="timeline-line hidden md:block"></div>
-                <div class="space-y-3 relative z-10" id="vertical-timetable">
-                    </div>
-            </div>
-        </div>
+<script>
+/* ════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════ */
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isOpen  = sidebar.classList.contains('sidebar-open');
+    sidebar.classList.toggle('sidebar-closed', isOpen);
+    sidebar.classList.toggle('sidebar-open',   !isOpen);
+    overlay.style.display = isOpen ? 'none' : 'block';
+}
 
-    </main>
+/* ════════════════════════════════════
+   THE TIME-AWARE AUTO-MARKING ENGINE V2.5
+════════════════════════════════════ */
+const examSchedule = [
+    { code:"PHS 211", title:"Blood Physiology",     v:"Annex",        date: new Date('March 3, 2026 11:00:00 GMT+0100').getTime() },
+    { code:"MBC 211", title:"General Biochemistry", v:"Annex",        date: new Date('March 4, 2026 11:00:00 GMT+0100').getTime() },
+    { code:"ANA 211", title:"Gross Anatomy",        v:"Annex",        date: new Date('March 5, 2026 08:00:00 GMT+0100').getTime() },
+    { code:"PHS 212", title:"Excitable Tissues",    v:"Annex",        date: new Date('March 9, 2026 08:00:00 GMT+0100').getTime() },
+    { code:"PHS 213", title:"Cell Physiology",      v:"Annex",        date: new Date('March 12, 2026 08:00:00 GMT+0100').getTime() },
+    { code:"PHS 214", title:"Lab Physiology",       v:"Physio Lab",   date: new Date('March 13, 2026 08:00:00 GMT+0100').getTime() },
+    { code:"ANA 213", title:"Embryology",           v:"Annex",        date: new Date('April 2, 2026 08:00:00 GMT+0100').getTime(),  displayDate:"APR 02", displayTime:"TBD", directive:"\"Embryological development timelines. The ceasefire ends in April.\"" },
+    { code:"GST 211", title:"Philosophy & Logic",   v:"Main Campus",  date: new Date('April 30, 2026 23:59:59 GMT+0100').getTime(), displayDate:"APR --", displayTime:"TBD", directive:"\"Philosophy and Logic. Exact date pending. Maintain readiness.\"" }
+];
 
-    <footer class="mt-8 py-6 text-center text-slate-500">
-        <p class="text-[10px] font-bold tracking-widest uppercase mb-1">Splendid's Academy</p>
-        <p class="text-[9px] font-mono">System running optimally.</p>
-    </footer>
+const DURATION_BUFFER = 4 * 60 * 60 * 1000;
+const MONTH_NAMES = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-    <script>
-        // UI Sidebar
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (sidebar.classList.contains('sidebar-closed')) {
-                sidebar.classList.remove('sidebar-closed');
-                sidebar.classList.add('sidebar-open');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('sidebar-closed');
-                sidebar.classList.remove('sidebar-open');
-                overlay.classList.add('hidden');
-            }
+function renderTimetableAndCountdown() {
+    const now = Date.now();
+    const container = document.getElementById('vertical-timetable');
+    container.innerHTML = '';
+
+    let nextExam = null;
+    let clearedCount = 0;
+
+    examSchedule.forEach((ex, index) => {
+        const isCompleted = now > (ex.date + DURATION_BUFFER);
+        if (isCompleted) clearedCount++;
+        const isNext = !isCompleted && !nextExam;
+        if (isNext) nextExam = ex;
+
+        const d = new Date(ex.date);
+        const dateStr = ex.displayDate || `${MONTH_NAMES[d.getMonth()]} ${d.getDate().toString().padStart(2,'0')}`;
+        const timeStr = ex.displayTime || d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        const codeNum = ex.code.split(' ')[1];
+
+        const row = document.createElement('div');
+        row.className = 'exam-row reveal' + (isNext ? ' is-next' : '') + (isCompleted ? ' is-done' : '');
+        row.style.transitionDelay = `${index * 55}ms`;
+
+        const codeColor = isNext ? 'color:var(--red)' : isCompleted ? 'color:rgba(52,211,153,0.5)' : 'color:var(--cyan)';
+        const nextBadge = isNext ? `<div class="next-badge">Next Target</div>` : '';
+        let actionHtml;
+        if (isCompleted) {
+            actionHtml = `<button class="exam-btn cleared"><i class="fas fa-check-circle"></i> Cleared</button>`;
+        } else if (isNext) {
+            actionHtml = `<button class="exam-btn attack" onclick="window.location.href='simulator.html'">Attack <i class="fas fa-crosshairs"></i></button>`;
+        } else {
+            actionHtml = `<button class="exam-btn drill" onclick="window.location.href='simulator.html'">Drill <i class="fas fa-arrow-right"></i></button>`;
         }
 
-        // ==========================================
-        // THE TIME-AWARE AUTO-MARKING ENGINE V2.5
-        // ==========================================
-        
-        // Master Schedule: Added specific display properties for "TBD" functionality
-        const examSchedule = [
-            { code: "PHS 211", title: "Blood Physiology", v: "Annex", date: new Date('March 3, 2026 11:00:00 GMT+0100').getTime() },
-            { code: "MBC 211", title: "General Biochemistry", v: "Annex", date: new Date('March 4, 2026 11:00:00 GMT+0100').getTime() },
-            { code: "ANA 211", title: "Gross Anatomy", v: "Annex", date: new Date('March 5, 2026 08:00:00 GMT+0100').getTime() },
-            { code: "PHS 212", title: "Excitable Tissues", v: "Annex", date: new Date('March 9, 2026 08:00:00 GMT+0100').getTime() },
-            { code: "PHS 213", title: "Cell Physiology", v: "Annex", date: new Date('March 12, 2026 08:00:00 GMT+0100').getTime() },
-            { code: "PHS 214", title: "Lab Physiology", v: "Physio Lab", date: new Date('March 13, 2026 08:00:00 GMT+0100').getTime() },
-            // NEW DATES: ANA 213 is April 2nd. GST 211 is April TBD.
-            { code: "ANA 213", title: "Embryology", v: "Annex", date: new Date('April 2, 2026 08:00:00 GMT+0100').getTime(), displayDate: "APR 02", displayTime: "TBD", directive: "\"Embryological development timelines. The ceasefire ends in April.\"" },
-            { code: "GST 211", title: "Philosophy & Logic", v: "Main Campus", date: new Date('April 30, 2026 23:59:59 GMT+0100').getTime(), displayDate: "APR --", displayTime: "TBD", directive: "\"Philosophy and Logic. Exact date pending. Maintain readiness.\"" }
-        ];
-
-        const DURATION_BUFFER = 4 * 60 * 60 * 1000; 
-        
-        function renderTimetableAndCountdown() {
-            const now = new Date().getTime();
-
-            const timetableContainer = document.getElementById('vertical-timetable');
-            timetableContainer.innerHTML = ''; 
-            
-            let nextExam = null;
-            let clearedCount = 0;
-            const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-            // 1. Process Timetable
-            examSchedule.forEach((ex, index) => {
-                let isCompleted = now > (ex.date + DURATION_BUFFER);
-                if (isCompleted) clearedCount++;
-
-                let isNext = !isCompleted && !nextExam;
-                if (isNext) nextExam = ex;
-
-                const dateObj = new Date(ex.date);
-                
-                // Dynamic Date/Time Parsing (Falls back to generated string if 'displayDate' isn't explicitly set)
-                const dateStr = ex.displayDate || `${monthNames[dateObj.getMonth()]} ${dateObj.getDate().toString().padStart(2, '0')}`;
-                const timeStr = ex.displayTime || dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-                const item = document.createElement('div');
-                item.className = `reveal-on-scroll flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center relative rounded-xl p-3 md:p-4 border ${isNext ? 'bg-slate-800/90 border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]' : (isCompleted ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-800/40 border-slate-700')}`;
-                item.style.transitionDelay = `${index * 50}ms`; 
-
-                let badgeHtml = isNext ? `<div class="absolute -top-2.5 right-2 bg-red-600 text-white text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-widest shadow-[0_0_10px_rgba(239,68,68,0.8)] animate-pulse border border-red-400">NEXT TARGET</div>` : '';
-
-                let actionHtml = '';
-                if (isCompleted) {
-                    actionHtml = `<div class="text-[10px] uppercase tracking-widest font-black text-emerald-500 flex items-center gap-1.5"><i class="fas fa-check-circle"></i> Cleared</div>`;
-                } else if (isNext) {
-                    actionHtml = `<button onclick="window.location.href='simulator.html'" class="bg-red-600 hover:bg-red-500 text-white text-[10px] uppercase tracking-widest font-black px-4 py-2 rounded-lg shadow-[0_0_15px_rgba(239,68,68,0.4)] active:scale-95 flex items-center gap-1.5">Attack <i class="fas fa-crosshairs"></i></button>`;
-                } else {
-                    actionHtml = `<button onclick="window.location.href='simulator.html'" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-[10px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg active:scale-95 flex items-center gap-1.5">Drill Now <i class="fas fa-arrow-right"></i></button>`;
-                }
-
-                item.innerHTML = `
-                    ${badgeHtml}
-                    <div class="flex items-center gap-3 w-full sm:w-auto flex-1">
-                        <div class="h-10 w-10 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-700 text-sm font-black shadow-inner ${isNext ? 'text-red-400 border-red-500/30' : (isCompleted ? 'text-emerald-500/50' : 'text-cyan-400')}">
-                            ${ex.code.split(' ')[1]}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-0.5">
-                                <span class="text-[9px] font-black text-slate-500 uppercase">${dateStr}</span>
-                                <span class="text-[8px] font-mono text-cyan-500 font-bold"><i class="far fa-clock"></i> ${timeStr}</span>
-                            </div>
-                            <h4 class="font-black text-sm text-white leading-none mb-0.5 ${isCompleted ? 'line-through decoration-emerald-500/50' : ''}">${ex.code}</h4>
-                            <p class="text-[10px] font-medium text-slate-400 truncate max-w-[150px] md:max-w-full">${ex.title}</p>
-                        </div>
+        row.innerHTML = `
+            ${nextBadge}
+            <div style="display:flex;align-items:center;gap:14px;flex:1">
+                <div class="exam-code-box" style="${codeColor}">${codeNum}</div>
+                <div class="exam-info">
+                    <div class="exam-meta">
+                        <span class="exam-date">${dateStr}</span>
+                        <span class="exam-time"><i class="far fa-clock"></i> ${timeStr}</span>
                     </div>
-                    
-                    <div class="w-full sm:w-auto flex flex-row items-center justify-between gap-3 border-t sm:border-t-0 border-slate-700/50 pt-2 sm:pt-0 mt-1 sm:mt-0">
-                        <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1"><i class="fas fa-map-marker-alt"></i> ${ex.v}</span>
-                        ${actionHtml}
-                    </div>
-                `;
-                timetableContainer.appendChild(item);
-            });
+                    <div class="exam-title">${ex.code}</div>
+                    <div class="exam-subtitle">${ex.title}</div>
+                </div>
+            </div>
+            <div class="exam-actions">
+                <span class="exam-venue"><i class="fas fa-map-marker-alt"></i>${ex.v}</span>
+                ${actionHtml}
+            </div>
+        `;
+        container.appendChild(row);
+    });
 
-            // 2. Update Stats & Progress Bar
-            document.getElementById('stat-cleared').innerText = clearedCount;
-            const percentage = Math.round((clearedCount / examSchedule.length) * 100);
-            document.getElementById('campaign-percentage').innerText = `${percentage}%`;
-            document.getElementById('campaign-progress-bar').style.setProperty('--progress-width', `${percentage}%`);
+    /* Stats */
+    document.getElementById('stat-cleared').textContent = clearedCount;
+    const pct = Math.round((clearedCount / examSchedule.length) * 100);
+    document.getElementById('campaign-percentage').textContent = `${pct}%`;
+    document.getElementById('campaign-progress-bar').style.setProperty('--progress-width', `${pct}%`);
 
-            // 3. Update Top Countdown Banner
-            const nameEl = document.getElementById('countdown-target-name');
-            const timerEl = document.getElementById('countdown-timer');
-            const directiveEl = document.getElementById('directive-text');
+    /* Countdown */
+    const nameEl      = document.getElementById('countdown-target-name');
+    const timerEl     = document.getElementById('countdown-timer');
+    const directiveEl = document.getElementById('directive-text');
 
-            if (!nextExam) {
-                nameEl.textContent = "ALL CLEARED";
-                timerEl.textContent = "CORE WEEK COMPLETE";
-                timerEl.classList.replace('text-red-400', 'text-emerald-400');
-                directiveEl.textContent = "\"All objectives neutralized. You have survived the gauntlet.\"";
-                return;
-            }
+    if (!nextExam) {
+        nameEl.textContent  = "ALL CLEARED";
+        timerEl.textContent = "CORE WEEK COMPLETE";
+        timerEl.style.color = "var(--emerald)";
+        directiveEl.textContent = '"All objectives neutralized. You have survived the gauntlet."';
+        return;
+    }
 
-            nameEl.textContent = nextExam.code;
-            directiveEl.textContent = nextExam.directive || "\"Prepare for the upcoming objective.\"";
+    nameEl.textContent  = nextExam.code;
+    directiveEl.textContent = nextExam.directive || '"Prepare for the upcoming objective."';
 
-            const updateTimer = () => {
-                const currentRealTime = new Date().getTime();
-                const distance = nextExam.date - currentRealTime;
-                
-                if (distance < 0 && distance > -DURATION_BUFFER) {
-                    timerEl.textContent = "EXAM TODAY";
-                    timerEl.classList.add('animate-pulse');
-                    return;
-                }
-
-                timerEl.classList.remove('animate-pulse');
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                let timeString = '';
-                if (days > 0) timeString += `${days}d `;
-                timeString += `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
-                timerEl.textContent = timeString;
-            };
-
-            setInterval(updateTimer, 1000);
-            updateTimer();
+    const tick = () => {
+        const dist = nextExam.date - Date.now();
+        if (dist < 0 && dist > -DURATION_BUFFER) {
+            timerEl.textContent = "EXAM TODAY";
+            timerEl.style.animation = "pd2 1.5s ease-in-out infinite";
+            return;
         }
+        timerEl.style.animation = "";
+        const days  = Math.floor(dist / 86400000);
+        const hours = Math.floor((dist % 86400000) / 3600000);
+        const mins  = Math.floor((dist % 3600000)  / 60000);
+        const secs  = Math.floor((dist % 60000)    / 1000);
+        let s = '';
+        if (days  > 0) s += `${days}d `;
+        s += `${hours.toString().padStart(2,'0')}h ${mins.toString().padStart(2,'0')}m ${secs.toString().padStart(2,'0')}s`;
+        timerEl.textContent = s;
+    };
+    setInterval(tick, 1000);
+    tick();
+}
 
-        renderTimetableAndCountdown();
+renderTimetableAndCountdown();
 
-        // Reveal Animations
-        document.addEventListener("DOMContentLoaded", () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, { threshold: 0.1 });
+/* ════════════════════════════════════
+   SCROLL REVEAL
+════════════════════════════════════ */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            document.querySelectorAll('.reveal-on-scroll').forEach((elem) => observer.observe(elem));
-        });
-    </script>
+/* ════════════════════════════════════
+   MISC
+════════════════════════════════════ */
+function logout() { /* implement logout */ }
+
+// Hide right panel on small screens
+if (window.innerWidth < 480) {
+    document.getElementById('nav-status-md').style.display = 'none';
+}
+</script>
 </body>
 </html>
