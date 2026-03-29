@@ -694,6 +694,245 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 100px; }
+
+        /* ══════════════════════════════════════════
+           LIGHT MODE TOKENS
+        ══════════════════════════════════════════ */
+        [data-theme="light"] {
+            --bg:           #f0f4f8;
+            --bg2:          #e8eef5;
+            --surface:      rgba(255,255,255,0.85);
+            --border:       rgba(0,0,0,0.08);
+            --border-bright:rgba(0,0,0,0.13);
+            --text:         #1a2235;
+            --muted:        rgba(60,90,130,0.65);
+        }
+        [data-theme="light"] body { background: var(--bg); color: var(--text); }
+        [data-theme="light"] body::before {
+            background-image:
+                radial-gradient(circle, rgba(34,211,238,0.12) 1px, transparent 1px),
+                radial-gradient(circle, rgba(245,158,11,0.07) 1px, transparent 1px);
+        }
+        [data-theme="light"] body::after {
+            background:
+                radial-gradient(ellipse 700px 400px at -5% 10%, rgba(245,158,11,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 600px 500px at 110% 80%, rgba(34,211,238,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 800px 600px at 50% 120%, rgba(220,232,245,0.8) 0%, transparent 50%);
+        }
+        [data-theme="light"] .nav {
+            background: rgba(240,244,248,0.95);
+            box-shadow: 0 1px 0 rgba(245,158,11,0.12), 0 4px 24px rgba(0,0,0,0.08);
+        }
+        [data-theme="light"] .nav-brand { filter: none; }
+        [data-theme="light"] #sidebar { background: rgba(240,244,248,0.99); border-right-color: rgba(245,158,11,0.2); }
+        [data-theme="light"] .sb-link { color: rgba(60,90,130,0.8); }
+        [data-theme="light"] .sb-link:hover { background: rgba(0,0,0,0.05); color: #1a2235; }
+        [data-theme="light"] .sb-link.active { background: rgba(34,211,238,0.08); }
+        [data-theme="light"] .hero { background: linear-gradient(135deg,#fff 0%,#f4f8ff 60%,#eef4ff 100%); border-color: rgba(245,158,11,0.25); }
+        [data-theme="light"] .hero-title { color: #1a2235; }
+        [data-theme="light"] .vault-card { background: #fff; border-color: rgba(34,211,238,0.2); }
+        [data-theme="light"] .tool-card { background: rgba(255,255,255,0.9); }
+        [data-theme="light"] .stat-card { background: rgba(255,255,255,0.9); }
+        [data-theme="light"] .campaign-bar-wrap { background: rgba(255,255,255,0.9); }
+        [data-theme="light"] .timetable-list { background: rgba(255,255,255,0.9); }
+        [data-theme="light"] .exam-row { border-bottom-color: rgba(0,0,0,0.05); }
+        [data-theme="light"] .exam-row.is-next { background: rgba(239,68,68,0.04); }
+        [data-theme="light"] .exam-title { color: #1a2235; }
+        [data-theme="light"] .threat-banner { background: rgba(255,242,242,0.85); border-color: rgba(248,113,113,0.25); }
+        [data-theme="light"] #countdown-timer { color: var(--red2); }
+        [data-theme="light"] .threat-timer-box { background: rgba(0,0,0,0.04); }
+        [data-theme="light"] .section-badge { background: rgba(0,0,0,0.05); }
+        [data-theme="light"] .bar-track { background: rgba(0,0,0,0.08); }
+        [data-theme="light"] .stat-value { color: #1a2235; }
+        [data-theme="light"] .logout-btn { background: rgba(248,113,113,0.06); }
+        [data-theme="light"] .exam-code-box { background: #f0f4f8; border-color: rgba(0,0,0,0.1); }
+        [data-theme="light"] .exam-btn.drill { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); color: #3c5a82; }
+
+        /* ══════════════════════════════════════════
+           THEME TOGGLE BUTTON
+        ══════════════════════════════════════════ */
+        .theme-toggle {
+            position: fixed; bottom: 28px; left: 16px; z-index: 200;
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 16px; border-radius: 100px;
+            background: rgba(10,16,30,0.92);
+            border: 1px solid var(--border-bright);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            cursor: pointer; transition: all 0.25s;
+            user-select: none;
+        }
+        [data-theme="light"] .theme-toggle {
+            background: rgba(255,255,255,0.94);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .theme-toggle:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.45); }
+        .theme-toggle:active { transform: scale(0.96); }
+        .theme-toggle-track {
+            width: 34px; height: 18px; border-radius: 100px; position: relative;
+            background: rgba(255,255,255,0.1); border: 1px solid var(--border-bright);
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+        [data-theme="light"] .theme-toggle-track { background: rgba(34,211,238,0.25); border-color: rgba(34,211,238,0.4); }
+        .theme-toggle-thumb {
+            position: absolute; top: 2px; left: 2px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--muted); transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+        [data-theme="light"] .theme-toggle-thumb { left: 18px; background: var(--cyan); }
+        .theme-toggle-icon { font-size: 12px; color: var(--muted); transition: color 0.2s; }
+        [data-theme="light"] .theme-toggle-icon { color: var(--amber); }
+        .theme-toggle-label {
+            font-family: var(--head); font-size: 10px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+            transition: color 0.2s;
+        }
+        [data-theme="light"] .theme-toggle-label { color: var(--cyan2); }
+
+        /* ══════════════════════════════════════════
+           ONBOARDING TOUR
+        ══════════════════════════════════════════ */
+
+        /* Dark overlay */
+        #tour-overlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(2,5,12,0.82);
+            backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+            transition: opacity 0.35s ease;
+            pointer-events: all;
+        }
+        #tour-overlay.hidden { opacity: 0; pointer-events: none; }
+
+        /* Spotlight cutout — sits above overlay */
+        #tour-spotlight {
+            position: fixed; z-index: 1001; border-radius: 16px;
+            box-shadow: 0 0 0 9999px rgba(2,5,12,0.82);
+            border: 2px solid var(--cyan);
+            transition: all 0.45s cubic-bezier(0.16,1,0.3,1);
+            pointer-events: none;
+        }
+        #tour-spotlight.hidden { opacity: 0; }
+        /* Spotlight glow */
+        #tour-spotlight::after {
+            content: ''; position: absolute; inset: -4px; border-radius: 18px;
+            box-shadow: 0 0 24px rgba(34,211,238,0.35), 0 0 60px rgba(34,211,238,0.15);
+            pointer-events: none;
+        }
+
+        /* Tour card / popover */
+        #tour-card {
+            position: fixed; z-index: 1002;
+            width: min(340px, calc(100vw - 32px));
+            background: rgba(8,13,26,0.97);
+            border: 1px solid rgba(34,211,238,0.22);
+            border-radius: 18px; padding: 22px 22px 18px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 0 1px rgba(34,211,238,0.06) inset;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        #tour-card.hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+        [data-theme="light"] #tour-card {
+            background: rgba(255,255,255,0.98);
+            border-color: rgba(34,211,238,0.3);
+        }
+
+        .tour-step-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .tour-step-pips { display: flex; gap: 5px; }
+        .tour-pip {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); transition: all 0.3s;
+        }
+        [data-theme="light"] .tour-pip { background: rgba(0,0,0,0.12); }
+        .tour-pip.active { background: var(--cyan); width: 18px; border-radius: 100px; }
+        .tour-pip.done   { background: var(--emerald); }
+
+        .tour-skip-btn {
+            font-family: var(--head); font-size: 9px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--muted); cursor: pointer; background: none; border: none;
+            padding: 4px; transition: color 0.2s;
+        }
+        .tour-skip-btn:hover { color: var(--red); }
+
+        .tour-icon {
+            width: 38px; height: 38px; border-radius: 12px; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+            background: rgba(34,211,238,0.1); color: var(--cyan);
+            border: 1px solid rgba(34,211,238,0.2);
+        }
+        .tour-title {
+            font-family: var(--head); font-size: 19px; font-weight: 700;
+            color: #fff; margin-bottom: 7px; line-height: 1.1;
+        }
+        [data-theme="light"] .tour-title { color: #1a2235; }
+        .tour-body {
+            font-size: 13px; line-height: 1.65;
+            color: rgba(180,200,230,0.85); margin-bottom: 18px;
+        }
+        [data-theme="light"] .tour-body { color: rgba(60,90,130,0.8); }
+        .tour-body strong { color: var(--cyan); font-weight: 600; }
+        [data-theme="light"] .tour-body strong { color: var(--cyan2); }
+
+        .tour-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .tour-back-btn {
+            font-family: var(--head); font-size: 11px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            color: var(--muted); cursor: pointer; background: none; border: none;
+            padding: 10px 14px; border-radius: 9px;
+            border: 1px solid var(--border-bright);
+            transition: all 0.2s;
+        }
+        .tour-back-btn:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        [data-theme="light"] .tour-back-btn { color: rgba(60,90,130,0.7); border-color: rgba(0,0,0,0.1); }
+        .tour-next-btn {
+            flex: 1;
+            font-family: var(--head); font-size: 12px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: var(--cyan); color: #050810;
+            border: none; border-radius: 9px; padding: 11px 18px;
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 6px 20px rgba(34,211,238,0.25);
+        }
+        .tour-next-btn:hover { background: var(--cyan2); box-shadow: 0 8px 28px rgba(34,211,238,0.35); }
+        .tour-next-btn.finish { background: var(--emerald); box-shadow: 0 6px 20px rgba(52,211,153,0.25); }
+        .tour-next-btn.finish:hover { background: #10b981; }
+
+        /* Welcome step — full center modal, no spotlight */
+        #tour-card.welcome-mode {
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #tour-card.welcome-mode.hidden {
+            transform: translate(-50%, calc(-50% + 16px));
+        }
+
+        /* Tour launcher button (re-trigger) */
+        .tour-launcher {
+            position: fixed; bottom: 28px; right: 16px; z-index: 200;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(10,16,30,0.92);
+            border: 1px solid rgba(167,139,250,0.3);
+            color: var(--violet); font-size: 15px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 16px rgba(167,139,250,0.12);
+            backdrop-filter: blur(12px);
+        }
+        [data-theme="light"] .tour-launcher { background: rgba(255,255,255,0.94); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+        .tour-launcher:hover { transform: scale(1.08); border-color: rgba(167,139,250,0.6); box-shadow: 0 10px 32px rgba(167,139,250,0.25); }
+        .tour-launcher:active { transform: scale(0.95); }
+
+        /* Arrow pointer on tour card */
+        .tour-arrow {
+            position: absolute; width: 12px; height: 12px;
+            background: rgba(8,13,26,0.97); border: 1px solid rgba(34,211,238,0.22);
+            transform: rotate(45deg);
+        }
+        [data-theme="light"] .tour-arrow { background: rgba(255,255,255,0.98); }
     </style>
 </head>
 <body>
@@ -712,7 +951,7 @@
             </span>
         </div>
         <div id="nav-status-md" class="nav-status" style="display:flex;flex-direction:column;align-items:flex-end;">
-            <span class="nav-name" style="font-family:var(--head);font-size:13px;font-weight:600;color:#fff;">Winners</span>
+            <span class="nav-name" style="font-family:var(--head);font-size:13px;font-weight:600;color:#fff;">Christian Afangide</span>
             <span class="nav-mode" style="font-size:9px;">
                 <span class="pulse-dot"></span> Standby Mode
             </span>
@@ -773,10 +1012,10 @@
             <span class="hero-badge-dot"></span>
             <span>Phase 1 Complete · Strategic Recovery</span>
         </div>
-        <h1 class="hero-title" id="welcome-msg">Welcome Back, <em>Winners.</em></h1>
+        <h1 class="hero-title" id="welcome-msg">Welcome Back, <em>Christian.</em></h1>
         <p class="hero-desc">
             The battlefield is quiet until April. Do not fall into the trap of total relaxation.
-            Maintain your streak. <strong>Map the Embryology timelines now (Click on MASTER MAP for Embryology Outline).</strong>
+            Maintain your streak. <strong>Map the Embryology timelines now.</strong>
         </p>
     </div>
 
@@ -803,7 +1042,7 @@
     </div>
 
     <!-- CBT VAULT -->
-    <div class="vault-card reveal" onclick="window.location.href='simulator.html'">
+    <div id="tour-vault" class="vault-card reveal" onclick="window.location.href='simulator.html'">
         <div class="vault-inner">
             <div style="flex:1">
                 <div class="vault-tags">
@@ -825,7 +1064,7 @@
             </div>
         </div>
         <div class="tools-grid">
-            <a href="notes.html"     class="tool-card tc-emerald">
+            <a href="notes.html" id="tour-notes" class="tool-card tc-emerald">
                 <div class="tool-icon"><i class="fas fa-book-open"></i></div>
                 <span class="tool-name">Lecture Notes</span>
             </a>
@@ -871,7 +1110,7 @@
     </div>
 
     <!-- TIMETABLE -->
-    <div class="reveal">
+    <div id="tour-timetable" class="reveal">
         <div class="section-hd">
             <div class="section-hd-title">
                 <i class="fas fa-calendar-alt" style="color:var(--cyan)"></i> Active Timetable
@@ -900,6 +1139,43 @@
     <div class="footer-brand">Splendid's Academy</div>
     <div class="footer-status">System running optimally.</div>
 </footer>
+
+<!-- ══════ THEME TOGGLE ══════ -->
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <i class="fas fa-sun theme-toggle-icon" id="theme-icon"></i>
+    <div class="theme-toggle-track">
+        <div class="theme-toggle-thumb"></div>
+    </div>
+    <span class="theme-toggle-label" id="theme-label">Light</span>
+</button>
+
+<!-- ══════ TOUR LAUNCHER (re-trigger) ══════ -->
+<button class="tour-launcher" onclick="startTour()" title="Take the tour again">
+    <i class="fas fa-compass"></i>
+</button>
+
+<!-- ══════ TOUR OVERLAY ══════ -->
+<div id="tour-overlay" class="hidden" onclick="skipTour()"></div>
+<div id="tour-spotlight" class="hidden"></div>
+
+<!-- ══════ TOUR CARD ══════ -->
+<div id="tour-card" class="hidden welcome-mode">
+    <div class="tour-step-row">
+        <div class="tour-step-pips" id="tour-pips"></div>
+        <button class="tour-skip-btn" onclick="skipTour()">Skip tour</button>
+    </div>
+    <div class="tour-icon" id="tour-icon"><i class="fas fa-rocket"></i></div>
+    <div class="tour-title" id="tour-title">Welcome to Command Center</div>
+    <div class="tour-body"  id="tour-body">Loading...</div>
+    <div class="tour-actions">
+        <button class="tour-back-btn" id="tour-back" onclick="tourStep(-1)">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="tour-next-btn" id="tour-next" onclick="tourStep(1)">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
 
 <script>
 /* ════════════════════════════════════
@@ -1048,6 +1324,210 @@ function logout() { /* implement logout */ }
 if (window.innerWidth < 480) {
     document.getElementById('nav-status-md').style.display = 'none';
 }
-</script>
+
+/* ════════════════════════════════════
+   THEME TOGGLE
+════════════════════════════════════ */
+(function initTheme() {
+    const saved = localStorage.getItem('sa-theme') || 'dark';
+    applyTheme(saved, false);
+})();
+
+function applyTheme(theme, save=true) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.style.background = theme === 'light' ? 'var(--bg)' : '';
+    document.getElementById('theme-icon').className  = theme === 'light'
+        ? 'fas fa-moon theme-toggle-icon' : 'fas fa-sun theme-toggle-icon';
+    document.getElementById('theme-label').textContent = theme === 'light' ? 'Dark' : 'Light';
+    if (save) localStorage.setItem('sa-theme', theme);
+}
+
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+/* ════════════════════════════════════
+   ONBOARDING TOUR ENGINE
+════════════════════════════════════ */
+const TOUR_STEPS = [
+    {
+        target: null,
+        icon: 'fas fa-dna',
+        iconColor: 'rgba(251,191,36,0.12)', iconTxt: 'var(--amber)',
+        title: "ANA 213 is live.",
+        body: `Embryology content has just been uploaded across three modules — lecture notes, CBT practice, and a brand new mind map. This tour takes 30 seconds and shows you exactly where everything landed.`,
+        nextLabel: "Show me"
+    },
+    {
+        target: 'tour-vault',
+        icon: 'fas fa-server',
+        iconColor: 'rgba(34,211,238,0.12)', iconTxt: 'var(--cyan)',
+        title: "Embryology CBT is ready",
+        body: `ANA 213 questions are now loaded in the vault. The engine picks <strong>50 questions per session</strong> straight from your lecturer's material. Best way to know where you actually stand before April.`,
+        nextLabel: "Next"
+    },
+    {
+        target: 'map-tool',
+        icon: 'fas fa-dna',
+        iconColor: 'rgba(167,139,250,0.12)', iconTxt: 'var(--violet)',
+        title: "The Embryology Map — new",
+        body: `This one's fresh. It's an interactive mind map of the full ANA 213 curriculum — every stage, every gene marker, every clinical trap. Tap any node to drill deeper. Good for revision when reading feels heavy.`,
+        nextLabel: "Next"
+    },
+    {
+        target: 'tour-notes',
+        icon: 'fas fa-book-open',
+        iconColor: 'rgba(52,211,153,0.12)', iconTxt: 'var(--emerald)',
+        title: "Lecture Notes uploaded",
+        body: `The ANA 213 Embryology notes are in. You'll find them under <strong>Lecture Notes</strong> in the toolset below. Read through them once, then use the map and CBT to lock things in.`,
+        nextLabel: "Finish"
+    }
+];
+
+let tourStep_idx = 0;
+const overlay   = document.getElementById('tour-overlay');
+const spotlight = document.getElementById('tour-spotlight');
+const card      = document.getElementById('tour-card');
+
+function startTour() {
+    // Skip if already seen (comment out if you always want to show)
+    // if (localStorage.getItem('sa-tour-done')) return;
+    tourStep_idx = 0;
+    overlay.classList.remove('hidden');
+    renderTourStep(0);
+}
+
+function skipTour() {
+    overlay.classList.add('hidden');
+    spotlight.classList.add('hidden');
+    card.classList.add('hidden');
+    localStorage.setItem('sa-tour-done', '1');
+}
+
+function tourStep(dir) {
+    const next = tourStep_idx + dir;
+    if (next < 0) return;
+    if (next >= TOUR_STEPS.length) { skipTour(); return; }
+    tourStep_idx = next;
+    renderTourStep(tourStep_idx);
+}
+
+function renderTourStep(idx) {
+    const step = TOUR_STEPS[idx];
+    const isFirst = idx === 0;
+    const isLast  = idx === TOUR_STEPS.length - 1;
+
+    // ── Pips ──
+    const pipsEl = document.getElementById('tour-pips');
+    pipsEl.innerHTML = TOUR_STEPS.map((_, i) =>
+        `<div class="tour-pip ${i < idx ? 'done' : ''} ${i === idx ? 'active' : ''}"></div>`
+    ).join('');
+
+    // ── Icon + copy ──
+    const iconEl  = document.getElementById('tour-icon');
+    iconEl.innerHTML = `<i class="${step.icon}"></i>`;
+    iconEl.style.background = step.iconColor;
+    iconEl.style.color = step.iconTxt;
+    iconEl.style.borderColor = step.iconTxt.replace('var(','').replace(')','');
+
+    document.getElementById('tour-title').textContent = step.title;
+    document.getElementById('tour-body').innerHTML    = step.body;
+
+    const nextBtn = document.getElementById('tour-next');
+    nextBtn.innerHTML = isLast
+        ? `<i class="fas fa-check"></i> ${step.nextLabel}`
+        : `${step.nextLabel} <i class="fas fa-arrow-right"></i>`;
+    nextBtn.className = 'tour-next-btn' + (isLast ? ' finish' : '');
+
+    const backBtn = document.getElementById('tour-back');
+    backBtn.style.display = isFirst ? 'none' : 'flex';
+
+    // ── Position card + spotlight ──
+    if (!step.target) {
+        // Centered modal
+        card.classList.remove('hidden');
+        card.style.position = 'fixed';
+        card.style.top    = '50%';
+        card.style.left   = '50%';
+        card.style.right  = 'auto';
+        card.style.bottom = 'auto';
+        card.style.transform = 'translate(-50%,-50%)';
+        spotlight.classList.add('hidden');
+        // Remove any arrow
+        card.querySelectorAll('.tour-arrow').forEach(a => a.remove());
+    } else {
+        const el = document.getElementById(step.target);
+        if (!el) { tourStep(1); return; }
+
+        // Scroll element into view
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => positionAroundTarget(el, step), 380);
+    }
+}
+
+function positionAroundTarget(el, step) {
+    const PAD = 10;
+    const rect = el.getBoundingClientRect();
+
+    // ── Spotlight ──
+    spotlight.style.top    = (rect.top    - PAD) + 'px';
+    spotlight.style.left   = (rect.left   - PAD) + 'px';
+    spotlight.style.width  = (rect.width  + PAD * 2) + 'px';
+    spotlight.style.height = (rect.height + PAD * 2) + 'px';
+    spotlight.classList.remove('hidden');
+
+    // ── Card placement: prefer below, fallback above ──
+    const CARD_W = Math.min(340, window.innerWidth - 32);
+    const CARD_APPROX_H = 260;
+    const spaceBelow = window.innerHeight - rect.bottom - PAD;
+    const spaceAbove = rect.top - PAD;
+
+    card.style.transform = 'none';
+    card.style.width = CARD_W + 'px';
+
+    // Horizontal centering relative to element
+    let left = rect.left + rect.width / 2 - CARD_W / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - CARD_W - 12));
+
+    // Remove old arrow
+    card.querySelectorAll('.tour-arrow').forEach(a => a.remove());
+    const arrow = document.createElement('div');
+    arrow.className = 'tour-arrow';
+
+    if (spaceBelow >= CARD_APPROX_H || spaceBelow >= spaceAbove) {
+        // Place below
+        card.style.top    = (rect.bottom + PAD + 14) + 'px';
+        card.style.bottom = 'auto';
+        card.style.left   = left + 'px';
+        // Arrow points up
+        arrow.style.top    = '-7px';
+        arrow.style.left   = Math.min(Math.max(rect.left + rect.width/2 - left - 6, 18), CARD_W - 30) + 'px';
+        arrow.style.borderRight = 'none';
+        arrow.style.borderBottom = 'none';
+    } else {
+        // Place above
+        const top = rect.top - PAD - 14 - CARD_APPROX_H;
+        card.style.top    = Math.max(8, top) + 'px';
+        card.style.bottom = 'auto';
+        card.style.left   = left + 'px';
+        // Arrow points down
+        arrow.style.bottom = '-7px';
+        arrow.style.top    = 'auto';
+        arrow.style.left   = Math.min(Math.max(rect.left + rect.width/2 - left - 6, 18), CARD_W - 30) + 'px';
+        arrow.style.borderTop  = 'none';
+        arrow.style.borderLeft = 'none';
+    }
+    card.appendChild(arrow);
+    card.classList.remove('hidden');
+}
+
+// Auto-launch on first visit
+window.addEventListener('DOMContentLoaded', () => {
+    if (!localStorage.getItem('sa-tour-done')) {
+        setTimeout(startTour, 800);
+    }
+});</script>
 </body>
 </html>
