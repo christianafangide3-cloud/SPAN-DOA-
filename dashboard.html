@@ -951,7 +951,7 @@
             </span>
         </div>
         <div id="nav-status-md" class="nav-status" style="display:flex;flex-direction:column;align-items:flex-end;">
-            <span class="nav-name" style="font-family:var(--head);font-size:13px;font-weight:600;color:#fff;">Winners</span>
+            <span class="nav-name" style="font-family:var(--head);font-size:13px;font-weight:600;color:#fff;">winners</span>
             <span class="nav-mode" style="font-size:9px;">
                 <span class="pulse-dot"></span> Standby Mode
             </span>
@@ -1136,7 +1136,7 @@
 
 <!-- FOOTER -->
 <footer>
-    <div class="footer-brand">Developed by Christian Afangide</div>
+    <div class="footer-brand">Splendid's Academy</div>
     <div class="footer-status">System running optimally.</div>
 </footer>
 
@@ -1529,5 +1529,348 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(startTour, 800);
     }
 });</script>
+
+<!-- ══════════════════════════════════════════
+     TESTIMONIAL PROMPT WIDGET
+     CSS + HTML + JS all self-contained
+══════════════════════════════════════════ -->
+<style>
+/* ── Floating bubble (collapsed state) ── */
+.rv-bubble {
+    position: fixed;
+    bottom: 88px;
+    right: 16px;
+    z-index: 500;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    box-shadow: 0 6px 24px rgba(245,158,11,0.45), 0 0 0 0 rgba(245,158,11,0.3);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    animation: rv-ring 2.5s ease-out 4s infinite;
+}
+.rv-bubble:hover { transform: scale(1.1); }
+.rv-bubble:active { transform: scale(0.94); }
+.rv-bubble i { color: #fff; font-size: 20px; }
+@keyframes rv-ring {
+    0%   { box-shadow: 0 6px 24px rgba(245,158,11,.45), 0 0 0 0 rgba(245,158,11,.35); }
+    60%  { box-shadow: 0 6px 24px rgba(245,158,11,.45), 0 0 0 14px rgba(245,158,11,0); }
+    100% { box-shadow: 0 6px 24px rgba(245,158,11,.45), 0 0 0 0 rgba(245,158,11,0); }
+}
+/* Notification dot on bubble */
+.rv-bubble .rv-dot {
+    position: absolute; top: -2px; right: -2px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--red); border: 2px solid var(--bg);
+    animation: rv-dot-pulse 2s ease-in-out infinite;
+}
+@keyframes rv-dot-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+/* ── Popup card ── */
+.rv-popup {
+    position: fixed;
+    bottom: 152px;
+    right: 16px;
+    z-index: 500;
+    width: min(340px, calc(100vw - 32px));
+    background: rgba(8, 13, 26, 0.97);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow:
+        0 24px 60px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(245,158,11,0.06) inset,
+        0 0 40px rgba(245,158,11,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform-origin: bottom right;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-theme="light"] .rv-popup {
+    background: rgba(255,255,255,0.97);
+    border-color: rgba(245,158,11,0.3);
+}
+.rv-popup.rv-hidden {
+    opacity: 0;
+    transform: scale(0.88) translateY(12px);
+    pointer-events: none;
+}
+.rv-popup.rv-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+}
+
+/* Top row */
+.rv-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.rv-avatar {
+    width: 42px; height: 42px;
+    border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(251,146,60,0.1));
+    border: 1px solid rgba(245,158,11,0.28);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
+.rv-close {
+    color: var(--muted); font-size: 13px; cursor: pointer;
+    padding: 4px; transition: color 0.2s; background: none; border: none;
+    margin-top: -2px;
+}
+.rv-close:hover { color: var(--red); }
+
+/* Copy */
+.rv-label {
+    font-family: var(--head);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 5px;
+}
+.rv-title {
+    font-family: var(--head);
+    font-size: 18px; font-weight: 700;
+    color: #fff; line-height: 1.15; margin-bottom: 8px;
+}
+[data-theme="light"] .rv-title { color: #1a2235; }
+.rv-body {
+    font-size: 13px; font-weight: 400;
+    color: rgba(180, 200, 230, 0.8);
+    line-height: 1.6; margin-bottom: 16px;
+}
+[data-theme="light"] .rv-body { color: rgba(60,90,130,0.8); }
+.rv-body strong { color: var(--amber2); font-weight: 600; }
+
+/* Stars row */
+.rv-stars {
+    display: flex; gap: 5px;
+    margin-bottom: 16px;
+}
+.rv-star {
+    font-size: 22px; cursor: pointer;
+    color: rgba(148,170,204,0.25);
+    transition: all 0.15s;
+    line-height: 1;
+}
+.rv-star:hover, .rv-star.active { color: var(--amber2); transform: scale(1.18); }
+
+/* CTA button */
+.rv-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, var(--amber), var(--orange));
+    color: #fff; font-family: var(--head);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; border: none;
+    box-shadow: 0 6px 20px rgba(245,158,11,0.3);
+    transition: all 0.2s;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+.rv-cta:hover { box-shadow: 0 8px 28px rgba(245,158,11,0.45); transform: translateY(-1px); }
+.rv-cta:active { transform: scale(0.97); }
+
+/* Skip */
+.rv-skip {
+    display: block; text-align: center;
+    font-family: var(--head);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); cursor: pointer;
+    background: none; border: none; width: 100%;
+    padding: 4px; transition: color 0.2s;
+}
+.rv-skip:hover { color: var(--text); }
+
+/* Thankyou state */
+.rv-thanks {
+    text-align: center; padding: 8px 0 4px;
+}
+.rv-thanks-icon {
+    font-size: 36px; margin-bottom: 10px; display: block;
+    animation: rv-pop 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes rv-pop { from{transform:scale(0)} to{transform:scale(1)} }
+.rv-thanks-title {
+    font-family: var(--head); font-size: 18px; font-weight: 700;
+    color: #fff; margin-bottom: 6px;
+}
+[data-theme="light"] .rv-thanks-title { color: #1a2235; }
+.rv-thanks-sub {
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+}
+<style>
+    /* CSS for the Floating Bubble and Popup */
+    .rv-bubble {
+        position: fixed; bottom: 24px; right: 24px; z-index: 40;
+        width: 50px; height: 50px; border-radius: 50%;
+        background: linear-gradient(135deg, #22d3ee, #3b82f6);
+        color: white; display: flex; align-items: center; justify-content: center;
+        font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
+        transition: transform 0.2s;
+    }
+    .rv-bubble:hover { transform: scale(1.05); }
+    .rv-dot {
+        position: absolute; top: 0; right: 0; width: 12px; height: 12px;
+        background-color: #ef4444; border: 2px solid #0f172a; border-radius: 50%;
+    }
+    
+    .rv-popup {
+        position: fixed; bottom: 84px; right: 24px; z-index: 50; width: 320px;
+        background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+        padding: 20px; color: #e8f0ff; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+    .rv-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+    .rv-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+    .rv-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .rv-avatar { font-size: 24px; }
+    .rv-close { background: none; border: none; color: #94aacc; cursor: pointer; font-size: 16px; transition: color 0.2s;}
+    .rv-close:hover { color: #ef4444; }
+    
+    .rv-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #22d3ee; font-weight: 700; margin-bottom: 4px; }
+    .rv-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+    .rv-body { font-size: 13px; color: #94aacc; line-height: 1.5; margin-bottom: 16px; }
+    
+    .rv-stars { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+    .rv-star { font-size: 24px; color: rgba(255,255,255,0.1); cursor: pointer; transition: color 0.2s; }
+    .rv-star:hover, .rv-star.active { color: #fbbf24; }
+    
+    .rv-cta {
+        display: block; width: 100%; text-align: center; padding: 10px; border-radius: 8px;
+        background: linear-gradient(135deg, #22d3ee, #3b82f6); color: white; font-weight: 700;
+        text-decoration: none; font-size: 14px; margin-bottom: 8px; transition: opacity 0.2s;
+    }
+    .rv-cta:hover { opacity: 0.9; }
+    .rv-skip { width: 100%; background: none; border: none; color: #94aacc; font-size: 12px; cursor: pointer; padding: 5px;}
+    .rv-skip:hover { color: white; text-decoration: underline; }
+    
+    .rv-thanks { text-align: center; padding: 10px 0; }
+    .rv-thanks-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+    .rv-thanks-title { font-size: 18px; font-weight: bold; margin-bottom: 6px; color: #34d399; }
+    .rv-thanks-sub { font-size: 13px; color: #94aacc; }
+</style>
+
+<div class="rv-bubble" id="rv-bubble" onclick="openRvPopup()" title="Leave a quick review">
+    <i class="fas fa-star"></i>
+    <span class="rv-dot"></span>
+</div>
+
+<div class="rv-popup rv-hidden" id="rv-popup">
+    <div id="rv-default-state">
+        <div class="rv-top">
+            <div class="rv-avatar">⭐</div>
+            <button class="rv-close" onclick="closeRvPopup()" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="rv-label">Quick feedback</div>
+        <div class="rv-title">How is the platform treating you?</div>
+        <div class="rv-body">
+            Took 60 seconds to read this. Takes <strong>60 seconds to review it</strong> — and your words secure funding for server upgrades.
+        </div>
+
+        <div class="rv-stars" id="rv-stars">
+            <span class="rv-star" data-val="1" onclick="pickStar(1)">★</span>
+            <span class="rv-star" data-val="2" onclick="pickStar(2)">★</span>
+            <span class="rv-star" data-val="3" onclick="pickStar(3)">★</span>
+            <span class="rv-star" data-val="4" onclick="pickStar(4)">★</span>
+            <span class="rv-star" data-val="5" onclick="pickStar(5)">★</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSegu788mPLfm1pgg_L5YEnYTmtJvnf9ZfD6-p0xU3IzLq-uFw/viewform?usp=header" target="_blank" class="rv-cta" id="rv-cta-btn" onclick="onReviewClick()">
+            <i class="fas fa-pen"></i> Leave a Review
+        </a>
+        <button class="rv-skip" onclick="skipRv()">Maybe later</button>
+    </div>
+
+    <div id="rv-thanks-state" style="display:none">
+        <div class="rv-thanks">
+            <span class="rv-thanks-icon">🙏</span>
+            <div class="rv-thanks-title">Thank you!</div>
+            <div class="rv-thanks-sub">
+                Your feedback means a lot. It helps other students discover this resource — and makes this worth building.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const RV_KEY_SKIP    = 'sa-rv-skipped';
+const RV_KEY_DONE    = 'sa-rv-done';
+const RV_DELAY_MS    = 3500;
+const RV_SKIP_DAYS   = 3;
+let rvStarVal = 0;
+
+function rvShouldShow() {
+    if (localStorage.getItem(RV_KEY_DONE)) return false;
+    const skipDate = localStorage.getItem(RV_KEY_SKIP);
+    if (skipDate) {
+        const daysSince = (Date.now() - parseInt(skipDate)) / (1000 * 60 * 60 * 24);
+        if (daysSince < RV_SKIP_DAYS) return false;
+    }
+    return true;
+}
+
+function openRvPopup() {
+    document.getElementById('rv-popup').classList.remove('rv-hidden');
+    document.getElementById('rv-popup').classList.add('rv-visible');
+    const dot = document.querySelector('.rv-dot');
+    if (dot) dot.style.display = 'none';
+}
+
+function closeRvPopup() {
+    document.getElementById('rv-popup').classList.remove('rv-visible');
+    document.getElementById('rv-popup').classList.add('rv-hidden');
+}
+
+function skipRv() {
+    localStorage.setItem(RV_KEY_SKIP, Date.now().toString());
+    closeRvPopup();
+}
+
+function pickStar(val) {
+    rvStarVal = val;
+    
+    // 1. Visually update the stars on the dashboard UI
+    document.querySelectorAll('.rv-star').forEach((s, i) => {
+        s.classList.toggle('active', i < val);
+    });
+    
+    // 2. Dynamically sync the star value to the Google Form URL
+    const ctaBtn = document.getElementById('rv-cta-btn');
+    if (ctaBtn) {
+        const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSegu788mPLfm1pgg_L5YEnYTmtJvnf9ZfD6-p0xU3IzLq-uFw/viewform";
+        ctaBtn.href = baseUrl + "?usp=pp_url&entry.1308469691=" + val;
+    }
+}
+
+function onReviewClick() {
+    setTimeout(() => {
+        document.getElementById('rv-default-state').style.display = 'none';
+        document.getElementById('rv-thanks-state').style.display  = 'block';
+        localStorage.setItem(RV_KEY_DONE, '1');
+    }, 300);
+    setTimeout(closeRvPopup, 4500);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (rvShouldShow()) {
+        setTimeout(openRvPopup, RV_DELAY_MS);
+    } else {
+        const dot = document.querySelector('.rv-dot');
+        if (dot) dot.style.display = 'none';
+    }
+});
+</script>
 </body>
 </html>
