@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Testimonials | Splendid's Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#05080f;--surface:rgba(15,23,42,0.7);--border:rgba(255,255,255,0.07);
+            --cyan:#22d3ee;--amber:#fbbf24;--emerald:#34d399;--rose:#fb7185;
+            --text:#e8f0ff;--muted:rgba(148,170,204,0.6);
+        }
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+            background-image:radial-gradient(circle,rgba(34,211,238,0.06) 1px,transparent 1px);
+            background-size:40px 40px}
+
+        /* ── Header ── */
+        .header{position:sticky;top:0;z-index:50;padding:14px 20px;
+                display:flex;justify-content:space-between;align-items:center;
+                background:rgba(5,8,15,0.92);backdrop-filter:blur(20px);
+                border-bottom:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,0.5)}
+        .brand{display:flex;align-items:center;gap:10px}
+        .brand-icon{width:38px;height:38px;border-radius:10px;
+                    background:linear-gradient(135deg,var(--cyan),#3b82f6);
+                    display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
+        .brand-name{font-size:16px;font-weight:800;letter-spacing:-.2px}
+        .back-btn{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;
+                  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+                  color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;
+                  text-decoration:none;transition:all .2s}
+        .back-btn:hover{color:var(--cyan);border-color:rgba(34,211,238,.3)}
+
+        /* ── Hero ── */
+        main{max-width:1000px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
+        .hero{text-align:center;margin-bottom:48px}
+        .hero-tag{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;
+                  padding:5px 14px;border-radius:100px;
+                  background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);
+                  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan)}
+        .hero-title{font-size:clamp(28px,6vw,46px);font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+        .hero-title em{font-style:normal;
+            background:linear-gradient(90deg,var(--amber),var(--cyan));
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-sub{font-size:14px;color:var(--muted);max-width:500px;margin:0 auto 24px}
+        .submit-link{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;
+                     border-radius:12px;background:linear-gradient(135deg,var(--cyan),#3b82f6);
+                     color:#fff;font-weight:700;font-size:13px;letter-spacing:.5px;
+                     text-decoration:none;transition:all .2s;
+                     box-shadow:0 6px 20px rgba(34,211,238,.25)}
+        .submit-link:hover{box-shadow:0 8px 28px rgba(34,211,238,.4);transform:translateY(-2px)}
+
+        /* ── Stats bar ── */
+        .stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:36px}
+        .stat-card{background:rgba(15,23,42,.7);border:1px solid var(--border);border-radius:14px;
+                   padding:18px;text-align:center;backdrop-filter:blur(12px)}
+        .stat-val{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+        .stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:700}
+
+        /* ── Filters ── */
+        .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;justify-content:center}
+        .filter-btn{padding:7px 16px;border-radius:100px;font-size:11px;font-weight:700;
+                    letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+                    border:1px solid var(--border);background:rgba(15,23,42,.6);color:var(--muted)}
+        .filter-btn:hover{border-color:rgba(34,211,238,.35);color:var(--cyan)}
+        .filter-btn.active{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.4);color:var(--cyan)}
+
+        /* ── Grid ── */
+        .grid{display:grid;grid-template-columns:repeat(1,1fr);gap:16px}
+        @media(min-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
+        @media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+        /* ── Card ── */
+        .card{background:rgba(15,23,42,.75);border:1px solid var(--border);border-radius:16px;
+              padding:22px;transition:all .25s;backdrop-filter:blur(12px);position:relative}
+        .card:hover{transform:translateY(-3px);border-color:rgba(34,211,238,.25);
+                    box-shadow:0 12px 32px rgba(0,0,0,.4)}
+        .card-quote{font-size:28px;color:var(--cyan);opacity:.3;line-height:1;margin-bottom:10px}
+        .card-text{font-size:13px;line-height:1.65;color:rgba(220,235,255,.85);margin-bottom:16px}
+        .card-footer{display:flex;align-items:center;justify-content:space-between}
+        .card-avatar{width:36px;height:36px;border-radius:50%;
+                     background:linear-gradient(135deg,rgba(34,211,238,.2),rgba(59,130,246,.2));
+                     border:1px solid rgba(34,211,238,.25);
+                     display:flex;align-items:center;justify-content:center;
+                     font-size:14px;font-weight:800;color:var(--cyan)}
+        .card-info{flex:1;margin-left:10px}
+        .card-name{font-size:13px;font-weight:700;color:#fff}
+        .card-course{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:1px}
+        .stars{display:flex;gap:2px}
+        .star{color:var(--amber);font-size:11px}
+        .star.empty{color:rgba(148,170,204,.3)}
+
+        /* ── Course badge ── */
+        .course-badge{position:absolute;top:14px;right:14px;
+                      font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                      padding:3px 8px;border-radius:6px;
+                      background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);color:var(--cyan)}
+
+        /* ── Loading / empty ── */
+        .loading{text-align:center;padding:60px 20px;color:var(--muted)}
+        .loading i{font-size:32px;margin-bottom:12px;color:var(--cyan);animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .empty{text-align:center;padding:60px 20px;color:var(--muted)}
+        .empty i{font-size:40px;margin-bottom:14px;color:rgba(34,211,238,.25);display:block}
+
+        /* ── Setup guide ── */
+        .setup-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+                      border-radius:14px;padding:20px 22px;margin-bottom:32px}
+        .setup-title{font-size:13px;font-weight:700;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+        .setup-steps{font-size:12px;color:rgba(220,200,120,.8);line-height:1.9}
+        .setup-steps code{background:rgba(251,191,36,.15);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:11px}
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">
+        <div class="brand-icon"><i class="fas fa-star"></i></div>
+        <span class="brand-name">Splendid's Academy</span>
+    </div>
+    <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Dashboard</a>
+</header>
+
+<main>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-tag"><i class="fas fa-comment-dots"></i> Student Voices</div>
+        <h1 class="hero-title">What Students Say About <em>Splendid's Academy</em></h1>
+        <p class="hero-sub">Real feedback from medical students who prepared for their exams using this platform.</p>
+        <!-- ⚠️  Replace this href with your actual Google Form link -->
+        <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="submit-link">
+            <i class="fas fa-pen"></i> Leave Your Feedback
+        </a>
+    </div>
+
+    <!-- Setup guide (remove this banner once the Sheet is connected) -->
+    <div class="setup-banner" id="setup-guide">
+        <div class="setup-title"><i class="fas fa-wrench"></i> Setup Instructions — Remove this banner after connecting</div>
+        <div class="setup-steps">
+            1. Create a Google Form with fields: <code>Name</code>, <code>Course</code>, <code>Rating (1–5)</code>, <code>Feedback</code><br>
+            2. Link the Form to a Google Sheet (Responses → Create Spreadsheet)<br>
+            3. In the Sheet: <strong>File → Share → Publish to web → CSV format → Publish</strong><br>
+            4. Copy the published CSV URL and paste it into <code>SHEET_CSV_URL</code> in the script below<br>
+            5. Replace <code>YOUR_GOOGLE_FORM_LINK_HERE</code> in the button above with your Form URL<br>
+            6. Delete this entire <code>setup-banner</code> div
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-val" id="stat-total" style="color:var(--cyan)">—</div>
+            <div class="stat-lbl">Total Reviews</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-avg" style="color:var(--amber)">—</div>
+            <div class="stat-lbl">Average Rating</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-five" style="color:var(--emerald)">—</div>
+            <div class="stat-lbl">5-Star Reviews</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters" id="filter-row">
+        <button class="filter-btn active" onclick="filterBy('ALL', this)">All Courses</button>
+        <button class="filter-btn" onclick="filterBy('ANA213', this)">ANA 213</button>
+        <button class="filter-btn" onclick="filterBy('PHS212', this)">PHS 212</button>
+        <button class="filter-btn" onclick="filterBy('PHS213', this)">PHS 213</button>
+        <button class="filter-btn" onclick="filterBy('PHS214', this)">PHS 214</button>
+        <button class="filter-btn" onclick="filterBy('GST211', this)">GST 211</button>
+    </div>
+
+    <!-- Cards -->
+    <div id="cards-container">
+        <div class="loading"><i class="fas fa-circle-notch"></i><br>Loading reviews...</div>
+    </div>
+</main>
+
+<script>
+/* ═══════════════════════════════════════════
+   ⚠️  REPLACE THIS URL with your published
+   Google Sheet CSV link
+═══════════════════════════════════════════ */
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR4AB6QedzFfEmg3N8vu7Ds-5HyZQAm5dy-wshxwI84C4l5yeTR8y1OsdgiYHh-V0TR_0ZH3gO26Dlj/pub?gid=1368247944&single=true&output=csv';
+
+/* Column mapping — adjust if your Form columns differ */
+const COL = {
+    timestamp: 0,
+    name:      1,
+    course:    2,
+    rating:    3,
+    feedback:  4
+};
+
+let allTestimonials = [];
+let activeFilter = 'ALL';
+
+/* ── Fetch & parse CSV ── */
+async function loadTestimonials() {
+    if (SHEET_CSV_URL.includes('YOUR_PUBLISHED')) {
+        // Demo data for preview
+        allTestimonials = getDemoData();
+        render(allTestimonials);
+        updateStats(allTestimonials);
+        return;
+    }
+    try {
+        const res = await fetch(SHEET_CSV_URL);
+        const csv = await res.text();
+        const rows = parseCSV(csv);
+        // Skip header row
+        allTestimonials = rows.slice(1).map(r => ({
+            timestamp: r[COL.timestamp] || '',
+            name:      r[COL.name]      || 'Anonymous',
+            course:    r[COL.course]    || 'General',
+            rating:    parseInt(r[COL.rating]) || 5,
+            feedback:  r[COL.feedback]  || ''
+        })).filter(t => t.feedback.length > 5).reverse(); // newest first
+
+        render(allTestimonials);
+        updateStats(allTestimonials);
+    } catch(e) {
+        document.getElementById('cards-container').innerHTML =
+            `<div class="empty"><i class="fas fa-plug"></i>Could not load testimonials. Check the Sheet CSV URL.</div>`;
+    }
+}
+
+function parseCSV(text) {
+    const rows = [];
+    const lines = text.split('\n');
+    for (const line of lines) {
+        if (!line.trim()) continue;
+        const cols = [];
+        let cur = '', inQ = false;
+        for (let i = 0; i < line.length; i++) {
+            const c = line[i];
+            if (c === '"' && !inQ) { inQ = true; }
+            else if (c === '"' && inQ && line[i+1] === '"') { cur += '"'; i++; }
+            else if (c === '"' && inQ) { inQ = false; }
+            else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+            else { cur += c; }
+        }
+        cols.push(cur.trim());
+        rows.push(cols);
+    }
+    return rows;
+}
+
+/* ── Render cards ── */
+function render(data) {
+    const filtered = activeFilter === 'ALL' ? data : data.filter(t =>
+        t.course.toUpperCase().replace(/\s/g,'').includes(activeFilter.replace(/\s/g,''))
+    );
+    const container = document.getElementById('cards-container');
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty"><i class="fas fa-comment-slash"></i>No reviews yet for this course.</div>`;
+        return;
+    }
+    container.innerHTML = `<div class="grid">${filtered.map(cardHTML).join('')}</div>`;
+}
+
+function cardHTML(t) {
+    const initials = t.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) || '?';
+    const stars = Array.from({length:5}, (_,i) =>
+        `<span class="star${i < t.rating ? '' : ' empty'}"><i class="fas fa-star"></i></span>`
+    ).join('');
+    const courseClean = t.course.replace(/\s/g,'').toUpperCase();
+    const shortCode = courseClean.match(/[A-Z]+\d+/)?.[0] || t.course;
+    return `
+        <div class="card">
+            <span class="course-badge">${shortCode}</span>
+            <div class="card-quote">"</div>
+            <div class="card-text">${escapeHTML(t.feedback)}</div>
+            <div class="card-footer">
+                <div class="card-avatar">${initials}</div>
+                <div class="card-info">
+                    <div class="card-name">${escapeHTML(t.name)}</div>
+                    <div class="card-course">${escapeHTML(t.course)}</div>
+                </div>
+                <div class="stars">${stars}</div>
+            </div>
+        </div>`;
+}
+
+function escapeHTML(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Stats ── */
+function updateStats(data) {
+    document.getElementById('stat-total').textContent = data.length;
+    const avg = data.length ? (data.reduce((a,t) => a + t.rating, 0) / data.length).toFixed(1) : '—';
+    document.getElementById('stat-avg').textContent = avg + (data.length ? ' ★' : '');
+    document.getElementById('stat-five').textContent = data.filter(t => t.rating === 5).length;
+}
+
+/* ── Filter ── */
+function filterBy(course, btn) {
+    activeFilter = course;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render(allTestimonials);
+}
+
+/* ── Demo data (shown when CSV URL not set) ── */
+function getDemoData() {
+    return [
+        { name:'Amaka Osei', course:'ANA 213', rating:5, feedback:'The Embryology mind map saved me. I could finally visualise the stages instead of just memorising names. Distinction.' },
+        { name:'Chukwudi A.', course:'PHS 212', rating:5, feedback:'The CBT vault is incredibly close to actual exam style. I sat PHS 212 without feeling surprised by a single question.' },
+        { name:'Fatima H.', course:'ANA 213', rating:4, feedback:'The mind map is brilliant. Would love more clinical trap questions for the gastrulation section.' },
+        { name:'Emmanuel T.', course:'PHS 213', rating:5, feedback:'Free. No ads. Just pure content. I sent this to my whole class on the night before the exam.' },
+        { name:'Blessing N.', course:'PHS 212', rating:5, feedback:'I failed PHS 212 in my first sit. Used the simulator daily for two weeks and came back with a merit. This works.' },
+        { name:'Kofi M.', course:'ANA 213', rating:5, feedback:'The colour-coded node map helped me understand Neural Crest differentiation better than any textbook diagram.' },
+    ];
+}
+
+loadTestimonials();
+</script>
+</body>
+</html>
+
