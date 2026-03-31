@@ -105,13 +105,6 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .empty{text-align:center;padding:60px 20px;color:var(--muted)}
         .empty i{font-size:40px;margin-bottom:14px;color:rgba(34,211,238,.25);display:block}
-
-        /* ── Setup guide ── */
-        .setup-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
-                      border-radius:14px;padding:20px 22px;margin-bottom:32px}
-        .setup-title{font-size:13px;font-weight:700;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:7px}
-        .setup-steps{font-size:12px;color:rgba(220,200,120,.8);line-height:1.9}
-        .setup-steps code{background:rgba(251,191,36,.15);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:11px}
     </style>
 </head>
 <body>
@@ -125,31 +118,15 @@
 </header>
 
 <main>
-    <!-- Hero -->
     <div class="hero">
         <div class="hero-tag"><i class="fas fa-comment-dots"></i> Student Voices</div>
         <h1 class="hero-title">What Students Say About <em>Splendid's Academy</em></h1>
         <p class="hero-sub">Real feedback from medical students who prepared for their exams using this platform.</p>
-        <!-- ⚠️  Replace this href with your actual Google Form link -->
-        <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="submit-link">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSegu788mPLfm1pgg_L5YEnYTmtJvnf9ZfD6-p0xU3IzLq-uFw/viewform?usp=header" target="_blank" class="submit-link">
             <i class="fas fa-pen"></i> Leave Your Feedback
         </a>
     </div>
 
-    <!-- Setup guide (remove this banner once the Sheet is connected) -->
-    <div class="setup-banner" id="setup-guide">
-        <div class="setup-title"><i class="fas fa-wrench"></i> Setup Instructions — Remove this banner after connecting</div>
-        <div class="setup-steps">
-            1. Create a Google Form with fields: <code>Name</code>, <code>Course</code>, <code>Rating (1–5)</code>, <code>Feedback</code><br>
-            2. Link the Form to a Google Sheet (Responses → Create Spreadsheet)<br>
-            3. In the Sheet: <strong>File → Share → Publish to web → CSV format → Publish</strong><br>
-            4. Copy the published CSV URL and paste it into <code>SHEET_CSV_URL</code> in the script below<br>
-            5. Replace <code>YOUR_GOOGLE_FORM_LINK_HERE</code> in the button above with your Form URL<br>
-            6. Delete this entire <code>setup-banner</code> div
-        </div>
-    </div>
-
-    <!-- Stats -->
     <div class="stats-bar">
         <div class="stat-card">
             <div class="stat-val" id="stat-total" style="color:var(--cyan)">—</div>
@@ -165,17 +142,10 @@
         </div>
     </div>
 
-    <!-- Filters -->
     <div class="filters" id="filter-row">
-        <button class="filter-btn active" onclick="filterBy('ALL', this)">All Courses</button>
-        <button class="filter-btn" onclick="filterBy('ANA213', this)">ANA 213</button>
-        <button class="filter-btn" onclick="filterBy('PHS212', this)">PHS 212</button>
-        <button class="filter-btn" onclick="filterBy('PHS213', this)">PHS 213</button>
-        <button class="filter-btn" onclick="filterBy('PHS214', this)">PHS 214</button>
-        <button class="filter-btn" onclick="filterBy('GST211', this)">GST 211</button>
+        <button class="filter-btn active" onclick="filterBy('ALL', this)">All Reviews</button>
     </div>
 
-    <!-- Cards -->
     <div id="cards-container">
         <div class="loading"><i class="fas fa-circle-notch"></i><br>Loading reviews...</div>
     </div>
@@ -183,50 +153,41 @@
 
 <script>
 /* ═══════════════════════════════════════════
-   ⚠️  REPLACE THIS URL with your published
-   Google Sheet CSV link
+   LIVE DATABASE CONNECTION
 ═══════════════════════════════════════════ */
 const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR4AB6QedzFfEmg3N8vu7Ds-5HyZQAm5dy-wshxwI84C4l5yeTR8y1OsdgiYHh-V0TR_0ZH3gO26Dlj/pub?gid=1368247944&single=true&output=csv';
-
-/* Column mapping — adjust if your Form columns differ */
-const COL = {
-    timestamp: 0,
-    name:      1,
-    course:    2,
-    rating:    3,
-    feedback:  4
-};
 
 let allTestimonials = [];
 let activeFilter = 'ALL';
 
 /* ── Fetch & parse CSV ── */
 async function loadTestimonials() {
-    if (SHEET_CSV_URL.includes('YOUR_PUBLISHED')) {
-        // Demo data for preview
-        allTestimonials = getDemoData();
-        render(allTestimonials);
-        updateStats(allTestimonials);
-        return;
-    }
     try {
         const res = await fetch(SHEET_CSV_URL);
         const csv = await res.text();
         const rows = parseCSV(csv);
-        // Skip header row
-        allTestimonials = rows.slice(1).map(r => ({
-            timestamp: r[COL.timestamp] || '',
-            name:      r[COL.name]      || 'Anonymous',
-            course:    r[COL.course]    || 'General',
-            rating:    parseInt(r[COL.rating]) || 5,
-            feedback:  r[COL.feedback]  || ''
-        })).filter(t => t.feedback.length > 5).reverse(); // newest first
+        
+        // Dynamic Mapping based on your Google Sheet columns
+        allTestimonials = rows.slice(1).map(r => {
+            // Extract and combine feedback from Col J (9) and Col O (14)
+            let rawFeedback = "";
+            if (r[9] && r[9].length > 3 && r[9].toLowerCase() !== "yes") rawFeedback += r[9] + ". ";
+            if (r[14]) rawFeedback += r[14];
+            
+            return {
+                timestamp: r[0] || '',
+                name:      r[1] || r[13] || 'Anonymous', // Col B or N
+                course:    r[2] || 'Student',            // Col C (Department)
+                rating:    parseInt(r[12]) || 5,         // Col M (Rating)
+                feedback:  rawFeedback.trim()
+            };
+        }).filter(t => t.feedback.length > 5).reverse(); // Remove empty/spam reviews
 
         render(allTestimonials);
         updateStats(allTestimonials);
     } catch(e) {
         document.getElementById('cards-container').innerHTML =
-            `<div class="empty"><i class="fas fa-plug"></i>Could not load testimonials. Check the Sheet CSV URL.</div>`;
+            `<div class="empty"><i class="fas fa-plug"></i>Could not load testimonials. Database sync failed.</div>`;
     }
 }
 
@@ -258,7 +219,7 @@ function render(data) {
     );
     const container = document.getElementById('cards-container');
     if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty"><i class="fas fa-comment-slash"></i>No reviews yet for this course.</div>`;
+        container.innerHTML = `<div class="empty"><i class="fas fa-comment-slash"></i>No reviews collected yet.</div>`;
         return;
     }
     container.innerHTML = `<div class="grid">${filtered.map(cardHTML).join('')}</div>`;
@@ -269,11 +230,14 @@ function cardHTML(t) {
     const stars = Array.from({length:5}, (_,i) =>
         `<span class="star${i < t.rating ? '' : ' empty'}"><i class="fas fa-star"></i></span>`
     ).join('');
-    const courseClean = t.course.replace(/\s/g,'').toUpperCase();
-    const shortCode = courseClean.match(/[A-Z]+\d+/)?.[0] || t.course;
+    
+    // Clean up the course/department name for the top right badge
+    let badgeText = t.course.toUpperCase();
+    if (badgeText.includes("PHYSIOLOGY")) badgeText = "PHYSIOLOGY";
+    
     return `
         <div class="card">
-            <span class="course-badge">${shortCode}</span>
+            <span class="course-badge">${badgeText}</span>
             <div class="card-quote">"</div>
             <div class="card-text">${escapeHTML(t.feedback)}</div>
             <div class="card-footer">
@@ -307,20 +271,7 @@ function filterBy(course, btn) {
     render(allTestimonials);
 }
 
-/* ── Demo data (shown when CSV URL not set) ── */
-function getDemoData() {
-    return [
-        { name:'Amaka Osei', course:'ANA 213', rating:5, feedback:'The Embryology mind map saved me. I could finally visualise the stages instead of just memorising names. Distinction.' },
-        { name:'Chukwudi A.', course:'PHS 212', rating:5, feedback:'The CBT vault is incredibly close to actual exam style. I sat PHS 212 without feeling surprised by a single question.' },
-        { name:'Fatima H.', course:'ANA 213', rating:4, feedback:'The mind map is brilliant. Would love more clinical trap questions for the gastrulation section.' },
-        { name:'Emmanuel T.', course:'PHS 213', rating:5, feedback:'Free. No ads. Just pure content. I sent this to my whole class on the night before the exam.' },
-        { name:'Blessing N.', course:'PHS 212', rating:5, feedback:'I failed PHS 212 in my first sit. Used the simulator daily for two weeks and came back with a merit. This works.' },
-        { name:'Kofi M.', course:'ANA 213', rating:5, feedback:'The colour-coded node map helped me understand Neural Crest differentiation better than any textbook diagram.' },
-    ];
-}
-
 loadTestimonials();
 </script>
 </body>
 </html>
-
