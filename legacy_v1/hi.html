@@ -1253,7 +1253,7 @@ function revealHiddenMessage() {
 }
 
 /* ═══════════════════════════════════════════
-   MUSIC TOGGLE
+   MUSIC TOGGLE (NATIVE UI)
 ═══════════════════════════════════════════ */
 let musicPlaying = false;
 
@@ -1264,13 +1264,13 @@ function toggleMusic() {
 
     if (musicPlaying) {
         audio.pause();
-        icon.className = 'fas fa-music';
+        icon.textContent = '🎵';
         btn.classList.remove('playing');
         musicPlaying = false;
     } else {
         audio.volume = 0.18;
         audio.play().then(() => {
-            icon.className = 'fas fa-pause';
+            icon.textContent = '⏸️';
             btn.classList.add('playing');
             musicPlaying = true;
         }).catch(() => {
@@ -1281,7 +1281,7 @@ function toggleMusic() {
 
 // Track if audio actually played
 document.getElementById('bg-audio').addEventListener('play', () => {
-    document.getElementById('music-icon').className = 'fas fa-pause';
+    document.getElementById('music-icon').textContent = '⏸️';
     document.getElementById('music-btn').classList.add('playing');
     musicPlaying = true;
 });
