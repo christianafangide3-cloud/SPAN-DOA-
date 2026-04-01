@@ -69,20 +69,20 @@
         /* ══════════════ MAIN ══════════════ */
         main{flex:1;display:flex;padding:20px;gap:20px;max-width:1280px;width:100%;margin:0 auto;position:relative;z-index:1}
 
-        /* ══════════════ SIDEBAR ══════════════ */
-        #sidebar{width:64px;flex-shrink:0;display:none;flex-direction:column;position:sticky;top:76px;height:calc(100vh-96px)}
-        @media(min-width:768px){#sidebar{width:256px}}
+        /* ══════════════ SIDEBAR — desktop only during exam ══════════════ */
+        #sidebar{width:64px;flex-shrink:0;display:none;flex-direction:column;position:sticky;top:76px;height:calc(100vh - 96px)}
+        @media(min-width:900px){#sidebar{width:240px}}
+        @media(max-width:899px){#sidebar{display:none!important}}
         .sb-inner{flex:1;overflow-y:auto;padding:14px;border-radius:18px}
         .sb-inner::-webkit-scrollbar{width:3px}
         .sb-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:100px}
         .sb-legend{display:none;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07)}
-        @media(min-width:768px){.sb-legend{display:block}}
+        @media(min-width:900px){.sb-legend{display:block}}
         .sb-legend-title{font-size:10px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
         .legend-row{display:flex;flex-wrap:wrap;gap:8px}
         .legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
         .legend-dot{width:7px;height:7px;border-radius:50%}
-        #q-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:4px}
-        @media(min-width:768px){#q-grid{grid-template-columns:repeat(5,1fr)}}
+        #q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
         .nb{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;
             font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid transparent}
         .nb.empty{background:rgba(255,255,255,.05);color:var(--muted)}
@@ -92,6 +92,28 @@
 
         /* ══════════════ CONTENT ══════════════ */
         .content{flex:1;display:flex;flex-direction:column;min-width:0}
+
+        /* ══════════════ DOT STRIP (mobile progress) ══════════════ */
+        .dot-strip-wrap{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+        @media(min-width:900px){.dot-strip-wrap{display:none}}
+        .dot-strip{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+        .ds{width:9px;height:9px;border-radius:50%;flex-shrink:0;cursor:pointer;transition:all .2s;
+            background:rgba(255,255,255,.08);border:1px solid transparent}
+        .ds.answered{background:rgba(6,182,212,.35);border-color:rgba(6,182,212,.5)}
+        .ds.flagged{background:rgba(251,191,36,.35);border-color:rgba(251,191,36,.5)}
+        .ds.current{background:var(--cyan);transform:scale(1.3);border-color:var(--cyan2)}
+        .ds-count{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+                  color:var(--muted);white-space:nowrap;flex-shrink:0}
+
+        /* ══════════════ AUTO-ADVANCE TOGGLE ══════════════ */
+        .aa-toggle{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;flex-shrink:0}
+        .aa-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+        .aa-track{width:30px;height:16px;border-radius:100px;background:rgba(255,255,255,.1);
+                  border:1px solid rgba(255,255,255,.12);position:relative;transition:background .3s}
+        .aa-track.on{background:rgba(6,182,212,.3);border-color:rgba(6,182,212,.5)}
+        .aa-thumb{position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;
+                  background:var(--muted);transition:all .25s}
+        .aa-track.on .aa-thumb{left:16px;background:var(--cyan)}
 
         /* ══════════════ NAME SCREEN ══════════════ */
         #name-screen{width:100%;max-width:420px;margin:40px auto 0;text-align:center}
@@ -151,31 +173,87 @@
 
         /* ══════════════ EXAM ══════════════ */
         #exam-screen{flex:1;display:none;flex-direction:column}
-        .exam-panel{border-radius:20px;padding:26px;flex:1;display:flex;flex-direction:column}
-        .exam-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-        .q-counter{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;
-                   color:var(--cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);
-                   padding:7px 13px;border-radius:9px;box-shadow:0 0 14px rgba(6,182,212,.12)}
+
+        /* ── Question card slide animations ── */
+        .q-card-wrap{overflow:hidden;position:relative;flex:1;display:flex;flex-direction:column}
+        .q-card{
+            flex:1;display:flex;flex-direction:column;
+            transition:transform 0.32s cubic-bezier(0.16,1,0.3,1), opacity 0.28s ease;
+        }
+        .q-card.slide-out-left  {transform:translateX(-55px);opacity:0;pointer-events:none}
+        .q-card.slide-out-right {transform:translateX(55px); opacity:0;pointer-events:none}
+        .q-card.slide-in-right  {transform:translateX(55px); opacity:0}
+        .q-card.slide-in-left   {transform:translateX(-55px);opacity:0}
+
+        .exam-panel{border-radius:20px;padding:26px 28px;flex:1;display:flex;flex-direction:column}
+        .exam-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+
+        /* Q counter with progress arc feel */
+        .q-counter{
+            font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;
+            color:var(--cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);
+            padding:7px 13px;border-radius:9px;box-shadow:0 0 14px rgba(6,182,212,.12);
+            display:flex;align-items:center;gap:8px;
+        }
+        .q-counter-fraction{color:var(--muted);font-weight:500}
+
+        .exam-top-right{display:flex;align-items:center;gap:10px}
         .flag-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;
                   border:1px solid rgba(148,163,184,.2);color:var(--muted);font-size:12px;font-weight:700;
                   cursor:pointer;transition:all .2s;background:none}
         .flag-btn:hover{color:var(--amber);border-color:rgba(251,191,36,.4)}
         .flag-btn.active{color:var(--amber);border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.08)}
-        #q-text{font-size:clamp(15px,2.8vw,21px);font-weight:700;line-height:1.55;color:#fff;margin-bottom:22px;flex-shrink:0}
-        #opts{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;flex:1}
-        .opt{padding:15px 17px;border-radius:13px;cursor:pointer;display:flex;align-items:center;
-             gap:13px;background:rgba(30,41,59,.45);border:1px solid rgba(255,255,255,.08);transition:all .18s}
+
+        /* Keyboard hint */
+        .kbd-hint{display:none;align-items:center;gap:5px;font-size:10px;color:rgba(148,163,184,.3)}
+        @media(min-width:900px){.kbd-hint{display:flex}}
+        .kbd{padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-family:'JetBrains Mono',monospace;font-size:9px}
+
+        /* Question text */
+        #q-text{font-size:clamp(16px,3vw,22px);font-weight:700;line-height:1.6;
+                color:#fff;margin-bottom:26px;flex-shrink:0}
+
+        /* Options — bigger hit area on mobile */
+        #opts{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;flex:1}
+        .opt{
+            padding:16px 18px;border-radius:13px;cursor:pointer;
+            display:flex;align-items:center;gap:13px;
+            background:rgba(30,41,59,.45);border:1px solid rgba(255,255,255,.08);
+            transition:all .18s;-webkit-tap-highlight-color:transparent;
+        }
         .opt:hover{background:rgba(30,41,59,.8);border-color:rgba(6,182,212,.4)}
         .opt.selected{background:rgba(6,182,212,.12);border-color:var(--cyan);box-shadow:inset 0 0 18px rgba(6,182,212,.07)}
+        /* Auto-advance flash — brief green before sliding */
+        .opt.auto-flash{background:rgba(52,211,153,.12);border-color:var(--emerald)!important;
+                        box-shadow:inset 0 0 18px rgba(52,211,153,.07)!important;
+                        transition:all .1s!important}
         .opt-radio{width:21px;height:21px;border-radius:50%;border:2px solid rgba(148,163,184,.3);
                    display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
         .opt.selected .opt-radio{border-color:var(--cyan);background:var(--cyan)}
+        .opt.auto-flash .opt-radio{border-color:var(--emerald);background:var(--emerald)}
         .opt-dot{width:8px;height:8px;border-radius:50%;background:#020617}
-        .opt-text{font-size:14px;font-weight:500;line-height:1.4}
+        .opt-label{
+            width:22px;height:22px;border-radius:7px;flex-shrink:0;
+            display:flex;align-items:center;justify-content:center;
+            font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;
+            background:rgba(255,255,255,.06);color:var(--muted);transition:all .18s;
+        }
+        .opt.selected .opt-label{background:rgba(6,182,212,.2);color:var(--cyan)}
+        .opt-text{font-size:14px;font-weight:500;line-height:1.45;flex:1}
+
+        /* Swipe hint on mobile */
+        .swipe-hint{
+            text-align:center;font-size:10px;color:rgba(148,163,184,.25);
+            letter-spacing:1.5px;text-transform:uppercase;padding:6px 0 2px;
+            display:none;
+        }
+        @media(max-width:899px){.swipe-hint{display:block}}
+
+        /* Nav buttons */
         .exam-nav{display:flex;justify-content:space-between;align-items:center;
-                  padding-top:18px;border-top:1px solid rgba(255,255,255,.06);margin-top:auto;gap:9px}
+                  padding-top:16px;border-top:1px solid rgba(255,255,255,.06);gap:9px}
         .btn-prev,.btn-next,.btn-submit{display:flex;align-items:center;gap:7px;
-             padding:11px 20px;border-radius:11px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;border:none}
+             padding:12px 22px;border-radius:11px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;border:none}
         .btn-prev{background:rgba(30,41,59,.6);color:#fff;border:1px solid rgba(255,255,255,.1)}
         .btn-prev:hover{background:rgba(30,41,59,1)}
         .btn-next{background:linear-gradient(135deg,var(--cyan),#3b82f6);color:#fff;box-shadow:0 4px 18px rgba(6,182,212,.25)}
@@ -421,18 +499,47 @@
 
         <!-- ③ EXAM -->
         <div id="exam-screen">
-            <div class="prog-track"><div id="prog-bar" style="width:0%"></div></div>
-            <div class="exam-panel glass">
-                <div class="exam-top">
-                    <span class="q-counter" id="q-counter">Q: 1 / 50</span>
-                    <button class="flag-btn" id="flag-btn" onclick="toggleFlag()"><i class="fas fa-flag"></i> Flag</button>
+            <!-- Controls row: dot strip + progress + auto-advance -->
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+                <div class="dot-strip-wrap">
+                    <div class="dot-strip" id="dot-strip"></div>
+                    <span class="ds-count" id="ds-count">1 / 50</span>
                 </div>
-                <div id="q-text">Loading...</div>
-                <div id="opts"></div>
-                <div class="exam-nav">
-                    <button class="btn-prev" onclick="nav(-1)"><i class="fas fa-arrow-left"></i> Prev</button>
-                    <button class="btn-submit" id="submit-btn" style="display:none" onclick="attemptSubmit()">Finish Exam <i class="fas fa-check-double"></i></button>
-                    <button class="btn-next" id="next-btn" onclick="nav(1)">Next <i class="fas fa-arrow-right"></i></button>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                    <div class="prog-track" style="flex:1;margin-bottom:0"><div id="prog-bar" style="width:0%"></div></div>
+                    <div class="aa-toggle" onclick="toggleAutoAdvance()" title="Auto-advance after selecting an answer">
+                        <div class="aa-track" id="aa-track"><div class="aa-thumb"></div></div>
+                        <span class="aa-label">Auto</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sliding question card -->
+            <div class="q-card-wrap">
+                <div class="q-card glass exam-panel" id="q-card">
+                    <div class="exam-top">
+                        <span class="q-counter" id="q-counter">
+                            <span id="q-num">1</span>
+                            <span class="q-counter-fraction" id="q-frac">/ 50</span>
+                        </span>
+                        <div class="exam-top-right">
+                            <div class="kbd-hint">
+                                <span class="kbd">← →</span>
+                                <span style="font-size:9px;color:rgba(148,163,184,.3)">nav</span>
+                                <span class="kbd" style="margin-left:4px">1–5</span>
+                                <span style="font-size:9px;color:rgba(148,163,184,.3)">pick</span>
+                            </div>
+                            <button class="flag-btn" id="flag-btn" onclick="toggleFlag()"><i class="fas fa-flag"></i> Flag</button>
+                        </div>
+                    </div>
+                    <div id="q-text">Loading...</div>
+                    <div id="opts"></div>
+                    <div class="swipe-hint">← swipe to navigate →</div>
+                    <div class="exam-nav">
+                        <button class="btn-prev" onclick="nav(-1)"><i class="fas fa-arrow-left"></i> Prev</button>
+                        <button class="btn-submit" id="submit-btn" style="display:none" onclick="attemptSubmit()">Finish Exam <i class="fas fa-check-double"></i></button>
+                        <button class="btn-next" id="next-btn" onclick="nav(1)">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -898,21 +1005,51 @@ function launchCourse(code){
     document.getElementById('sidebar').style.display      = 'flex';
     document.getElementById('timer-wrap').style.display   = 'flex';
     document.getElementById('header-sub').textContent     = `${code} — ACTIVE`;
+    document.getElementById('q-frac').textContent         = `/ ${questions.length}`;
 
+    buildDotStrip();
     buildGrid();
-    renderQ();
+    renderQ(null);
     startTimer();
+    initSwipe();
+    initKeyboard();
 }
 
 /* ════════════════════════════════════════════
-   NAVIGATOR GRID
+   DOT STRIP (mobile progress indicator)
+════════════════════════════════════════════ */
+function buildDotStrip(){
+    const strip = document.getElementById('dot-strip');
+    strip.innerHTML = '';
+    questions.forEach((_,i) => {
+        const d = document.createElement('div');
+        d.id = `ds-${i}`; d.className = 'ds';
+        d.onclick = () => nav(null, i);
+        strip.appendChild(d);
+    });
+    syncDots();
+}
+
+function syncDots(){
+    questions.forEach((_,i) => {
+        const d = document.getElementById(`ds-${i}`); if(!d) return;
+        d.className = 'ds' +
+            (i === currentIndex      ? ' current'  :
+             flagged[i]              ? ' flagged'  :
+             userAnswers[i] !== null ? ' answered' : '');
+    });
+    document.getElementById('ds-count').textContent = `${currentIndex+1} / ${questions.length}`;
+}
+
+/* ════════════════════════════════════════════
+   SIDEBAR GRID (desktop)
 ════════════════════════════════════════════ */
 function buildGrid(){
     const grid = document.getElementById('q-grid'); grid.innerHTML = '';
     questions.forEach((_,i) => {
         const b = document.createElement('div');
         b.id = `nb-${i}`; b.className = 'nb empty'; b.textContent = i+1;
-        b.onclick = () => jumpTo(i);
+        b.onclick = () => nav(null, i);
         grid.appendChild(b);
     });
     syncGrid();
@@ -929,36 +1066,126 @@ function syncGrid(){
 }
 
 /* ════════════════════════════════════════════
-   RENDER QUESTION
+   RENDER QUESTION (with optional slide direction)
 ════════════════════════════════════════════ */
-function renderQ(){
-    const q = questions[currentIndex];
-    document.getElementById('q-counter').textContent = `Q: ${currentIndex+1} / ${questions.length}`;
-    document.getElementById('q-text').textContent = q.question || q.q || '';
+function renderQ(slideDir){
+    const q    = questions[currentIndex];
+    const card = document.getElementById('q-card');
 
-    const fb = document.getElementById('flag-btn');
-    fb.className = 'flag-btn' + (flagged[currentIndex] ? ' active' : '');
+    document.getElementById('q-num').textContent  = currentIndex + 1;
+    document.getElementById('flag-btn').className = 'flag-btn' + (flagged[currentIndex] ? ' active' : '');
 
-    const container = document.getElementById('opts'); container.innerHTML = '';
-    q.options.forEach((opt, idx) => {
+    const labels = ['A','B','C','D','E'];
+    const optsHTML = q.options.map((opt, idx) => {
         const sel = userAnswers[currentIndex] === idx;
-        const c = document.createElement('div');
-        c.className = 'opt' + (sel ? ' selected' : '');
-        c.onclick = () => pick(idx);
-        c.innerHTML = `<div class="opt-radio">${sel ? '<div class="opt-dot"></div>' : ''}</div><span class="opt-text">${opt}</span>`;
-        container.appendChild(c);
-    });
+        return `<div class="opt${sel ? ' selected' : ''}" onclick="pick(${idx})">
+            <div class="opt-label">${labels[idx]||idx+1}</div>
+            <span class="opt-text">${opt}</span>
+        </div>`;
+    }).join('');
 
     const last = currentIndex === questions.length - 1;
-    document.getElementById('next-btn').style.display   = last ? 'none' : 'flex';
-    document.getElementById('submit-btn').style.display = last ? 'flex' : 'none';
-    syncGrid();
+
+    if(slideDir){
+        isAnimating = true;
+        card.classList.add(slideDir === 1 ? 'slide-out-left' : 'slide-out-right');
+        setTimeout(() => {
+            card.classList.remove('slide-out-left','slide-out-right');
+            applyContent();
+            card.classList.add(slideDir === 1 ? 'slide-in-right' : 'slide-in-left');
+            void card.offsetWidth; // reflow
+            card.classList.remove('slide-in-right','slide-in-left');
+            setTimeout(() => { isAnimating = false; }, 320);
+        }, 270);
+    } else {
+        applyContent();
+    }
+
+    function applyContent(){
+        document.getElementById('q-text').textContent    = q.question || q.q || '';
+        document.getElementById('opts').innerHTML        = optsHTML;
+        document.getElementById('next-btn').style.display   = last ? 'none' : 'flex';
+        document.getElementById('submit-btn').style.display = last ? 'flex' : 'none';
+        syncGrid(); syncDots();
+    }
 }
 
-function pick(idx){ userAnswers[currentIndex] = idx; renderQ(); }
-function toggleFlag(){ flagged[currentIndex] = !flagged[currentIndex]; renderQ(); }
-function nav(dir){ const n = currentIndex + dir; if(n >= 0 && n < questions.length){ currentIndex = n; renderQ(); } }
-function jumpTo(idx){ currentIndex = idx; renderQ(); }
+/* ════════════════════════════════════════════
+   PICK ANSWER
+════════════════════════════════════════════ */
+function pick(idx){
+    if(isAnimating) return;
+    userAnswers[currentIndex] = idx;
+    // Update option styles instantly without full re-render
+    document.querySelectorAll('.opt').forEach((el,i) => {
+        el.classList.toggle('selected', i === idx);
+    });
+    syncGrid(); syncDots();
+    if(autoAdvance && currentIndex < questions.length - 1){
+        const el = document.querySelectorAll('.opt')[idx];
+        if(el) el.classList.add('auto-flash');
+        setTimeout(() => nav(1), 600);
+    }
+}
+
+/* ════════════════════════════════════════════
+   NAVIGATION WITH SLIDE
+════════════════════════════════════════════ */
+function nav(dir, targetIdx = null){
+    if(isAnimating) return;
+    let next, slideDir;
+    if(targetIdx !== null){
+        next     = targetIdx;
+        slideDir = next > currentIndex ? 1 : -1;
+    } else {
+        next     = currentIndex + dir;
+        slideDir = dir;
+    }
+    if(next < 0 || next >= questions.length) return;
+    currentIndex = next;
+    renderQ(slideDir);
+}
+
+function toggleFlag(){ flagged[currentIndex] = !flagged[currentIndex]; renderQ(null); }
+function jumpTo(idx){ nav(null, idx); }
+
+/* ════════════════════════════════════════════
+   AUTO-ADVANCE TOGGLE
+════════════════════════════════════════════ */
+let autoAdvance = false;
+function toggleAutoAdvance(){
+    autoAdvance = !autoAdvance;
+    document.getElementById('aa-track').classList.toggle('on', autoAdvance);
+}
+
+/* ════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+════════════════════════════════════════════ */
+let isAnimating = false;
+function initKeyboard(){
+    document.addEventListener('keydown', e => {
+        if(document.getElementById('exam-screen').style.display === 'none') return;
+        if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){ e.preventDefault(); nav(1); }
+        if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  { e.preventDefault(); nav(-1); }
+        if(e.key === 'f' || e.key === 'F') toggleFlag();
+        const num = parseInt(e.key);
+        if(num >= 1 && num <= (questions[currentIndex]?.options?.length || 0)) pick(num - 1);
+    });
+}
+
+/* ════════════════════════════════════════════
+   SWIPE TO NAVIGATE
+════════════════════════════════════════════ */
+let touchStartX = 0;
+function initSwipe(){
+    const card = document.getElementById('q-card');
+    card.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    card.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if(Math.abs(diff) > 52) nav(diff > 0 ? 1 : -1);
+    }, { passive: true });
+}
 
 /* ════════════════════════════════════════════
    TIMER
@@ -1095,4 +1322,3 @@ function openReview(){
 </script>
 </body>
 </html>
-
