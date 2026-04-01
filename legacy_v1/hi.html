@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Two | Miriam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for a premium feel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        
+        /* Initial state for scroll animation */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden">
+
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <img src="path/to/hero-image.jpg" alt="Miriam and I" class="absolute inset-0 w-full h-full object-cover opacity-30 scale-105 animate-pulse duration-[10000ms]">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-950"></div>
+        
+        <div class="relative z-10 text-center space-y-6 max-w-2xl px-6 backdrop-blur-md bg-white/5 p-10 rounded-3xl border border-white/10 shadow-2xl reveal active">
+            <span class="text-xs font-mono text-emerald-400 tracking-widest uppercase">System Log: 365 Days</span>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white">
+                You said,<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-300">"Rest for a while."</span>
+            </h1>
+            <p class="text-lg text-slate-300 font-light">
+                But I couldn't sleep. Instead, I wrote this code to document the most beautiful 365 days of my life.
+            </p>
+            <div class="pt-4">
+                <a href="#gallery" class="inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-slate-900 bg-white rounded-full hover:bg-slate-200 transition-colors duration-300">
+                    Unlock Our Archive
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="gallery" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-3xl font-bold">The Architecture of Us</h2>
+            <p class="text-slate-400 mt-2">Every frame is a core memory.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            
+            <div class="group relative overflow-hidden rounded-2xl md:row-span-2 reveal">
+                <img src="path/to/photo1.jpg" alt="Memory 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <p class="text-white font-medium">The day it all started.</p>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl reveal delay-100">
+                <img src="path/to/photo2.jpg" alt="Memory 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                    <p class="text-white font-medium">My absolute peace.</p>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl reveal delay-200">
+                <img src="path/to/photo3.jpg" alt="Memory 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            </div>
+
+            <div class="group relative overflow-hidden rounded-2xl md:col-span-2 reveal">
+                <img src="path/to/photo4.jpg" alt="Memory 4" class="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p class="text-2xl font-bold text-white tracking-widest">UNBREAKABLE</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-32 px-6 relative flex flex-col items-center justify-center min-h-screen text-center reveal">
+        <div id="wish-container" class="max-w-3xl w-full p-1 rounded-3xl bg-gradient-to-r from-rose-500 via-purple-500 to-orange-500 transition-all duration-500 cursor-pointer hover:shadow-[0_0_40px_rgba(244,63,94,0.3)]">
+            <div class="bg-slate-950 rounded-[23px] p-10 md:p-16 h-full w-full relative overflow-hidden" id="wish-inner">
+                
+                <div id="wish-trigger-text" class="relative z-10 transition-opacity duration-500">
+                    <svg class="w-12 h-12 mx-auto text-rose-400 mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <h3 class="text-2xl font-bold text-white">Decrypt Chapter Two</h3>
+                    <p class="text-slate-400 mt-2 text-sm">Tap to execute my wish for us.</p>
+                </div>
+
+                <div id="wish-content" class="absolute inset-0 flex flex-col items-center justify-center p-8 opacity-0 pointer-events-none transition-opacity duration-700 bg-slate-950 z-20">
+                    <h3 class="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-300 mb-4">My Wish For Us</h3>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        I wish for unconditional growth. I wish for us to conquer every goal we set while keeping this beautiful bond untouchable. I want us to build a legacy so solid that it outlasts time. I want to keep choosing you, every single day.
+                    </p>
+                    <p class="text-rose-400 font-medium mt-6">Happy 1-Year Anniversary, Miriam. 🥂</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 1. Scroll Reveal Logic (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        };
+        
+        const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 2. The Interactive Wish Decryption
+        const wishContainer = document.getElementById('wish-container');
+        const triggerText = document.getElementById('wish-trigger-text');
+        const wishContent = document.getElementById('wish-content');
+        let isDecrypted = false;
+
+        wishContainer.addEventListener('click', () => {
+            if (isDecrypted) return;
+            isDecrypted = true;
+            
+            // UI State Change
+            wishContainer.classList.remove('cursor-pointer', 'hover:shadow-[0_0_40px_rgba(244,63,94,0.3)]');
+            triggerText.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                wishContent.classList.remove('opacity-0', 'pointer-events-none');
+                wishContent.classList.add('opacity-100');
+            }, 300);
+        });
+    </script>
+</body>
+  </html>
+  
