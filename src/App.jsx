@@ -41,7 +41,7 @@ const ProtectedRoute = ({ children }) => {
 export default function App() {
     return (
         <AuthProvider>
-            <Router>
+            <Router basename="/SPAN-DOA-">
                 <Routes>
                     {/* Public Route */}
                     <Route path="/" element={<Login />} />
