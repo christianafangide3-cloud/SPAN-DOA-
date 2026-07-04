@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }) {
     const navItems = [
         { path: "/dashboard", label: "Dashboard", icon: "fa-columns-solid fa-gauge-high" },
         { path: "/cbt", label: "CBT Simulator", icon: "fa-laptop-code" },
-        { path: "/clinical", label: "Objective Vault", icon: "fa-notes-medical" },
+        { path: "/clinical", label: "Exam Springs", icon: "fa-notes-medical" },
         { path: "/flashcards", label: "Flashcards", icon: "fa-layer-group" },
         { path: "/calculator", label: "GP Forecaster", icon: "fa-calculator" },
         { path: "/map", label: "Embryology Map", icon: "fa-dna" },

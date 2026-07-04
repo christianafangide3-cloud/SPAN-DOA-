@@ -5,8 +5,6 @@ import { useAuth } from "../context/AuthContext";
 export default function Dashboard() {
     const { user } = useAuth();
     const [targetCgpa, setTargetCgpa] = useState("4.50");
-    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    const [progressPercent, setProgressPercent] = useState(0);
     const [showBanner, setShowBanner] = useState(true);
 
     // Load Local Storage targets
@@ -25,53 +23,6 @@ export default function Dashboard() {
         return () => window.removeEventListener("storage", handleStorageChange);
     }, []);
 
-    // Exam countdown & progress timeline shifting engine
-    useEffect(() => {
-        const getDates = () => {
-            const now = new Date();
-            let currentYear = now.getFullYear();
-            
-            // March 23 is the target exam date
-            let targetDate = new Date(`March 23, ${currentYear} 09:00:00`);
-            let semesterStart = new Date(`November 1, ${currentYear - 1} 08:00:00`);
-            
-            if (now > targetDate) {
-                targetDate = new Date(`March 23, ${currentYear + 1} 09:00:00`);
-                semesterStart = new Date(`November 1, ${currentYear} 08:00:00`);
-            }
-            return { start: semesterStart, target: targetDate };
-        };
-
-        const { start, target } = getDates();
-
-        const updateTimelineAndTimer = () => {
-            const now = new Date();
-            const totalDuration = target.getTime() - start.getTime();
-            const elapsed = now.getTime() - start.getTime();
-            
-            // Calculate progress percentage
-            let percent = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-            setProgressPercent(Math.round(percent));
-
-            // Calculate countdown
-            const distance = target.getTime() - now.getTime();
-            if (distance < 0) {
-                setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-            } else {
-                setCountdown({
-                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((distance % (1000 * 60)) / 1000)
-                });
-            }
-        };
-
-        updateTimelineAndTimer();
-        const intervalId = setInterval(updateTimelineAndTimer, 1000);
-        return () => clearInterval(intervalId);
-    }, []);
-
     const greeting = () => {
         const hr = new Date().getHours();
         if (hr < 12) return "Good morning";
@@ -81,7 +32,7 @@ export default function Dashboard() {
 
     const modules = [
         { path: "/cbt", label: "CBT Simulator", desc: "Interactive computer-based testing arena.", icon: "fa-laptop-code", color: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20" },
-        { path: "/clinical", label: "Objective Vault", desc: "Interactive OSCE clinical mock desk.", icon: "fa-notes-medical", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+        { path: "/clinical", label: "Exam Springs", desc: "Interactive OSCE clinical mock desk.", icon: "fa-notes-medical", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
         { path: "/flashcards", label: "Flashcards Arena", desc: "Spaced-repetition active recall decks.", icon: "fa-layer-group", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
         { path: "/calculator", label: "GP Forecaster", desc: "Project grades and forecast CGPA trajectory.", icon: "fa-calculator", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
         { path: "/map", label: "Embryology Map", desc: "Interactive D3.js embryology core map.", icon: "fa-dna", color: "text-purple-400 bg-purple-500/10 border-purple-500/20" },
@@ -103,7 +54,7 @@ export default function Dashboard() {
                         <div className="space-y-0.5">
                             <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Platform Migration Notice</h3>
                             <p className="text-[11px] text-slate-400 max-w-xl leading-relaxed">
-                                Splendid's Academy is transitioning study slides to the secure **Cortex Hub**! Check out the secure reader portal now.
+                                Cortex Hub is an intelligent and adaptive academic workspace filled with a whole lot of things, far better than what this is. Check out the secure reader portal now.
                             </p>
                         </div>
                     </div>
@@ -178,67 +129,20 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            {/* Timelines block */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Countdown Card */}
-                <div className="glass-card p-6 rounded-2xl border border-white/5 text-center flex flex-col justify-center space-y-4">
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">
-                        <i className="fas fa-hourglass-half text-cyan-400 mr-1.5"></i> Target Profs Countdown
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                        <div className="bg-slate-950/60 p-3 rounded-xl border border-white/5">
-                            <div className="text-2xl font-black font-mono text-cyan-400 leading-none">{countdown.days}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Days</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-3 rounded-xl border border-white/5">
-                            <div className="text-2xl font-black font-mono text-cyan-400 leading-none">{countdown.hours}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Hours</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-3 rounded-xl border border-white/5">
-                            <div className="text-2xl font-black font-mono text-cyan-400 leading-none">{countdown.minutes}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Mins</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-3 rounded-xl border border-white/5">
-                            <div className="text-2xl font-black font-mono text-cyan-400 leading-none">{countdown.seconds}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Secs</div>
-                        </div>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-mono tracking-wider">Target: March 23 (Next Profs Exam Session)</p>
+            {/* Workspace Overview Box */}
+            <div className="glass-card p-6 rounded-3xl border border-white/5 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="space-y-2 max-w-xl">
+                    <div className="text-[10px] font-bold text-cyan-400 font-mono tracking-widest uppercase">// ACADEMIC WORKSPACE</div>
+                    <h3 className="text-xl font-bold text-white tracking-tight">Active Learning Tracks</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                        Welcome to Year 2. Focus on systematic review of Musculoskeletal Anatomy, Embryonic development vectors, and Organ System physiology. Explore checklists and practice mocks to cement your knowledge.
+                    </p>
                 </div>
-
-                {/* Progress bar timeline */}
-                <div className="glass-card p-6 rounded-2xl border border-white/5 md:col-span-2 flex flex-col justify-between space-y-4">
-                    <div>
-                        <div className="flex justify-between items-center mb-1">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest font-mono">
-                                Semester Progress timeline
-                            </span>
-                            <span className="text-xs font-black font-mono text-cyan-400">{progressPercent}% Completed</span>
-                        </div>
-                        <div className="w-full bg-slate-950/80 rounded-full h-3 border border-white/5 overflow-hidden p-0.5">
-                            <div 
-                                className="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full transition-all duration-500" 
-                                style={{ width: `${progressPercent}%` }}
-                            ></div>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-3 text-center text-[9px] font-bold text-slate-500 font-mono tracking-wider">
-                        <div>
-                            <div>NOV 1</div>
-                            <div className="text-[8px] text-slate-600 mt-0.5">SEMESTER START</div>
-                        </div>
-                        <div>
-                            <div className="text-slate-400">ACTIVE PROGRESS</div>
-                            <div className="text-[8px] text-cyan-500 mt-0.5">CURRENT INTERVAL</div>
-                        </div>
-                        <div>
-                            <div>MAR 23</div>
-                            <div className="text-[8px] text-slate-600 mt-0.5">FINAL PROFS EXAM</div>
-                        </div>
-                    </div>
+                <div className="flex gap-3 flex-shrink-0">
+                    <Link to="/outline" className="px-5 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/20 hover:bg-cyan-500/5 text-slate-300 hover:text-cyan-400 font-bold transition-all text-xs uppercase tracking-wider flex items-center gap-1.5 font-mono">
+                        <i className="fas fa-list-check"></i> Outline Checkpoints
+                    </Link>
                 </div>
-
             </div>
 
             {/* Bento Module Cards */}

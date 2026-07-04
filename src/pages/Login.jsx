@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { 
@@ -22,9 +22,6 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [timeoutMessage, setTimeoutMessage] = useState(false);
 
-    // Countdown State
-    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
     useEffect(() => {
         if (user) {
             navigate("/dashboard");
@@ -34,45 +31,6 @@ export default function Login() {
             localStorage.removeItem("session_timeout");
         }
     }, [user, navigate]);
-
-    // Dynamic countdown shifting logic
-    useEffect(() => {
-        const getNextExamDate = () => {
-            const now = new Date();
-            let currentYear = now.getFullYear();
-            
-            // Core target: March 23
-            let targetDate = new Date(`March 23, ${currentYear} 09:00:00`);
-            
-            if (now > targetDate) {
-                // If past March 23, shift to next year
-                targetDate = new Date(`March 23, ${currentYear + 1} 09:00:00`);
-            }
-            return targetDate;
-        };
-
-        const target = getNextExamDate();
-
-        const updateTimer = () => {
-            const now = new Date().getTime();
-            const distance = target.getTime() - now;
-
-            if (distance < 0) {
-                setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-            } else {
-                setCountdown({
-                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((distance % (1000 * 60)) / 1000)
-                });
-            }
-        };
-
-        updateTimer();
-        const timerId = setInterval(updateTimer, 1000);
-        return () => clearInterval(timerId);
-    }, []);
 
     const handleAuth = async (e) => {
         e.preventDefault();
@@ -128,7 +86,7 @@ export default function Login() {
                         Splendid's Academy
                     </h1>
                     <p className="text-xs text-slate-400 font-mono tracking-widest uppercase">
-                        DOA STUDY PREP PORTAL
+                        DOA STUDY PORTAL
                     </p>
                 </div>
 
@@ -254,31 +212,6 @@ export default function Login() {
                         >
                             {isRegister ? "Already registered? Sign In" : "Need credentials? Request Access"}
                         </button>
-                    </div>
-                </div>
-
-                {/* Exam Countdown Widget */}
-                <div className="glass-card rounded-2xl p-5 border border-white/5 text-center">
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono mb-3">
-                        <i className="fas fa-hourglass-half text-cyan-400 mr-1.5"></i> Countdown to Profs Exam
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                        <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5">
-                            <div className="text-xl font-bold font-mono text-cyan-400 leading-none">{countdown.days}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Days</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5">
-                            <div className="text-xl font-bold font-mono text-cyan-400 leading-none">{countdown.hours}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Hours</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5">
-                            <div className="text-xl font-bold font-mono text-cyan-400 leading-none">{countdown.minutes}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Mins</div>
-                        </div>
-                        <div className="bg-slate-950/60 p-2.5 rounded-xl border border-white/5">
-                            <div className="text-xl font-bold font-mono text-cyan-400 leading-none">{countdown.seconds}</div>
-                            <div className="text-[8px] text-slate-500 uppercase tracking-widest font-mono mt-1">Secs</div>
-                        </div>
                     </div>
                 </div>
 

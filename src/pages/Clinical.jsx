@@ -94,7 +94,7 @@ export default function Clinical() {
             {/* Header Navigation */}
             <div className="flex items-center justify-between pb-4 border-b border-white/5">
                 <div>
-                    <h1 className="text-xl font-bold tracking-tight text-white font-head leading-tight">THE UNIFIED VAULT</h1>
+                    <h1 className="text-xl font-bold tracking-tight text-white font-head leading-tight">EXAM SPRINGS</h1>
                     <p className="text-[9px] text-cyan-400 font-mono tracking-widest uppercase mt-0.5">Multi-Engine Simulator</p>
                 </div>
                 <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center hover:text-rose-400 hover:border-rose-400/30 transition-all">
@@ -132,7 +132,7 @@ export default function Clinical() {
             {mode === "CBT" && (
                 <div className="glass-card rounded-3xl p-6 text-center border border-white/5 space-y-6">
                     <div className="space-y-2">
-                        <h2 className="text-xl font-bold text-white">Select Objective Module</h2>
+                        <h2 className="text-xl font-bold text-white">Select Exam Springs Module</h2>
                         <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">Click a module to load questions directly from our central vault.</p>
                     </div>
                     
