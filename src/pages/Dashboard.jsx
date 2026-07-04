@@ -7,6 +7,7 @@ export default function Dashboard() {
     const [targetCgpa, setTargetCgpa] = useState("4.50");
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [progressPercent, setProgressPercent] = useState(0);
+    const [showBanner, setShowBanner] = useState(true);
 
     // Load Local Storage targets
     useEffect(() => {
@@ -92,6 +93,40 @@ export default function Dashboard() {
     return (
         <div className="space-y-6">
             
+            {/* Cortex Hub Migration Alert */}
+            {showBanner && (
+                <div className="relative overflow-hidden bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/25 p-5 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-4 backdrop-blur-md">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0 animate-pulse">
+                            <i className="fas fa-satellite-dish"></i>
+                        </div>
+                        <div className="space-y-0.5">
+                            <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Platform Migration Notice</h3>
+                            <p className="text-[11px] text-slate-400 max-w-xl leading-relaxed">
+                                Splendid's Academy is transitioning study slides to the secure **Cortex Hub**! Check out the secure reader portal now.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <a 
+                            href="https://cortex-hub-seven.vercel.app" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="bg-purple-500/20 border border-purple-500/30 hover:bg-purple-500/30 text-purple-300 font-bold px-4 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5"
+                        >
+                            Open Cortex Hub <i className="fas fa-external-link-alt text-[9px]"></i>
+                        </a>
+                        <button 
+                            onClick={() => setShowBanner(false)}
+                            className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 hover:border-rose-500/30 hover:text-rose-400 flex items-center justify-center text-slate-400 transition-all text-xs"
+                            title="Dismiss notification"
+                        >
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Header / Welcome box */}
             <div className="glass-card rounded-3xl p-6 md:p-8 border border-white/5 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-2 relative z-10">

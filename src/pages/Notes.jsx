@@ -97,17 +97,13 @@ export default function Notes() {
                             </div>
                         </div>
                         <a 
-                            href={`/public/${res.file}`}
-                            download 
-                            onClick={(e) => {
-                                // Since it's a mock file, alert user if file not found
-                                e.preventDefault();
-                                alert(`Downloading mock resource archive: ${res.file}`);
-                            }}
+                            href={`https://cortex-hub-seven.vercel.app/notes?topic=${encodeURIComponent(res.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-400/30 transition-all active:scale-90 flex-shrink-0 self-center"
-                            title="Download PDF"
+                            title="Read Securely on Cortex Hub"
                         >
-                            <i className="fas fa-download text-xs"></i>
+                            <i className="fas fa-eye text-xs"></i>
                         </a>
                     </div>
                 ))}

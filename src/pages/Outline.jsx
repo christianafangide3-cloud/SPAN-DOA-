@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Outline() {
     const sections = [
         {
             title: "ANATOMY: UPPER LIMB",
+            courseCode: "ANA 211",
             items: [
                 { id: "ana_1", label: "Pectoral & Scapular Regions (Muscles & Attachments)" },
                 { id: "ana_2", label: "Axilla (Boundaries, Contents, & Axillary Artery branches)" },
@@ -15,6 +17,7 @@ export default function Outline() {
         },
         {
             title: "ANATOMY: EMBRYOLOGY",
+            courseCode: "ANA 213",
             items: [
                 { id: "emb_1", label: "Gametogenesis (Spermatogenesis & Oogenesis steps)" },
                 { id: "emb_2", label: "Weeks 1 & 2 (Fertilization, Cleavage, Blastocyst & Twos)" },
@@ -25,6 +28,7 @@ export default function Outline() {
         },
         {
             title: "PHYSIOLOGY: BLOOD & MUSCLE",
+            courseCode: "PHS 211",
             items: [
                 { id: "phy_1", label: "Blood: Erythropoiesis, Hemoglobin synthesis, & Anemias" },
                 { id: "phy_2", label: "Hemostasis: Platelet plug, Clotting cascade, & Fibrinolysis" },
@@ -125,6 +129,29 @@ export default function Outline() {
                                         }`}>
                                             {item.label}
                                         </span>
+                                        
+                                        <div className="flex items-center gap-2 ml-auto">
+                                            {/* Practice CBT */}
+                                            <Link 
+                                                to={`/cbt/levels?course=${encodeURIComponent(sec.courseCode)}`}
+                                                className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 transition-all text-[10px]"
+                                                title="Practice CBT"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <i className="fas fa-graduation-cap"></i>
+                                            </Link>
+                                            {/* Secure slide notes link to Cortex Hub */}
+                                            <a 
+                                                href={`https://cortex-hub-seven.vercel.app/notes?topic=${encodeURIComponent(item.label)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center hover:bg-purple-400 hover:text-slate-950 transition-all text-[10px]"
+                                                title="Read Secure Slides on Cortex Hub"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <i className="fas fa-eye"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 );
                             })}

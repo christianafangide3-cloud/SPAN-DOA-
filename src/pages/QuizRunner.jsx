@@ -303,7 +303,7 @@ export default function QuizRunner() {
 
                     <div className="fixed bottom-0 left-0 w-full p-4 bg-slate-950/90 backdrop-blur-xl border-t border-white/5 flex justify-center z-20">
                         <button 
-                            onClick={() => navigate(`/cbt?course=${courseCode}`)} 
+                            onClick={() => navigate(`/cbt/levels?course=${encodeURIComponent(courseCode)}`)} 
                             className="btn-primary px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg flex items-center gap-2 active:scale-95 transition-all"
                         >
                             <i className="fas fa-check-double text-[10px]"></i> Conclude Review
@@ -355,7 +355,7 @@ export default function QuizRunner() {
                                     <i className="fas fa-search text-[10px]"></i> Deep Review
                                 </button>
                                 <button 
-                                    onClick={() => navigate(`/cbt?course=${courseCode}`)} 
+                                    onClick={() => navigate(`/cbt/levels?course=${encodeURIComponent(courseCode)}`)} 
                                     className="w-full py-3.5 btn-primary text-white rounded-xl font-bold uppercase tracking-widest text-xs"
                                 >
                                     Return to Hub
